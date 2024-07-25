@@ -1,0 +1,10 @@
+{% extends 'File/base.html' %}
+{% block content %}
+{% load static %}
+<h1>Upload a File</h1>
+<form action="{% url 'File:upload_file' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Upload File</button>
+</form>
+{% endblock content %}

@@ -1,0 +1,18 @@
+django==4.2.6
+django-ckeditor==6.7.0
+Pillow==10.1.0
+djangorestframework==3.14.0
+requests==2.31.0
+djangorestframework-simplejwt==5.3.0
+django-cors-headers==4.3.1
+channels==4.0.0
+channels-redis==4.2.0
+django-jazzmin==3.0.0
+django-js-asset==2.1.0
+Jinja2==3.1.2
+redis==5.0.1
+template==0.7.6
+bcrypt==4.2.0
+psycopg2==2.9.9
+# pip install -r requirements.txt
+# pip list

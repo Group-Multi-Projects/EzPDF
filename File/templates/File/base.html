@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+</head>
+<body>
+    <div class="navbar">
+        <ul>
+            <li><a href="{% url 'File:home' %}">Home</a></li>
+            <li><a href="{% url 'Account:signup' %}">Sign Up</a></li>
+            <li><a href="{% url 'Account:signin' %}">Sign In</a></li>
+            <li><a href="{% url 'Account:signout' %}">Sign Out</a></li>
+            <li><a href="{% url 'File:edit_file' %}">Edit File Here</a></li>
+            <li><a href="{% url 'File:upload_file' %}">Upload File Here</a></li>
+
+        </ul>
+    </div>
+    {% block content %}
+        
+    {% endblock content %}
+        
+</body>
+</html>
