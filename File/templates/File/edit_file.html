@@ -1,7 +1,7 @@
 {% extends 'File/base.html' %}
 {% block content %}
 {% load static %}
-    <input type="file" id="fileInput" accept=".pdf" />
+    <p id="file_id" style="opacity: 0;">{{file.id}}</p>
     <canvas id="pdfCanvas"></canvas>
     <button id="saveDrawing">Save Drawing</button>
     <button id="redraw">Redraw</button>

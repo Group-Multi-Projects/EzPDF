@@ -5,19 +5,40 @@ $(document).ready(function() {
     var pdfDocument = null;
     var currentPage = 1;
     var drawingPoints = [];
-
-    // Load PDF
-    $('#fileInput').on('change', function(event) {
-        var file = event.target.files[0];
-        var fileReader = new FileReader();
-        fileReader.onload = function() {
-            var typedArray = new Uint8Array(this.result);
-            pdfjsLib.getDocument(typedArray).promise.then(function(pdf) {
-                pdfDocument = pdf;
-                renderPage(currentPage);
+    var file_id = $("#file_id").text()
+    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxOTQ2MTQwLCJpYXQiOjE3MjE5NDI1NDAsImp0aSI6IjA3NmQwODcyMWFiZTRkYTZiNzU0YWY5Y2E5Y2I5ZDkxIiwidXNlcl9pZCI6MX0.TkcUdUgXwtgkHuh0QMD385HFu08vcGcVVm6LmRleTTo"
+    $.ajax({
+        type: "GET",
+        url: `http://127.0.0.1:8000/file_api/${file_id}/`,
+        headers: {
+            "Authorization": "Bearer " + token
+        },
+        success: function (response) {
+            console.log('Response received:', response);
+            var fileUrl = response.file; 
+            $.ajax({
+                type: "GET",
+                url: fileUrl,
+                xhrFields: {
+                    responseType: 'arraybuffer'
+                },
+                success: function (pdfResponse) {
+                    var typedArray = new Uint8Array(pdfResponse);
+                    pdfjsLib.getDocument(typedArray).promise.then(function(pdf) {
+                        pdfDocument = pdf;
+                        renderPage(currentPage);
+                    }).catch(function(error) {
+                        console.error('Error loading PDF:', error);
+                    });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('Error during AJAX request for PDF:', textStatus, errorThrown);
+                }
             });
-        };
-        fileReader.readAsArrayBuffer(file);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error('Error during initial AJAX request:', textStatus, errorThrown);
+        }
     });
 
     // Render Page
@@ -30,6 +51,7 @@ $(document).ready(function() {
                 canvasContext: ctx,
                 viewport: viewport
             };
+            console.log(page)
             page.render(renderContext).promise.then(function() {
                 // Redraw saved drawings after rendering page
                 redraw();

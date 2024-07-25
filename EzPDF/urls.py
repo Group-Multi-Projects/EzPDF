@@ -20,11 +20,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('edit/', include("editor.urls")),
     path('', include("File.urls")),
     path('customer/', include("Account.urls")),
-    # path('session/', include("session.urls")),
     # path('convert/', include("convert.urls")),
+    path('auth/', include("jwt_auth.urls")),
     
     
 ]

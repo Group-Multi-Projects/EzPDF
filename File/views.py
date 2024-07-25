@@ -1,25 +1,75 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UploadFileForm
 import os
+from .models import FileModel
+import logging
+from rest_framework.decorators import api_view,permission_classes
+from rest_framework import status
+from rest_framework.response import Response
+from. serializers import FileSerializer
+from rest_framework.permissions import IsAuthenticated
+logger = logging.getLogger(__name__)
 # Create your views here.
 def home(request):
     return render(request,"File/home.html")
+
 def list_files(request):
     return render(request,"File/list_files.html")
-def edit_file(request):
-    
-    return render(request,"File/edit_file.html")
+
+def edit_file(request, file_id):
+    file = get_object_or_404(FileModel, id=file_id)
+    context = {
+        "file": file
+    }
+    return render(request, "File/edit_file.html", context)
+
 def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()  
-            return redirect('File:edit_file')
+            uploaded_file = form.save()
+            logger.info(f"Uploaded file ID: {uploaded_file.id}")
+            return redirect('File:edit_file', file_id=uploaded_file.id)
         else:
+            logger.warning("Upload form is not valid")
             return render(request, 'File/upload_file.html', {'form': form})
     else:
         form = UploadFileForm()
+    
     context = {
-        "form":form
+        "form": form
     }
     return render(request, 'File/upload_file.html', context)
+@api_view(["GET","POST"])
+@permission_classes([IsAuthenticated]) 
+def get_post_file_api(request):
+    if request.method == "GET":
+        model = FileModel.objects.all()
+        serializers = FileSerializer(model,many = True)
+        return Response(serializers.data)
+    
+    elif request.method == "POST":
+        serializer = FileSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return redirect("File:list_files")
+
+@api_view(["GET", "PUT", "DELETE"])
+@permission_classes([IsAuthenticated])
+def get_put_delete_file_api(request, id):
+    model = get_object_or_404(FileModel, id=id)
+
+    if request.method == "GET":
+        serializer = FileSerializer(model)
+        return Response(serializer.data)
+
+    elif request.method == "PUT":
+        serializer = FileSerializer(model, data=request.data)
+        print("geellsadlasd")
+        if serializer.is_valid():
+            serializer.save()
+            # return Response(serializer.data, status=status.HTTP_200_OK)
+            return redirect('File:list')
+    elif request.method == "DELETE":
+        model.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

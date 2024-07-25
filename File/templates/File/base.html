@@ -14,7 +14,7 @@
             <li><a href="{% url 'Account:signup' %}">Sign Up</a></li>
             <li><a href="{% url 'Account:signin' %}">Sign In</a></li>
             <li><a href="{% url 'Account:signout' %}">Sign Out</a></li>
-            <li><a href="{% url 'File:edit_file' %}">Edit File Here</a></li>
+            {% comment %} <li><a href="{% url 'File:edit_file' file.id %}">Edit File Here</a></li> {% endcomment %}
             <li><a href="{% url 'File:upload_file' %}">Upload File Here</a></li>
 
         </ul>
