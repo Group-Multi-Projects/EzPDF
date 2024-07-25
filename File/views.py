@@ -8,13 +8,24 @@ from rest_framework import status
 from rest_framework.response import Response
 from. serializers import FileSerializer
 from rest_framework.permissions import IsAuthenticated
+from Account.models import AccountModel
+from django.contrib.auth.decorators import login_required
+from django.conf import settings
 logger = logging.getLogger(__name__)
 # Create your views here.
 def home(request):
     return render(request,"File/home.html")
-
+@login_required(login_url=settings.LOGIN_URL)
 def list_files(request):
-    return render(request,"File/list_files.html")
+    account = AccountModel.objects.get(username = request.user.username)
+    files = FileModel.objects.filter(
+        account = account
+    )
+    print(account)
+    context = {
+        "files":files
+    }
+    return render(request,"File/list_files.html",context)
 
 def edit_file(request, file_id):
     file = get_object_or_404(FileModel, id=file_id)

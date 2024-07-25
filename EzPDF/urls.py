@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("File.urls")),
-    path('customer/', include("Account.urls")),
+    path('account/', include("Account.urls")),
     # path('convert/', include("convert.urls")),
     path('auth/', include("jwt_auth.urls")),
     

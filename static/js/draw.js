@@ -6,7 +6,7 @@ $(document).ready(function() {
     var currentPage = 1;
     var drawingPoints = [];
     var file_id = $("#file_id").text()
-    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxOTQ2MTQwLCJpYXQiOjE3MjE5NDI1NDAsImp0aSI6IjA3NmQwODcyMWFiZTRkYTZiNzU0YWY5Y2E5Y2I5ZDkxIiwidXNlcl9pZCI6MX0.TkcUdUgXwtgkHuh0QMD385HFu08vcGcVVm6LmRleTTo"
+    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxOTQ5ODQ5LCJpYXQiOjE3MjE5NDYyNDksImp0aSI6ImE2YmYzNjAyMTIyMzQxZjI5MzFhOTQzNzYwZTI2NGJlIiwidXNlcl9pZCI6MX0.lhmprXc3XWO3afj7CDcC9GJUH4GjYUu5CVrsXQEi_rM"
     $.ajax({
         type: "GET",
         url: `http://127.0.0.1:8000/file_api/${file_id}/`,

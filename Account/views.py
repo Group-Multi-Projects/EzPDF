@@ -16,6 +16,7 @@ def signup(request):
     return render(request,"Account/signup.html",context)
 
 def signin(request):
+    next = request.GET.get("next")
     if request.method == 'POST':
         form = SignInForm(request, data=request.POST)
         if form.is_valid():
@@ -24,6 +25,8 @@ def signin(request):
             user = authenticate(request, username=email, password=password)
             if user is not None:
                 login(request, user)
+                if next:
+                    return redirect(next)
                 return redirect('File:list_files')
     else:
         form = SignInForm()
