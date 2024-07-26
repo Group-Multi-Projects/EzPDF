@@ -6,41 +6,63 @@ $(document).ready(function() {
     var currentPage = 1;
     var drawingPoints = [];
     var file_id = $("#file_id").text()
-    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxOTQ5ODQ5LCJpYXQiOjE3MjE5NDYyNDksImp0aSI6ImE2YmYzNjAyMTIyMzQxZjI5MzFhOTQzNzYwZTI2NGJlIiwidXNlcl9pZCI6MX0.lhmprXc3XWO3afj7CDcC9GJUH4GjYUu5CVrsXQEi_rM"
+    var file_path = $("#file_path").text()
+
+    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI3MTY0OTM1LCJpYXQiOjE3MjE5ODA5MzUsImp0aSI6IjdhMjcyMGRjN2Y4OTRlZTdhOGE4MDYzYzA0OTIxNWRiIiwidXNlcl9pZCI6MX0.E004KL8pztdtBk7vvEq2azDytMFl4ryXI-kcRWxcjU8"
+    // var access_token = $("#access_token").text()
+    // console.log(access_token)
+    // $.ajax({
+    //     type: "GET",
+    //     url: `http://127.0.0.1:8000/file_api/${file_id}/`,
+    //     headers: {
+    //         "Authorization": "Bearer " + token
+    //     },
+    //     success: function (response) {
+    //         console.log('Response received:', response);
+    //         var fileUrl = response.file; 
+    //         $.ajax({
+    //             type: "GET",
+    //             url: fileUrl,
+    //             xhrFields: {
+    //                 responseType: 'arraybuffer'
+    //             },
+    //             success: function (pdfResponse) {
+    //                 var typedArray = new Uint8Array(pdfResponse);
+    //                 pdfjsLib.getDocument(typedArray).promise.then(function(pdf) {
+    //                     pdfDocument = pdf;
+    //                     renderPage(currentPage);
+    //                 }).catch(function(error) {
+    //                     console.error('Error loading PDF:', error);
+    //                 });
+    //             },
+    //             error: function (jqXHR, textStatus, errorThrown) {
+    //                 console.error('Error during AJAX request for PDF:', textStatus, errorThrown);
+    //             }
+    //         });
+    //     },
+    //     error: function (jqXHR, textStatus, errorThrown) {
+    //         console.error('Error during initial AJAX request:', textStatus, errorThrown);
+    //     }
+    // });
     $.ajax({
         type: "GET",
-        url: `http://127.0.0.1:8000/file_api/${file_id}/`,
-        headers: {
-            "Authorization": "Bearer " + token
+        url: `http://127.0.0.1:8000/media/${file_path}`,
+        xhrFields: {
+            responseType: 'arraybuffer'
         },
-        success: function (response) {
-            console.log('Response received:', response);
-            var fileUrl = response.file; 
-            $.ajax({
-                type: "GET",
-                url: fileUrl,
-                xhrFields: {
-                    responseType: 'arraybuffer'
-                },
-                success: function (pdfResponse) {
-                    var typedArray = new Uint8Array(pdfResponse);
-                    pdfjsLib.getDocument(typedArray).promise.then(function(pdf) {
-                        pdfDocument = pdf;
-                        renderPage(currentPage);
-                    }).catch(function(error) {
-                        console.error('Error loading PDF:', error);
-                    });
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.error('Error during AJAX request for PDF:', textStatus, errorThrown);
-                }
+        success: function (pdfResponse) {
+            var typedArray = new Uint8Array(pdfResponse);
+            pdfjsLib.getDocument(typedArray).promise.then(function(pdf) {
+                pdfDocument = pdf;
+                renderPage(currentPage);
+            }).catch(function(error) {
+                console.error('Error loading PDF:', error);
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            console.error('Error during initial AJAX request:', textStatus, errorThrown);
+            console.error('Error during AJAX request for PDF:', textStatus, errorThrown);
         }
     });
-
     // Render Page
     function renderPage(num) {
         pdfDocument.getPage(num).then(function(page) {

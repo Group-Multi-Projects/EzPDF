@@ -11,14 +11,21 @@
     <div class="navbar">
         <ul>
             <li><a href="{% url 'File:home' %}">Home</a></li>
+            {% if request.user.is_authenticated %}
+            <li>{{request.user.username}}<a href="{% url 'Account:signout' %}">Sign Out</a></li>
+
+            {% endif %}
+            {% if not request.user.is_authenticated %}
             <li><a href="{% url 'Account:signup' %}">Sign Up</a></li>
             <li><a href="{% url 'Account:signin' %}">Sign In</a></li>
-            <li><a href="{% url 'Account:signout' %}">Sign Out</a></li>
+            {% endif %}
+           
             <li><a href="{% url 'File:list_files' %}">List Files Here</a></li>
             <li><a href="{% url 'File:upload_file' %}">Upload File Here</a></li>
 
         </ul>
-    </div>
+    </div>  
+
     {% block content %}
         
     {% endblock content %}

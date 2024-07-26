@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UploadFileForm
 import os
+import requests
+
 from .models import FileModel
 import logging
 from rest_framework.decorators import api_view,permission_classes
@@ -11,6 +13,8 @@ from rest_framework.permissions import IsAuthenticated
 from Account.models import AccountModel
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import authenticate
 logger = logging.getLogger(__name__)
 # Create your views here.
 def home(request):
@@ -26,11 +30,43 @@ def list_files(request):
         "files":files
     }
     return render(request,"File/list_files.html",context)
+def get_jwt_token(username, password):
+    url = 'http://127.0.0.1:8000/auth/api/token/'
+    data = {
+        'username': username,
+        'password': password
+    }
+    response = requests.post(url, data=data)
+    
+    if response.status_code == 200:
+        tokens = response.json()
+        return tokens['access'], tokens['refresh']
+    else:
+        print(f"Error: {response.status_code}")
+        return None, None
 
 def edit_file(request, file_id):
     file = get_object_or_404(FileModel, id=file_id)
+    # try:
+    #   username = request.user.username
+    # except:
+    #   username = "khach"
+    # account = AccountModel.objects.get(username=username)
+    # print(account.email,request.user.password)
+    file_path = file.get_file_path()
+
+    # access_token, refresh_token = get_jwt_token(account.email, "admin")
+    
+    # if access_token:
+    #     print("Access token:", access_token)
+    #     print("Refresh token:", refresh_token)
+    # else:
+    #     print("Failed to obtain access token")
+
     context = {
-        "file": file
+        "file": file,
+        "file_path":file_path
+        # "access_token": access_token
     }
     return render(request, "File/edit_file.html", context)
 
@@ -84,3 +120,4 @@ def get_put_delete_file_api(request, id):
     elif request.method == "DELETE":
         model.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
