@@ -3,21 +3,20 @@ from .models import FileModel
 from Account.models import AccountModel
 
 class UploadFileForm(forms.ModelForm):
-    username = forms.CharField(max_length=100, required=False)
-    
     class Meta:
         model = FileModel
         fields = ['file']
         labels = {
-            'file': 'Select your file:',
+            'file': 'Chọn file của bạn:',
         }
         widgets = {
             'file': forms.ClearableFileInput(),
         }
-    
-    def save(self, commit=True):
+ 
+
+
+    def save(self, commit=True,username = None):
         # Lấy tài khoản dựa trên tên người dùng
-        username = self.cleaned_data.get("username", "")
         try:
             account = AccountModel.objects.get(username=username)
        

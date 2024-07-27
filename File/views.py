@@ -72,9 +72,15 @@ def edit_file(request, file_id):
 
 def upload_file(request):
     if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
+        try:
+            username = request.user.username
+        except AccountModel.DoesNotExist:
+            form = UploadFileForm(request.POST, request.FILES) 
+        else:
+            form = UploadFileForm(request.POST, request.FILES)
+        
         if form.is_valid():
-            uploaded_file = form.save()
+            uploaded_file = form.save(commit=True,username = username)
             logger.info(f"Uploaded file ID: {uploaded_file.id}")
             return redirect('File:edit_file', file_id=uploaded_file.id)
         else:
@@ -82,11 +88,12 @@ def upload_file(request):
             return render(request, 'File/upload_file.html', {'form': form})
     else:
         form = UploadFileForm()
-    
+
     context = {
         "form": form
     }
     return render(request, 'File/upload_file.html', context)
+
 @api_view(["GET","POST"])
 @permission_classes([IsAuthenticated]) 
 def get_post_file_api(request):

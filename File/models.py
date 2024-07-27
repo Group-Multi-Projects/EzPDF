@@ -12,3 +12,6 @@ class FileModel(models.Model):
     
     def get_file_path(self):
         return self.file
+    
+    def get_account(self):
+        return self.account
