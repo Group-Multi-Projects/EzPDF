@@ -11,11 +11,11 @@
         border: 1px dashed #000;
         padding: 5px;
         display: none;
-        background-color: rgba(255, 255, 255, 0.8);
+        resize: both;
+        overflow: auto;
     }
     canvas {
         background-color: aqua;
-        margin-left: 200px;
     }
 </style>
     <div id="tools_list">
@@ -30,6 +30,12 @@
             <input type="number" id="fontSize" placeholder="Font Size" value="12">
             <input type="color" id="fontColor" value="#000000">   
             <button type="button" id="save_add_text">Save</button>
+        </div>
+        <hr>
+        <div class="restore">
+            <button onclick="undo_canvas()" id="undo">Undo canvas</button>
+            <button onclick="undo_html()" id="undo">Undo html</button>
+            <button onclick="clear_canvas()" id="clear">Clear</button>
         </div>
     </div>
     <p id="file_id" style="opacity: 0;">{{file.id}}</p>
@@ -46,6 +52,7 @@
         var pdfDocument = null;
         var currentPage = 1;
         var file_path = $("#file_path").text()
+        
         $.ajax({
             type: "GET",
             url: `http://127.0.0.1:8000/media/${file_path}`,
@@ -85,5 +92,5 @@
     </script>
     <script src="{% static 'js/draw.js' %}"></script> 
     <script src="{% static 'js/add_text.js' %}"></script>
-
+    <script src="{% static 'js/undo_clear.js' %}"></script>
 {% endblock content %}

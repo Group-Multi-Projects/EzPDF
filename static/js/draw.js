@@ -2,14 +2,17 @@
     var isDrawing = false;
     var drawingPoints = [];
     var isDrawActive = false
- 
+    var restoreArray = []
+    let index = -1
     penBtn.on("click", function () {
         isDrawActive = true
         isAddText = false
+        restoreArray.push(ctx.getImageData(0,0,canvas.width,canvas.height))
+        index += 1
         $(canvas).on('mousedown', function(e) {
-            var rect = canvas.getBoundingClientRect();
-            var x = e.clientX - rect.left;
-            var y = e.clientY - rect.top;
+            let rect = canvas.getBoundingClientRect();
+            let x = e.clientX - rect.left;
+            let y = e.clientY - rect.top;
             console.log("Pen:",rect)
             console.log("x:",x)
             console.log("y:",y)
@@ -21,7 +24,9 @@
             isDrawing = false;
             ctx.beginPath(); 
             drawingPoints.push(null);
-            
+            restoreArray.push(ctx.getImageData(0,0,canvas.width,canvas.height))
+            index += 1
+            console.log(restoreArray)
         });
     });
     // Drawing function
@@ -30,9 +35,9 @@
             
         if (!isDrawing || !pdfDocument) return;
 
-        var rect = canvas.getBoundingClientRect();
-        var x = e.clientX - rect.left;
-        var y = e.clientY - rect.top;
+        let rect = canvas.getBoundingClientRect();
+        let x = e.clientX - rect.left;
+        let y = e.clientY - rect.top;
 
         ctx.lineWidth = 5;
         ctx.lineCap = 'round';
@@ -56,7 +61,7 @@
     
         ctx.beginPath();
     
-        for (var i = 0; i < drawingPoints.length; i++) {
+        for (let i = 0; i < drawingPoints.length; i++) {
             if (drawingPoints[i] === null) {
                 ctx.stroke();
                 ctx.beginPath();
@@ -81,4 +86,3 @@
     $('#redraw').on('click', function() {
         redraw();
     });
-
