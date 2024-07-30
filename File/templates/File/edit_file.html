@@ -2,9 +2,10 @@
 {% block content %}
 {% load static %}
 <style>
-    #pdfCanvas {
+    .pdfCanvas {
         border: 1px solid #000;
         cursor: move;
+        margin-bottom: 20px;
     }
     .textBox {
         position: absolute;
@@ -16,6 +17,7 @@
     }
     canvas {
         background-color: aqua;
+        margin-left: 20vw;
     }
 </style>
     <div id="tools_list">
@@ -27,8 +29,9 @@
         <hr>
         <div class="write">
             <button id="add_text">Add Text</button>
-            <input type="number" id="fontSize" placeholder="Font Size" value="12">
-            <input type="color" id="fontColor" value="#000000">   
+            {% comment %} <input type="number" id="fontSize" placeholder="Font Size" value="12">
+            <input type="color" id="fontColor" value="#000000">    {% endcomment %}
+            <button id="readdtext">Readdtext</button>
             <button type="button" id="save_add_text">Save</button>
         </div>
         <hr>
@@ -40,19 +43,17 @@
     </div>
     <p id="file_id" style="opacity: 0;">{{file.id}}</p>
     <p id="file_path" style="display: none;">{{file_path}}</p>
-    <canvas id="pdfCanvas"></canvas>
-    
-  
+    <div id="pdfContainer"></div>
+   
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-    {% comment %} <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script> {% endcomment %}
     <script>
-        var canvas = $('#pdfCanvas')[0];
-        var ctx = canvas.getContext('2d');
         var pdfDocument = null;
-        var currentPage = 1;
-        var file_path = $("#file_path").text()
-        
+        var file_path = $("#file_path").text();
+        var penBtn = $("#pen");
+        var index = -1
+        var priority = 0
+        var currentIndexAddText = -1
         $.ajax({
             type: "GET",
             url: `http://127.0.0.1:8000/media/${file_path}`,
@@ -63,30 +64,46 @@
                 var typedArray = new Uint8Array(pdfResponse);
                 pdfjsLib.getDocument(typedArray).promise.then(function(pdf) {
                     pdfDocument = pdf;
-                    renderPage(currentPage);
+                    renderAllPages();
                 }).catch(function(error) {
-                    console.error('Error loading PDF:', error);
+                    console.error('Lỗi tải PDF:', error);
                 });
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                console.error('Error during AJAX request for PDF:', textStatus, errorThrown);
+                console.error('Lỗi trong yêu cầu AJAX cho PDF:', textStatus, errorThrown);
             }
         });
-        // Render Page
+        
+        function renderAllPages() {
+   
+            for (var num = 1; num <= pdfDocument.numPages; num++) {
+                renderPage(num);
+            }
+            
+        }
+
         function renderPage(num) {
             pdfDocument.getPage(num).then(function(page) {
                 var viewport = page.getViewport({ scale: 1 });
+                var canvas = document.createElement('canvas');
+                canvas.className = 'pdfCanvas';
+                canvas.id = 'page-' + num;
                 canvas.width = viewport.width;
                 canvas.height = viewport.height;
+                var ctx = canvas.getContext('2d');
                 var renderContext = {
                     canvasContext: ctx,
                     viewport: viewport
                 };
-                console.log(page)
+        
                 page.render(renderContext).promise.then(function() {
-                    // Redraw saved drawings after rendering page
-             //       redraw();
+                    $('#pdfContainer').append(canvas);
                 });
+                var isDrawActive = false;
+                var isAddTextActive = false;
+
+                setupTextAdding(canvas);
+                drawing(canvas, ctx);
             });
         }
     </script>

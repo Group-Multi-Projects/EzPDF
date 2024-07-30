@@ -18,8 +18,8 @@ def add_text_to_pdf(input_pdf, output_pdf, text, position, font_size):
     doc.save(output_pdf)
 
 # Thông tin về văn bản cần thêm //129 x:52 y:24
-text = "Hello"
-position = (360, 45.8)  # X, Y position
+text = "Enter text here"
+position = (336, 32)  # X, Y position
 font_size = 12
 # font_color = "#000000"  # Mã màu font
 

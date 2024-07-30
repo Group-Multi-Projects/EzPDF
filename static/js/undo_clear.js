@@ -15,18 +15,17 @@ function undo_canvas() {
     }
 }
 // Biến toàn cục để theo dõi chỉ số phần tử hiện tại
-
 function undo_html() {
     // Kiểm tra nếu danh sách không rỗng và currentIndex hợp lệ
-    if (currentIndex >= 0) {
+    if (currentIndexAddText >= 0) {
         // Lấy phần tử hiện tại dựa trên currentIndex
-        let element = list_textbox[currentIndex];
+        let element = list_textbox[currentIndexAddText];
         
         // Ẩn phần tử hiện tại
         $(element).css("display", "none");
         
         // Giảm currentIndex để chuyển đến phần tử tiếp theo
-        currentIndex--;
+        currentIndexAddText--;
     } else {
         console.log("Đã ẩn tất cả các phần tử.");
     }
