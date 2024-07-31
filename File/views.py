@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UploadFileForm
 import os
 import requests
-
 from .models import FileModel
 import logging
 from rest_framework.decorators import api_view,permission_classes

@@ -7,7 +7,7 @@ class FileModel(models.Model):
     account = models.ForeignKey(AccountModel, on_delete=models.PROTECT, null=True)
     file = models.FileField(upload_to="files/", null=True)
     num_pages = models.IntegerField(null=True, blank=True)
-    file_format = models.CharField(verbose_name="Format", max_length=20, null=True)
+    file_format = models.CharField(verbose_name="Format", max_length=20, null=True,default="pdf")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

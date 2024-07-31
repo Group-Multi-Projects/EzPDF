@@ -1,4 +1,6 @@
 var listObjectDrawInfo = [];
+var currentPage = 1; // Biến để lưu trang hiện tại
+
 function drawing(canvas, ctx) {
     var isDrawing = false;
     var drawingPoints = [];
@@ -20,36 +22,36 @@ function drawing(canvas, ctx) {
         $(canvas).on('mousemove', draw);
 
         $(canvas).on('mouseup', function () {
-            isDrawing = false;
-            priority += 1;
             let objectDrawInfo = {
-                type: "addtext",
+                type: "draw",
                 coordinates: drawingPoints.slice(),
-                priority: priority
+                page: this.id, // Lưu thông tin trang hiện tại
+                draw_id:""
             };
+            let uniqueId = 'draw-' + Date.now(); // Ví dụ: 'draw-1690992901876'
+            objectDrawInfo.draw_id = uniqueId
             drawingPoints = [];
             restoreArray.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
             index += 1;
-            listObjectDrawInfo.push(objectDrawInfo);
-            console.log(objectDrawInfo.priority);
-            console.log(objectDrawInfo.coordinates);
+            if (isDrawActive) {
+         
+                listObjectDrawInfo.push(objectDrawInfo);
+            }
+            isDrawing = false;
+
         });
 
         $(canvas).on('mouseleave', function () {
             if (isDrawing) {
                 isDrawing = false;
-                priority += 1;
                 let objectDrawInfo = {
                     type: "addtext",
                     coordinates: drawingPoints.slice(),
-                    priority: priority
+                    page: this.id // Lưu thông tin trang hiện tại
                 };
                 drawingPoints = [];
                 restoreArray.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
                 index += 1;
-                listObjectDrawInfo.push(objectDrawInfo);
-                console.log(objectDrawInfo.priority);
-                console.log(objectDrawInfo.coordinates);
             }
         });
     });
@@ -102,7 +104,6 @@ function drawing(canvas, ctx) {
     }
 
     $('#saveDrawing').on('click', function () {
-        
         console.log(listObjectDrawInfo);
     });
 
@@ -111,4 +112,9 @@ function drawing(canvas, ctx) {
     });
 
     console.log("Draw is working!");
+}
+
+// Hàm để cập nhật trang hiện tại khi người dùng chuyển trang
+function updateCurrentPage(newPage) {
+    currentPage = newPage;
 }

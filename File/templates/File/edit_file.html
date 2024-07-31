@@ -40,6 +40,8 @@
             <button onclick="undo_html()" id="undo">Undo html</button>
             <button onclick="clear_canvas()" id="clear">Clear</button>
         </div>
+        <hr>
+        <button id="save_all_changes">Save All</button>
     </div>
     <p id="file_id" style="opacity: 0;">{{file.id}}</p>
     <p id="file_path" style="display: none;">{{file_path}}</p>
@@ -47,66 +49,8 @@
    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-    <script>
-        var pdfDocument = null;
-        var file_path = $("#file_path").text();
-        var penBtn = $("#pen");
-        var index = -1
-        var priority = 0
-        var currentIndexAddText = -1
-        $.ajax({
-            type: "GET",
-            url: `http://127.0.0.1:8000/media/${file_path}`,
-            xhrFields: {
-                responseType: 'arraybuffer'
-            },
-            success: function (pdfResponse) {
-                var typedArray = new Uint8Array(pdfResponse);
-                pdfjsLib.getDocument(typedArray).promise.then(function(pdf) {
-                    pdfDocument = pdf;
-                    renderAllPages();
-                }).catch(function(error) {
-                    console.error('Lỗi tải PDF:', error);
-                });
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.error('Lỗi trong yêu cầu AJAX cho PDF:', textStatus, errorThrown);
-            }
-        });
-        
-        function renderAllPages() {
-   
-            for (var num = 1; num <= pdfDocument.numPages; num++) {
-                renderPage(num);
-            }
-            
-        }
+    <script src="{% static 'js/render_pages.js' %}"></script>
 
-        function renderPage(num) {
-            pdfDocument.getPage(num).then(function(page) {
-                var viewport = page.getViewport({ scale: 1 });
-                var canvas = document.createElement('canvas');
-                canvas.className = 'pdfCanvas';
-                canvas.id = 'page-' + num;
-                canvas.width = viewport.width;
-                canvas.height = viewport.height;
-                var ctx = canvas.getContext('2d');
-                var renderContext = {
-                    canvasContext: ctx,
-                    viewport: viewport
-                };
-        
-                page.render(renderContext).promise.then(function() {
-                    $('#pdfContainer').append(canvas);
-                });
-                var isDrawActive = false;
-                var isAddTextActive = false;
-
-                setupTextAdding(canvas);
-                drawing(canvas, ctx);
-            });
-        }
-    </script>
     <script src="{% static 'js/draw.js' %}"></script> 
     <script src="{% static 'js/add_text.js' %}"></script>
     <script src="{% static 'js/undo_clear.js' %}"></script>
