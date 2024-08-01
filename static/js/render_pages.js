@@ -36,7 +36,7 @@ function renderAllPages() {
     for (var num = 1; num <= pdfDocument.numPages; num++) {
         renderPage(num);
     }
-    
+
 }
 
 function renderPage(num) {
@@ -58,11 +58,13 @@ function renderPage(num) {
         });
         var isDrawActive = false;
         var isAddTextActive = false;
-
+        
+        
         setupTextAdding(canvas);
         drawing(canvas, ctx);
     });
 }
+
 $("#save_all_changes").click(function (e) { 
     console.log("Danh sách các đường vẽ:", listObjectDrawInfo);
     console.log("Danh sách các textbox:", listObjectTextBoxInfo);

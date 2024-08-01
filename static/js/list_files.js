@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const viewport = page.getViewport({ scale: 1.5 });
                 canvas.width = viewport.width;
                 canvas.height = viewport.height;
-
                 const renderContext = {
                     canvasContext: context,
                     viewport: viewport

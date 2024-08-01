@@ -45,7 +45,12 @@
     </div>
     <p id="file_id" style="opacity: 0;">{{file.id}}</p>
     <p id="file_path" style="display: none;">{{file_path}}</p>
-    <div id="pdfContainer"></div>
+    <div id="pdfContainer">
+{% comment %} 
+        {% for textbox in textboxs %}
+             <div class="textBox" contenteditable="true" id="{{textbox.item_id}}" style="position: absolute; display: block; left: {{textbox.coord_in_doc_X}}px; top: {{textbox.coord_in_doc_Y}}px;">{{textbox.content}}</div>
+        {% endfor %} {% endcomment %}
+    </div>
    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
@@ -54,4 +59,5 @@
     <script src="{% static 'js/draw.js' %}"></script> 
     <script src="{% static 'js/add_text.js' %}"></script>
     <script src="{% static 'js/undo_clear.js' %}"></script>
+
 {% endblock content %}

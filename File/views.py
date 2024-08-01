@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
+from tools.models import TextModel,DrawModel
 logger = logging.getLogger(__name__)
 # Create your views here.
 def home(request):
@@ -46,23 +47,15 @@ def get_jwt_token(username, password):
 
 def edit_file(request, file_id):
     file = get_object_or_404(FileModel, id=file_id)
-    # try:
-    #   username = request.user.username
-    # except:
-    #   username = "khach"
-    # account = AccountModel.objects.get(username=username)
-    # print(account.email,request.user.password)
+ 
     file_path = file.get_file_path()
+    textboxs = TextModel.objects.filter(
+        file = file
+    )
 
-    # access_token, refresh_token = get_jwt_token(account.email, "admin")
-    
-    # if access_token:
-    #     print("Access token:", access_token)
-    #     print("Refresh token:", refresh_token)
-    # else:
-    #     print("Failed to obtain access token")
 
     context = {
+        'textboxs':textboxs,
         "file": file,
         "file_path":file_path
         # "access_token": access_token
