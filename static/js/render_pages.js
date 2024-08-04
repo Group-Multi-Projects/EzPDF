@@ -8,7 +8,8 @@ var currentIndexAddText = -1
 var objAllChangesEvent = {
     file_id:0,
     draw:[],
-    addtext:[]
+    addtext:[],
+    addimage:[]
 }
 
 $.ajax({
@@ -58,18 +59,23 @@ function renderPage(num) {
         });
         var isDrawActive = false;
         var isAddTextActive = false;
-        
-        
+        var isAddImgaeActive = false
+        var isAddShapesActive = false
         setupTextAdding(canvas);
         drawing(canvas, ctx);
+        setupImageAdding(canvas)
+        setupShapesAdding(canvas)
+
     });
 }
 
 $("#save_all_changes").click(function (e) { 
     console.log("Danh sách các đường vẽ:", listObjectDrawInfo);
     console.log("Danh sách các textbox:", listObjectTextBoxInfo);
+    console.log("Danh sách các image thêm:",listObjectImageInfo);
     objAllChangesEvent.draw = listObjectDrawInfo;
     objAllChangesEvent.addtext = listObjectTextBoxInfo;
+    objAllChangesEvent.addimage = listObjectImageInfo
     objAllChangesEvent.file_id = file_id; // Thêm file_id vào đối tượng
 
     $.ajax({

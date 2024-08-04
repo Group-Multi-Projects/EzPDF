@@ -2,14 +2,17 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import DrawModel, TextModel, ToolModel
+from .models import DrawModel, TextModel, ToolModel,ImageModel,GeometryModel
 from File.models import FileModel
 import json
 from rest_framework.decorators import api_view,permission_classes
 from rest_framework import status
 from rest_framework.response import Response
-from .serializers import DrawSerializers,TextSerializers,ToolsSerializers
+from .serializers import DrawSerializers,TextSerializers,ToolsSerializers,ImageSerializers
 from rest_framework.permissions import IsAuthenticated
+from django.core.files.base import ContentFile
+import base64
+
 @csrf_exempt
 def get_obj_all_changes_event(request):
     if request.method == 'POST':
@@ -19,49 +22,13 @@ def get_obj_all_changes_event(request):
             print(data)
             file_id = int(data.get('file_id'))
             file_instance = FileModel.objects.get(id=file_id)
-
             # Lưu dữ liệu vẽ
-            draw_data = data.get('draw', [])
-            for draw in draw_data:
-                draw_id = draw.get("draw_id")
-                DrawModel.objects.update_or_create(
-                    file=file_instance,
-                    item_id = draw_id,
-                    page=draw['page'],
-                    tool_type=draw.get('tool_type', 'Draw'),
-                    defaults={
-                        'coordinates': json.dumps(draw['coordinates']),
-                        'updated_at': timezone.now()  # Cập nhật thời gian chỉnh sửa
-                    }
-                )
-
+            draw_save_data(request, data, file_instance)
             # Lưu dữ liệu văn bản
-            text_data = data.get('addtext', [])
-            for text in text_data:
-                item_id = text.get('item_id')
-
-                TextModel.objects.update_or_create(
-                    
-                    file=file_instance,
-                    item_id = item_id,
-                    page=text['page'],
-                    tool_type=text.get('tool_type', 'Text'),
-                    defaults={
-                        'content': text['content'],
-                        'color': text['color'],
-                        'coord_in_canvas_X': float(text['coord_in_canvas_X']),
-                        'coord_in_canvas_Y': float(text['coord_in_canvas_Y']),
-                        'coord_in_doc_X': float(text['coord_in_doc_X']),
-                        'coord_in_doc_Y': float(text['coord_in_doc_Y']),
-                        'font_size': text.get('fontsize', 12),
-                        'bold': text.get('bold', False),
-                        'italic': text.get('italic', False),
-                        'updated_at': timezone.now()  # Cập nhật thời gian chỉnh sửa
-                    }
-                )
-
+            add_text_save_data(request, data, file_instance)
+            # Lưu dữ liệu hình ảnh
+            add_image_save_data(request, data, file_instance)
             return JsonResponse({'status': 'success', 'message': 'Data saved successfully!'})
-
         except FileModel.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'File not found.'})
         except Exception as e:
@@ -69,10 +36,68 @@ def get_obj_all_changes_event(request):
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method.'})
 
-def draw(request):
-    pass
-def add_text(request):
-    pass
+def draw_save_data(request,data,file_instance):
+    draw_data = data.get('draw', [])
+    for draw in draw_data:
+        draw_id = draw.get("draw_id")
+        DrawModel.objects.update_or_create(
+            file=file_instance,
+            item_id = draw_id,
+            page=draw['page'],
+            defaults={
+            'coordinates': json.dumps(draw['coordinates']),
+            'updated_at': timezone.now()  # Cập nhật thời gian chỉnh sửa
+            }
+        )
+def add_text_save_data(request,data,file_instance):
+    text_data = data.get('addtext', [])
+    for text in text_data:
+        item_id = text.get('item_id')
+
+        TextModel.objects.update_or_create(
+            file=file_instance,
+            item_id = item_id,
+            page=text['page'],
+            defaults={
+        'content': text['content'],
+        'color': text['color'],
+        'coord_in_canvas_X': float(text['coord_in_canvas_X']),
+        'coord_in_canvas_Y': float(text['coord_in_canvas_Y']),
+        'coord_in_doc_X': float(text['coord_in_doc_X']),
+        'coord_in_doc_Y': float(text['coord_in_doc_Y']),
+        'font_size': text.get('fontsize', 12),
+        'bold': text.get('bold', False),
+        'italic': text.get('italic', False),
+        'updated_at': timezone.now()  # Cập nhật thời gian chỉnh sửa
+            }
+        )
+def add_image_save_data(request, data, file_instance):
+    image_data = data.get('addimage', [])
+    for image in image_data:
+        item_id = image.get('item_id')
+        try:
+            format, imgstr = image['image'].split(';base64,')
+            ext = format.split('/')[-1]
+
+            image_converted = ContentFile(base64.b64decode(imgstr), name=f"{item_id}.{ext}")
+        except:
+            image_converted = image.get('image').replace('/media/', '')
+        ImageModel.objects.update_or_create(
+            file=file_instance,
+            item_id=item_id,
+            page=image['page'],
+            defaults={
+                'image': image_converted,
+                'coord_in_canvas_X': float(image['coord_in_canvas_X']),
+                'coord_in_canvas_Y': float(image['coord_in_canvas_Y']),
+                'coord_in_doc_X': float(image['coord_in_doc_X']),
+                'coord_in_doc_Y': float(image['coord_in_doc_Y']),
+                'height': float(image['height']),
+                'width': float(image['width']),
+                'canvas_id': int(image['canvas_id']),
+                'updated_at': timezone.now()  # Cập nhật thời gian chỉnh sửa
+            }
+        )
 
 @api_view(["GET","POST"])
 def get_post_tools_api(request):
@@ -94,19 +119,24 @@ def get_post_tools_api(request):
             TextSerializers.save()
             return  Response({"Success":"Success"})
 
-@api_view(["GET","PUT","DELETE"])
-def get_put_delete_tools_api(request,id):
+@api_view(["GET"])
+def get_put_delete_text_added_api(request,id):
     file = FileModel.objects.get(id = id)
-    # draw_model = DrawModel.objects.filter(
-    #     file = file
-    # )
     text_model = TextModel.objects.filter(
         file = file
     )
     if request.method == "GET":
-        # draw_serializers = DrawSerializers(draw_model,many = True)
         text_serializers = TextSerializers(text_model,many = True)
-        # serializers_data = draw_serializers.data + text_serializers.data
         return Response(text_serializers.data)
+    
+@api_view(["GET"])
+def get_put_delete_image_added_api(request,id):
+    file = FileModel.objects.get(id = id)
+    text_model = ImageModel.objects.filter(
+        file = file
+    )
+    if request.method == "GET":
+        image_serializers = ImageSerializers(text_model,many = True)
+        return Response(image_serializers.data)
     
    

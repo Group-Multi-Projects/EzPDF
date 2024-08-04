@@ -10,6 +10,8 @@ function drawing(canvas, ctx) {
     penBtn.on("click", function () {
         isDrawActive = true;
         isAddTextActive = false;
+        isAddImageActive = false;
+
         restoreArray.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
         index += 1;
 

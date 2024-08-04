@@ -49,6 +49,8 @@ function setupTextAdding(canvas) {
     $("#add_text").click(function () {
         isDrawActive = false;
         isAddTextActive = true;
+        isAddImageActive = false;
+
         $(canvas).on("mousedown", function (e) {
             let documentX = e.pageX;
             let documentY = e.pageY;
@@ -106,7 +108,7 @@ function addText(canvas, documentX, documentY, canvasLeft, canvasTop) {
 
             coord_in_doc_X = $textBox.position().left;
             coord_in_doc_Y = $textBox.position().top;
-
+        
             $(document).on('mousemove', function (e) {
                 if (isDragging) {
                     textBox.css({
@@ -187,6 +189,14 @@ function redrawTextBoxes(arrayObj) {
                 console.log("Da sua")
             }
         });
+        $textBox.on('input', function () {
+            arrayObj.forEach(objInfo => {
+                if (objInfo.item_id === textBoxId) {
+                    objInfo.content = $(this).text()
+                    console.log("Da sua")
+                }
+            });
+        });
         $(document).on('mousemove', function (e) {
             if (isDragging) {
                 $textBox.css({
@@ -223,14 +233,14 @@ $(document).ready(function () {
     var tools_api_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI3NjkzNDU3LCJpYXQiOjE3MjI1MDk0NTcsImp0aSI6Ijk3MDg3ZGQ0ZWFiMzQ1NGRiOGMwZGRhMDYzYzQ4MWRmIiwidXNlcl9pZCI6Mn0._hZZoyZpB6RdTnubLUd0u0ZrZ44KJXVWqHY2npVooYk";
     $.ajax({
         type: "GET",
-        url: `http://127.0.0.1:8000/tools/tools_api/${file_id}/`,
+        url: `http://127.0.0.1:8000/tools/text_added_api/${file_id}/`,
         dataType: "json",
         headers: {
             "Authorization": "Bearer " + tools_api_token
         },
         success: function (response) {
             listObjectTextBoxInfo = response;
-            console.log("Received response:", response); 
+            console.log("Text added api Received response:", response); 
             redrawTextBoxes(listObjectTextBoxInfo);
         },
         error: function (jqXHR, textStatus, errorThrown) {

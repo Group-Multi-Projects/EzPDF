@@ -5,8 +5,7 @@ from File.models import FileModel
 class ToolModel(models.Model):
     file = models.ForeignKey(FileModel, on_delete=models.PROTECT, verbose_name="File")
     page = models.IntegerField(verbose_name="Page Number")
-    # priority = models.IntegerField(verbose_name="Priority", unique=True)
-    tool_type = models.CharField(verbose_name="Tool Type", max_length=20, default="Draw")
+    tool_type = models.CharField(verbose_name="Tool Type", max_length=20,null=True)
     created_at = models.DateTimeField(verbose_name="Created At", auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name="Updated At", auto_now=True)
     item_id = models.CharField(max_length=200,null=True)
@@ -32,3 +31,22 @@ class TextModel(ToolModel):
 
     def __str__(self):
         return f"Text Tool - {self.content}"
+
+class ImageModel(ToolModel):
+    image = models.ImageField(upload_to="images/images_added/")
+    coord_in_canvas_X = models.FloatField(verbose_name="Canvas X Coordinate")
+    coord_in_canvas_Y = models.FloatField(verbose_name="Canvas Y Coordinate")
+    coord_in_doc_X = models.FloatField(verbose_name="Document X Coordinate")
+    coord_in_doc_Y = models.FloatField(verbose_name="Document Y Coordinate")
+    height = models.FloatField(verbose_name="Image height")
+    width = models.FloatField(verbose_name="Image width")
+    canvas_id = models.IntegerField(verbose_name="Image in st.canvas:",null=True)
+    
+class GeometryModel(ToolModel):
+    coord_in_canvas_X = models.FloatField(verbose_name="Canvas X Coordinate")
+    coord_in_canvas_Y = models.FloatField(verbose_name="Canvas Y Coordinate")
+    coord_in_doc_X = models.FloatField(verbose_name="Document X Coordinate")
+    coord_in_doc_Y = models.FloatField(verbose_name="Document Y Coordinate")
+    height = models.FloatField(verbose_name="Geometry height")
+    width = models.FloatField(verbose_name="Geometry width")
+    color = models.CharField(max_length=20)
