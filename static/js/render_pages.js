@@ -3,15 +3,24 @@ var file_path = $("#file_path").text();
 var file_id = $("#file_id").text();
 var penBtn = $("#pen");
 var index = -1
+var numPages = $("#num_pages").text()
 // var priority = 0
 var currentIndexAddText = -1
 var objAllChangesEvent = {
     file_id:0,
     draw:[],
     addtext:[],
-    addimage:[]
+    addimage:[],
+    addshape:[],
 }
-
+function getCanvasList() {
+    var canvasList = document.querySelectorAll("canvas");
+    var newObj = {
+        canvasList:canvasList,
+        quantityPage:numPages
+    }
+    return newObj
+}
 $.ajax({
     type: "GET",
     url: `http://127.0.0.1:8000/media/${file_path}`,
@@ -56,16 +65,17 @@ function renderPage(num) {
 
         page.render(renderContext).promise.then(function() {
             $('#pdfContainer').append(canvas);
+            getCanvasList()
         });
         var isDrawActive = false;
         var isAddTextActive = false;
         var isAddImgaeActive = false
         var isAddShapesActive = false
-        setupTextAdding(canvas);
         drawing(canvas, ctx);
+        // setupDrawing(canvas)
+        setupTextAdding(canvas)
         setupImageAdding(canvas)
         setupShapesAdding(canvas)
-
     });
 }
 
@@ -73,9 +83,11 @@ $("#save_all_changes").click(function (e) {
     console.log("Danh sách các đường vẽ:", listObjectDrawInfo);
     console.log("Danh sách các textbox:", listObjectTextBoxInfo);
     console.log("Danh sách các image thêm:",listObjectImageInfo);
+    console.log("Danh sách các shape thêm:",listObjectShapesInfo);
     objAllChangesEvent.draw = listObjectDrawInfo;
     objAllChangesEvent.addtext = listObjectTextBoxInfo;
     objAllChangesEvent.addimage = listObjectImageInfo
+    objAllChangesEvent.addshape = listObjectShapesInfo
     objAllChangesEvent.file_id = file_id; // Thêm file_id vào đối tượng
 
     $.ajax({

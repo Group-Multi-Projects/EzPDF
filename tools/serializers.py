@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import DrawModel,TextModel,ToolModel,ImageModel,GeometryModel
+from .models import DrawModel,TextModel,ToolModel,ImageModel,ShapeModel
 class DrawSerializers(serializers.ModelSerializer):
     class Meta():
         model = DrawModel
@@ -20,7 +20,7 @@ class ImageSerializers(serializers.ModelSerializer):
         model = ImageModel
         fields = "__all__"
 
-class GeometrySerializers(serializers.ModelSerializer):
+class ShapeSerializers(serializers.ModelSerializer):
       class Meta():
-        model = GeometryModel
+        model = ShapeModel
         fields = "__all__"

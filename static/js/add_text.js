@@ -50,6 +50,7 @@ function setupTextAdding(canvas) {
         isDrawActive = false;
         isAddTextActive = true;
         isAddImageActive = false;
+        isAddShapesActive = false;
 
         $(canvas).on("mousedown", function (e) {
             let documentX = e.pageX;
@@ -68,7 +69,6 @@ function addText(canvas, documentX, documentY, canvasLeft, canvasTop) {
         let textBox = $('<div class="textBox" contenteditable="true">Enter text here</div>');
         textBox.attr('id', uniqueId); 
         objectTextBoxInfo.item_id = uniqueId   
-        let rect = canvas.getBoundingClientRect();
         let coord_in_canvas_X = documentX - canvasLeft;
         let coord_in_canvas_Y = documentY - canvasTop;
         let coord_in_doc_X = 0;

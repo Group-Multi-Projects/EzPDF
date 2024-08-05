@@ -10,6 +10,7 @@ function setupImageAdding(canvas) {
             // Reset states
             isDrawActive = false;
             isAddTextActive = false;
+            isAddShapesActive = false;
             isAddImageActive = true;
             $(canvas).on('mousedown', function(event) {
    
@@ -127,10 +128,8 @@ function reAddImage(listImageAdded) {
         imgElement.style.width = `${objectImageInfo.width}px`;
         imgElement.style.height = `${objectImageInfo.height}px`;
         pdfContainer.appendChild(imgElement);
-        // Add drag-and-drop functionality
         handleImageAddedAction(imgElement.id, objectImageInfo);
 
-        // Add the image info to the list
         listObjectImageInfo.push(objectImageInfo);
     });
 }

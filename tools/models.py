@@ -12,9 +12,10 @@ class ToolModel(models.Model):
     class Meta:
         abstract = True  # Ensure this model is abstract and won't create a separate table
 
+
 class DrawModel(ToolModel):
-    coordinates = models.TextField(verbose_name="Coordinates")
-    
+    coordinates = models.JSONField(verbose_name="Coordinates",null=True)  # Sử dụng JSONField
+
     def __str__(self):
         return f"Draw Tool - {self.tool_type}"
 
@@ -42,7 +43,7 @@ class ImageModel(ToolModel):
     width = models.FloatField(verbose_name="Image width")
     canvas_id = models.IntegerField(verbose_name="Image in st.canvas:",null=True)
     
-class GeometryModel(ToolModel):
+class ShapeModel(ToolModel):
     coord_in_canvas_X = models.FloatField(verbose_name="Canvas X Coordinate")
     coord_in_canvas_Y = models.FloatField(verbose_name="Canvas Y Coordinate")
     coord_in_doc_X = models.FloatField(verbose_name="Document X Coordinate")
@@ -50,3 +51,7 @@ class GeometryModel(ToolModel):
     height = models.FloatField(verbose_name="Geometry height")
     width = models.FloatField(verbose_name="Geometry width")
     color = models.CharField(max_length=20)
+    borderRadius = models.CharField(verbose_name="Radius",max_length=20,null=True)
+    canvas_id = models.IntegerField(verbose_name="Shape in st.canvas:",null=True)
+    shapeType = models.CharField(verbose_name="Type of shape",max_length=50,null=True)
+    

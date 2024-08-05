@@ -28,6 +28,7 @@
             <div class="button_shape square" name = "square"></div>
             <div class="button_shape rectangle" name = "rectangle"></div>
             <div class="button_shape triangle" name = "triangle"></div>
+            <button id="saveshapes">save shapes</button>
         </div>
         <hr>
         <div class="restore">
@@ -40,8 +41,8 @@
     </div>
     <p id="file_id" style="opacity: 0;">{{file.id}}</p>
     <p id="file_path" style="display: none;">{{file_path}}</p>
+    <p id="num_pages" style="display: none;">{{num_pages}}</p>
     <div id="pdfContainer">
-        {% comment %} <img src="http://127.0.0.1:8000/media/images/profile_images/blog.png/" style="width: 100px;height: 100px;position: absolute;top: 400px;left: 400px;" alt=""> {% endcomment %}
     </div>
    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

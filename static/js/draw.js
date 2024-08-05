@@ -1,5 +1,5 @@
 var listObjectDrawInfo = [];
-var currentPage = 1; // Biến để lưu trang hiện tại
+var currentPage = 1; // Variable to store the current page
 
 function drawing(canvas, ctx) {
     var isDrawing = false;
@@ -11,45 +11,44 @@ function drawing(canvas, ctx) {
         isDrawActive = true;
         isAddTextActive = false;
         isAddImageActive = false;
+        isAddShapesActive = false;
 
         restoreArray.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
         index += 1;
 
         $(canvas).on('mousedown', function (e) {
             isDrawing = true;
-            ctx.beginPath(); // Bắt đầu một đường mới khi bắt đầu vẽ
+            ctx.beginPath(); 
             draw(e);
         });
 
         $(canvas).on('mousemove', draw);
 
         $(canvas).on('mouseup', function () {
-            let objectDrawInfo = {
-                type: "draw",
-                coordinates: drawingPoints.slice(),
-                page: this.id, // Lưu thông tin trang hiện tại
-                draw_id:""
-            };
-            let uniqueId = 'draw-' + Date.now(); // Ví dụ: 'draw-1690992901876'
-            objectDrawInfo.draw_id = uniqueId
-            drawingPoints = [];
-            restoreArray.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
-            index += 1;
-            if (isDrawActive) {
-         
-                listObjectDrawInfo.push(objectDrawInfo);
+            if (isDrawing) {
+                isDrawing = false;
+                let objectDrawInfo = {
+                    type: "draw",
+                    coordinates: drawingPoints.slice(),
+                    page: canvas.id, 
+                    item_id: 'draw-' + Date.now() 
+                };
+                drawingPoints = [];
+                restoreArray.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+                index += 1;
+                if (isDrawActive) {
+                    listObjectDrawInfo.push(objectDrawInfo);
+                }
             }
-            isDrawing = false;
-
         });
 
         $(canvas).on('mouseleave', function () {
             if (isDrawing) {
                 isDrawing = false;
                 let objectDrawInfo = {
-                    type: "addtext",
+                    type: "draw",
                     coordinates: drawingPoints.slice(),
-                    page: this.id // Lưu thông tin trang hiện tại
+                    page: canvas.id
                 };
                 drawingPoints = [];
                 restoreArray.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
@@ -79,44 +78,95 @@ function drawing(canvas, ctx) {
         }
     }
 
-    function redraw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        if (restoreArray.length > 0) {
-            ctx.putImageData(restoreArray[restoreArray.length - 1], 0, 0);
-        }
 
-        listObjectDrawInfo.forEach(object => {
-            if (!object.coordinates.length) return;
-            ctx.lineWidth = 5;
-            ctx.lineCap = 'round';
-            ctx.strokeStyle = 'red';
-
-            ctx.beginPath();
-
-            for (let i = 0; i < object.coordinates.length; i++) {
-                if (i === 0) {
-                    ctx.moveTo(object.coordinates[i].x, object.coordinates[i].y);
-                } else {
-                    ctx.lineTo(object.coordinates[i].x, object.coordinates[i].y);
-                }
-            }
-
-            ctx.stroke();
-        });
-    }
-
-    $('#saveDrawing').on('click', function () {
-        console.log(listObjectDrawInfo);
-    });
-
-    $('#redraw').on('click', function () {
-        redraw();
-    });
+  
 
     console.log("Draw is working!");
 }
+$('#saveDrawing').on('click', function () {
+    console.log(listObjectDrawInfo);
+});
 
-// Hàm để cập nhật trang hiện tại khi người dùng chuyển trang
-function updateCurrentPage(newPage) {
-    currentPage = newPage;
+$('#redraw').on('click', function () {
+    var page = 0
+    var canvasList = document.querySelectorAll("canvas")
+    for (let index = 0; index < listObjectDrawInfo.length; index++) {
+        canvas = canvasList[(listObjectDrawInfo[index].page - 1)]
+        page = listObjectDrawInfo[index].page
+        redraw(listObjectDrawInfo,canvas,page);
+    }
+});
+function redraw(drawInfoList,canvas,page) {
+    var ctx = canvas.getContext('2d');
+    var index = page - 1
+    for (var i = index; i < drawInfoList.length; i++) {
+        var drawInfo = drawInfoList[i];
+        if (drawInfo.page === page) {
+            ctx.beginPath();
+            ctx.lineWidth = 5;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = 'red';
+    
+            for (var j = 0; j < drawInfo.coordinates.length; j++) {
+                var point = drawInfo.coordinates[j];
+                if (j === 0) {
+                    ctx.moveTo(point.x, point.y);
+                } else {
+                    ctx.lineTo(point.x, point.y);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(point.x, point.y);
+                }
+            }
+    
+            ctx.stroke();
+        }
+
+        }
 }
+//lấy dữ liệu các textbox đã lưu
+$(document).ready(function () {
+    var tools_api_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI3NjkzNDU3LCJpYXQiOjE3MjI1MDk0NTcsImp0aSI6Ijk3MDg3ZGQ0ZWFiMzQ1NGRiOGMwZGRhMDYzYzQ4MWRmIiwidXNlcl9pZCI6Mn0._hZZoyZpB6RdTnubLUd0u0ZrZ44KJXVWqHY2npVooYk";
+    
+    // Tạo một hàm để thực hiện yêu cầu AJAX
+    function fetchDrawInfo() {
+        $.ajax({
+            type: "GET",
+            url: `http://127.0.0.1:8000/tools/draw_added_api/${file_id}/`,
+            dataType: "json",
+            headers: {
+                "Authorization": "Bearer " + tools_api_token
+            },
+            success: function (response) {
+                var canvas_list = getCanvasList();
+                listObjectDrawInfo = response;
+                console.log("Draws added api Received response:", response); 
+                let page = 0
+                for (let index = 0; index < listObjectDrawInfo.length; index++) {
+                    canvas = canvas_list.canvasList[(listObjectDrawInfo[index].page - 1)]
+                    page = listObjectDrawInfo[index].page
+                    redraw(listObjectDrawInfo,canvas,page);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('Lỗi trong yêu cầu AJAX cho PDF:', textStatus, errorThrown);
+            }
+        });
+    }
+    
+    // Tạo một MutationObserver để theo dõi khi các canvas được thêm vào
+    var observer = new MutationObserver(function(mutations) {
+        var canvas_list = getCanvasList();
+        console.log("Canvas List:",canvas_list)
+        if (canvas_list.canvasList.length == canvas_list.quantityPage) {
+            console.log('dadaydu')
+            fetchDrawInfo();
+            
+            // Ngừng quan sát sau khi đã thực hiện xong AJAX
+            observer.disconnect();
+        }
+    });
+    
+    // Bắt đầu theo dõi phần tử chứa các canvas
+    observer.observe(document.getElementById('pdfContainer'), { childList: true });
+});

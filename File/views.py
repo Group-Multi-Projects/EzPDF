@@ -52,12 +52,13 @@ def edit_file(request, file_id):
     textboxs = TextModel.objects.filter(
         file = file
     )
-
+    num_pages = file.get_num_pages()
 
     context = {
         'textboxs':textboxs,
         "file": file,
-        "file_path":file_path
+        "file_path":file_path,
+        "num_pages":num_pages
         # "access_token": access_token
     }
     return render(request, "File/edit_file.html", context)

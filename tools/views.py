@@ -2,13 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import DrawModel, TextModel, ToolModel,ImageModel,GeometryModel
+from .models import DrawModel, TextModel, ToolModel, ImageModel, ShapeModel
 from File.models import FileModel
 import json
-from rest_framework.decorators import api_view,permission_classes
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 from rest_framework.response import Response
-from .serializers import DrawSerializers,TextSerializers,ToolsSerializers,ImageSerializers
+from .serializers import DrawSerializers, TextSerializers, ToolsSerializers, ImageSerializers, ShapeSerializers
 from rest_framework.permissions import IsAuthenticated
 from django.core.files.base import ContentFile
 import base64
@@ -18,35 +18,39 @@ def get_obj_all_changes_event(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            print(type(data))
-            print(data)
             file_id = int(data.get('file_id'))
             file_instance = FileModel.objects.get(id=file_id)
+
             # Lưu dữ liệu vẽ
-            draw_save_data(request, data, file_instance)
+            draw_save_data(request,data, file_instance)
             # Lưu dữ liệu văn bản
-            add_text_save_data(request, data, file_instance)
+            add_text_save_data(request,data, file_instance)
             # Lưu dữ liệu hình ảnh
-            add_image_save_data(request, data, file_instance)
+            add_image_save_data(request,data, file_instance)
+            # Lưu dữ liệu hình dạng
+            add_shape_save_data(request,data, file_instance)
+
             return JsonResponse({'status': 'success', 'message': 'Data saved successfully!'})
         except FileModel.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'File not found.'})
+        except json.JSONDecodeError:
+            return JsonResponse({'status': 'error', 'message': 'Invalid JSON data.'})
         except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)})
+            return JsonResponse({'status': 'error', 'message': f'Error: {str(e)}'})
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method.'})
 
-def draw_save_data(request,data,file_instance):
+def draw_save_data(request,data, file_instance):
     draw_data = data.get('draw', [])
     for draw in draw_data:
-        draw_id = draw.get("draw_id")
+        item_id = draw.get("item_id")
         DrawModel.objects.update_or_create(
             file=file_instance,
-            item_id = draw_id,
-            page=draw['page'],
+            item_id=item_id,
+            page=draw.get('page', None),
             defaults={
-            'coordinates': json.dumps(draw['coordinates']),
-            'updated_at': timezone.now()  # Cập nhật thời gian chỉnh sửa
+                'coordinates': draw.get('coordinates', []),
+                'updated_at': timezone.now()  # Cập nhật thời gian chỉnh sửa
             }
         )
 def add_text_save_data(request,data,file_instance):
@@ -58,6 +62,7 @@ def add_text_save_data(request,data,file_instance):
             file=file_instance,
             item_id = item_id,
             page=text['page'],
+            # tool_type = text['type'],
             defaults={
         'content': text['content'],
         'color': text['color'],
@@ -86,6 +91,7 @@ def add_image_save_data(request, data, file_instance):
             file=file_instance,
             item_id=item_id,
             page=image['page'],
+            # tool_type=image['type'],
             defaults={
                 'image': image_converted,
                 'coord_in_canvas_X': float(image['coord_in_canvas_X']),
@@ -98,7 +104,28 @@ def add_image_save_data(request, data, file_instance):
                 'updated_at': timezone.now()  # Cập nhật thời gian chỉnh sửa
             }
         )
-
+def add_shape_save_data(request,data, file_instance):
+    shapes_data = data.get("addshape",[])
+    for shape in shapes_data:
+        item_id = shape.get('item_id')
+        ShapeModel.objects.update_or_create(
+            file=file_instance,
+            item_id=item_id,
+            page=shape['page'],
+            # tool_type = shape['type'],
+            defaults={
+                'coord_in_canvas_X': float(shape['coord_in_canvas_X']),
+                'coord_in_canvas_Y': float(shape['coord_in_canvas_Y']),
+                'coord_in_doc_X': float(shape['coord_in_doc_X']),
+                'coord_in_doc_Y': float(shape['coord_in_doc_Y']),
+                'height': float(shape['height']),
+                'width': float(shape['width']),
+                'borderRadius':shape['borderRadius'],
+                'canvas_id': int(shape['canvas_id']),
+                'shapeType': (shape['shapeType']),
+                'updated_at': timezone.now()  # Cập nhật thời gian chỉnh sửa
+            }
+        )
 @api_view(["GET","POST"])
 def get_post_tools_api(request):
     draw_model = DrawModel.objects.all()
@@ -118,7 +145,18 @@ def get_post_tools_api(request):
         if TextSerializers.is_valid():
             TextSerializers.save()
             return  Response({"Success":"Success"})
-
+        
+@api_view(["GET"])
+def get_put_delete_draw_added_api(request,id):
+    file = FileModel.objects.get(id = id)
+    draw_model = DrawModel.objects.filter(
+        file = file
+    )
+    if request.method == "GET":
+        draw_serializers = DrawSerializers(draw_model,many = True)
+        return Response(draw_serializers.data)
+    
+   
 @api_view(["GET"])
 def get_put_delete_text_added_api(request,id):
     file = FileModel.objects.get(id = id)
@@ -138,5 +176,15 @@ def get_put_delete_image_added_api(request,id):
     if request.method == "GET":
         image_serializers = ImageSerializers(text_model,many = True)
         return Response(image_serializers.data)
+    
+@api_view(["GET"])
+def get_put_delete_shape_added_api(request,id):
+    file = FileModel.objects.get(id = id)
+    shape_model = ShapeModel.objects.filter(
+        file = file
+    )
+    if request.method == "GET":
+        shape_serializers = ShapeSerializers(shape_model,many = True)
+        return Response(shape_serializers.data)
     
    
