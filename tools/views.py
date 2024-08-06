@@ -35,8 +35,8 @@ def get_obj_all_changes_event(request):
             return JsonResponse({'status': 'error', 'message': 'File not found.'})
         except json.JSONDecodeError:
             return JsonResponse({'status': 'error', 'message': 'Invalid JSON data.'})
-        except Exception as e:
-            return JsonResponse({'status': 'error', 'message': f'Error: {str(e)}'})
+        # except Exception as e:
+        #     return JsonResponse({'status': 'error', 'message': f'Error: {str(e)}'})
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method.'})
 
@@ -55,25 +55,28 @@ def draw_save_data(request,data, file_instance):
         )
 def add_text_save_data(request,data,file_instance):
     text_data = data.get('addtext', [])
+    
     for text in text_data:
         item_id = text.get('item_id')
-
+        # font_size = text['font_size']
+        # font_family = text['font_family']
         TextModel.objects.update_or_create(
             file=file_instance,
             item_id = item_id,
             page=text['page'],
             # tool_type = text['type'],
             defaults={
-        'content': text['content'],
-        'color': text['color'],
-        'coord_in_canvas_X': float(text['coord_in_canvas_X']),
-        'coord_in_canvas_Y': float(text['coord_in_canvas_Y']),
-        'coord_in_doc_X': float(text['coord_in_doc_X']),
-        'coord_in_doc_Y': float(text['coord_in_doc_Y']),
-        'font_size': text.get('fontsize', 12),
-        'bold': text.get('bold', False),
-        'italic': text.get('italic', False),
-        'updated_at': timezone.now()  # Cập nhật thời gian chỉnh sửa
+                'content': text['content'],
+                'color': text['color'],
+                'coord_in_canvas_X': float(text['coord_in_canvas_X']),
+                'coord_in_canvas_Y': float(text['coord_in_canvas_Y']),
+                'coord_in_doc_X': float(text['coord_in_doc_X']),
+                'coord_in_doc_Y': float(text['coord_in_doc_Y']),
+                'font_size': text.get('font_size'),
+                'font_family': text.get('font_family'),
+                'bold': text.get('bold'),
+                'italic': text.get('italic'),
+                'updated_at': timezone.now()  # Cập nhật thời gian chỉnh sửa
             }
         )
 def add_image_save_data(request, data, file_instance):

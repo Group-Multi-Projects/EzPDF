@@ -26,10 +26,10 @@ class TextModel(ToolModel):
     coord_in_canvas_Y = models.FloatField(verbose_name="Canvas Y Coordinate")
     coord_in_doc_X = models.FloatField(verbose_name="Document X Coordinate")
     coord_in_doc_Y = models.FloatField(verbose_name="Document Y Coordinate")
-    font_size = models.FloatField(verbose_name="Font Size", default=12)
+    font_size = models.CharField(verbose_name="Font Size",max_length=20,null=True)
     bold = models.BooleanField(verbose_name="Bold", default=False)
     italic = models.BooleanField(verbose_name="Italic", default=False)
-
+    font_family = models.CharField(verbose_name="Font Text",null=True,max_length=100)
     def __str__(self):
         return f"Text Tool - {self.content}"
 

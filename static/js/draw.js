@@ -157,9 +157,7 @@ $(document).ready(function () {
     // Tạo một MutationObserver để theo dõi khi các canvas được thêm vào
     var observer = new MutationObserver(function(mutations) {
         var canvas_list = getCanvasList();
-        console.log("Canvas List:",canvas_list)
         if (canvas_list.canvasList.length == canvas_list.quantityPage) {
-            console.log('dadaydu')
             fetchDrawInfo();
             
             // Ngừng quan sát sau khi đã thực hiện xong AJAX
