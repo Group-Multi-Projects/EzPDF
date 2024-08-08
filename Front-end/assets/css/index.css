@@ -21,8 +21,6 @@
 #login__link
 {
     padding: 0.5rem 1.5rem;
-    text-decoration: none;
-    color: black;
     border-left: 1px solid;
     border-color: rgb(196, 196, 196);
 }
@@ -242,8 +240,8 @@ border-color: #C754A8;
 
 
 
-/* LOGIN-SIGN-UP */
-.sidepanel {
+/* login */
+.sidepanel2 {
     height: 100%; /* Full-height */
     width: 0; /* Initial width of 0 */
     position: fixed; /* Stay in place */
@@ -256,6 +254,51 @@ border-color: #C754A8;
     padding-top: 60px; /* Place content 60px from the top */
 }
 
+
+.sidepanel2 a:hover {
+    color: #f1f1f1;
+}
+
+.sidepanel2 .closebtn2 {
+    display: flex;
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center;    /* Căn giữa theo chiều dọc */
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    width: 2rem;
+    height: 2rem;
+}
+.bi-x-lg{ 
+    color: #111;
+}
+.closebtn2:hover
+{
+    background-color: #e41818;
+    border-radius: 5px;
+}
+.closebtn2:hover .bi-x-lg { color: white;}
+.openbtn2 {
+    cursor: pointer;
+}
+
+
+
+
+/* signup */
+.sidepanel {
+    height: 100%; /* Full-height */
+    width: 0; /* Initial width of 0 */
+    position: fixed; /* Stay in place */
+    z-index: 2; /* Stay on top */
+    top: 0; /* Stay at the top */
+    right: 0; /* Align to the right side */
+    background-color: #ffffff; /* Black */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    transition: 0.3s; /* 0.5 second transition effect to slide in the panel */
+    padding-top: 60px; /* Place content 60px from the top */
+}
 
 .sidepanel a:hover {
     color: #f1f1f1;
@@ -272,26 +315,15 @@ border-color: #C754A8;
     width: 2rem;
     height: 2rem;
 }
-.bi-x-lg{ 
+.bi-x-lg { 
     color: #111;
 }
-.closebtn:hover
-{
+.closebtn:hover {
     background-color: #e41818;
     border-radius: 5px;
 }
-.closebtn:hover .bi-x-lg { color: white;}
-.openbtn {
-    font-size: 20px;
-    cursor: pointer;
-    background-color: #111;
+.closebtn:hover .bi-x-lg { 
     color: white;
-    padding: 10px 15px;
-    border: none;
-}
-
-.openbtn:hover {
-    background-color: #444;
 }
 
 .overlay {
@@ -305,38 +337,101 @@ border-color: #C754A8;
     display: none; /* Hidden by default */
 }
 
-#signup-logo-web
-{
+#signup-logo-web {
     height: 4.375rem;
     width: 4.375rem;
 }
-h2.text-center
-{
+
+h2.text-center {
     font-family: 'NotoSans-Bold';
-    padding: 0 20rem;
 }
-input.form-control
-{
+
+input.form-control {
     padding: 0.7rem 3rem 0.7rem 2rem;
+    position: relative;
+    font-size: 0.9rem;
 }
-input.form-control::placeholder
-{
+
+input.form-control::placeholder {
     color: #929292; /* Màu chữ placeholder */
     font-size: 0.8rem; /* Cỡ chữ placeholder */
 }
-.input
-{
+
+.input {
     position: relative;
 }
-#login-icon
-{
+
+#login-icon {
     position: absolute;
     left: 0;
-    bottom: 35%;
-    height: 1rem;
-    width: 1rem;
+    bottom: 50%;
+    transform: translateY(50%);
     margin-left: 0.5rem;
+    font-size: 1rem;
+    color: #929292;
+    z-index: 2;
 }
+#toggle-login-password,
+#toggle-password,
+#toggle-confirm-password {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #929292;
+}
+#toggle-login-password:hover,
+#toggle-password:hover,
+#toggle-confirm-password:hover {
+    color: #000;
+}
+
+input.form-control {
+    padding: 0.7rem 2rem 0.7rem 2rem;
+}
+
+input.form-control::placeholder {
+    color: #929292;
+    font-size: 0.8rem;
+}
+
+/* Styles for the submit button */
+.btn-signup {
+    padding: 0.5rem 2rem;
+    background-color: #C754A8;
+    color: white;
+    border: 0px solid;
+    border-radius: 6px;
+}
+
+.btn-signup:hover {
+    background-color: #ac4c92;
+}
+
+.d-flex > a,
+.signup-p {
+    font-size: 0.8rem;
+}
+/* Eye icon */
+#toggle-password,
+#toggle-confirm-password {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #929292;
+}
+
+#toggle-password:hover,
+#toggle-confirm-password:hover {
+    color: #000;
+}
+
+
+
+
 /* RESPONSIVE */
 @media (max-width: 575px ) {
 
