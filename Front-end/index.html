@@ -9,10 +9,10 @@
     <script src="./assets/js/jquery-3.7.1.min.js"></script>
     <script src="./assets/js/index.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <title>EZ PDF</title>
+    <title>Index</title>
 </head>
 <body>
-    <header class="navbar navbar-expand-lg bg-body-tertiary shadow p-3 mb-5 bg-body rounded">
+    <header class="navbar navbar-expand-lg bg-body-tertiary shadow p-3 mb-5 bg-body rounded header">
         <div class="container-fluid">
           <a href="">
             <img style="margin-right: 0.5rem;" class="logo" src="./assets/images/Logo.png" alt="">
@@ -333,9 +333,12 @@
         </div>
       </div>    
       
+
+
+
       <!-- SIGNUP -->
-      <div id="mySidepanel" class="sidepanel">
-        <div class="container">
+      <div id="my_signup" class="signup">
+        <div class="container container_signup">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">
                 <i class="bi bi-x-lg align-items-center"></i>
             </a>
@@ -405,8 +408,8 @@
 
 
       <!-- LOGIN -->
-      <div id="mySidepanel2" class="sidepanel2">
-        <div class="container">
+      <div id="my_login" class="login">
+        <div class="container container_login">
           <a href="javascript:void(0)" class="closebtn2" onclick="closeNav2()">
             <i class="bi bi-x-lg align-items-center"></i>
           </a>
@@ -467,6 +470,62 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+
+// CHUYỂN ĐỔI GIAO DIỆN TỪ LOGIN -> SIGNUP VÀ NGƯỢC LẠI
+$(document).ready(function() {
+    // Hàm để cập nhật chiều rộng của các giao diện
+    function updatePanelWidth() {
+        var screenWidth = $(window).width();
+        var panelWidth = (screenWidth < 992) ? '100%' : '90%';
+
+        // Cập nhật chiều rộng của giao diện đăng ký và đăng nhập dựa trên kích thước màn hình
+        $('#my_signup').css('width', panelWidth);
+        $('#my_login').css('width', panelWidth);
+    }
+
+    // Hiển thị giao diện đăng ký và lớp phủ khi nhấp vào liên kết "Signup here"
+    $('a[href="#mySidepanel"]').click(function(e) {
+        e.preventDefault(); // Ngăn chặn hành vi mặc định của liên kết
+
+        // Cập nhật chiều rộng của giao diện đăng ký dựa trên kích thước màn hình
+        updatePanelWidth();
+        $('#my_login').css('width', '0'); // Ẩn giao diện đăng nhập
+        $('#my_signup').css('width', '90%'); // Hiển thị giao diện đăng ký
+        $('.overlay').show(); // Hiển thị lớp phủ
+    });
+
+    // Hiển thị giao diện đăng nhập và lớp phủ khi nhấp vào liên kết "Login here"
+    $('a[href="#mySidepanel2"]').click(function(e) {
+        e.preventDefault(); // Ngăn chặn hành vi mặc định của liên kết
+
+        // Cập nhật chiều rộng của giao diện đăng nhập dựa trên kích thước màn hình
+        updatePanelWidth();
+        $('#my_signup').css('width', '0'); // Ẩn giao diện đăng ký
+        $('#my_login').css('width', '90%'); // Hiển thị giao diện đăng nhập
+        $('.overlay').show(); // Hiển thị lớp phủ
+    });
+
+    // Ẩn các giao diện và lớp phủ khi lớp phủ được nhấp
+    $('.overlay').click(function() {
+        $('#my_signup').css('width', '0'); // Ẩn giao diện đăng ký
+        $('#my_login').css('width', '0'); // Ẩn giao diện đăng nhập
+        $('.overlay').hide(); // Ẩn lớp phủ
+    });
+
+    // Cập nhật chiều rộng của các giao diện khi cửa sổ thay đổi kích thước
+    $(window).resize(function() {
+        // Nếu giao diện đang hiển thị, cập nhật lại chiều rộng
+        if ($('#my_signup').css('width') === '90%' || $('#my_signup').css('width') === '100%') {
+            updatePanelWidth();
+        }
+        if ($('#my_login').css('width') === '90%' || $('#my_login').css('width') === '100%') {
+            updatePanelWidth();
+        }
+    });
+});
+
+
+
   // JavaScript to toggle password visibility
 const togglePassword = document.querySelector('#toggle-password');
 const passwordInput = document.querySelector('#password-input');

@@ -1,0 +1,16 @@
+#convert-before-login-h1
+{
+    font-family: 'NotoSans-Black';
+}
+.content
+{
+    height: 65vh;
+    position: relative;
+    border: 1px dashed;
+    border-radius: 25px;
+    border-color: #CD00A0 ;
+}
+i.bi-cloud-arrow-up
+{
+    font-size: 4rem;
+}
