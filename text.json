@@ -1,0 +1,38 @@
+[
+    {
+        "type": "draw",
+        "text": "Hello World",
+        "docX": 150,
+        "docY": 200,
+        "coord_in_canvas_X": 100,
+        "coord_in_canvas_Y": 150,
+        "width": 200,
+        "height": 50,
+        "content": "Sample text content",
+        "fontSize": 14,
+        "color": "#000000",
+        "bold": true,
+        "italic": false,
+        "priority": 1,
+        "page": 1
+    },
+    {
+        "type": "draw",
+        "text": "Example Text",
+        "docX": 300,
+        "docY": 400,
+        "coord_in_canvas_X": 250,
+        "coord_in_canvas_Y": 350,
+        "width": 300,
+        "height": 100,
+        "content": "Another example of text content",
+        "fontSize": 18,
+        "color": "#FF5733",
+        "bold": false,
+        "italic": true,
+        "priority": 2,
+        "page": 2
+    }
+]
+
+

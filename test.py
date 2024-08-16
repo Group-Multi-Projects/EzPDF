@@ -1,5 +1,4 @@
-
-import aspose.words as aw
-
-doc = aw.Document("C:/Users/MSI/OneDrive/Desktop/CV-NguyenDinhThai-InternBackendWeb.pdf")
-doc.save("Output.html")
+a = [1,2,3]
+b = [4,5,6]
+c= a + b
+print(c)

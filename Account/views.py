@@ -2,6 +2,10 @@ from django.shortcuts import render, redirect
 from .forms import SignUpForm, SignInForm
 from .models import AccountModel
 from django.contrib.auth import login,authenticate,logout
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 def signup(request):
     if request.method == "POST":
         form = SignUpForm(request.POST,request.FILES)
@@ -37,3 +41,4 @@ def signin(request):
 def signout(request):
     logout(request)
     return redirect("File:home")
+
