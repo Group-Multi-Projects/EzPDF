@@ -1,7 +1,7 @@
 let header =  document.querySelector('.header');
 header.innerHTML = `  <header class="navbar navbar-expand-lg bg-body-tertiary shadow p-3 mb-5 bg-body rounded header">
             <div class="container-fluid">
-              <a href="">
+              <a href="../index.html">
                 <img style="margin-right: 0.5rem;" class="logo" src="../assets/images/Logo.png" alt="">
               </a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

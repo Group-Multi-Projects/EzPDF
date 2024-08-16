@@ -27,20 +27,20 @@
                   Tools
                 </a>
                 <ul class="dropdown-menu">
-                  <li class="dropdown-item-li"><a class="dropdown-item" href="#">Sắp xếp file PDF</a></li>
-                  <li class="dropdown-item-li"><a class="dropdown-item" href="#">Xem & chỉnh sửa PDF </a></li>
-                  <li class="dropdown-item-li"><a class="dropdown-item" href="#">Chuyển đổi PDF</a></li>
-                  <li class="dropdown-item-li"><a class="dropdown-item" href="#">Ký tên</a></li>
+                  <li class="dropdown-item-li"><a class="dropdown-item" href="#">Arrange PDF files</a></li>
+                  <li class="dropdown-item-li"><a class="dropdown-item" href="#">View & Edit PDF </a></li>
+                  <li class="dropdown-item-li"><a class="dropdown-item" href="#">PDF conversion</a></li>
+                  <li class="dropdown-item-li"><a class="dropdown-item" href="#">Sign</a></li>
                 </ul>
               </li>
               <li class="nav-item me-3">
-                <a class="nav-link" href="#">Chuyển đổi</a>
+                <a class="nav-link" href="./pages/conversion_before_login.html">Conversion</a>
               </li>
               <li class="nav-item me-3">
-                <a class="nav-link" href="#">Ghép</a>
+                <a class="nav-link" href="#">Merge</a>
               </li>
               <li class="nav-item me-3">
-                <a class="nav-link" href="#">Chỉnh sửa</a>
+                <a class="nav-link" href="#">Edit</a>
               </li>
             </ul>
            
@@ -490,7 +490,7 @@ $(document).ready(function() {
         // Cập nhật chiều rộng của giao diện đăng ký dựa trên kích thước màn hình
         updatePanelWidth();
         $('#my_login').css('width', '0'); // Ẩn giao diện đăng nhập
-        $('#my_signup').css('width', '90%'); // Hiển thị giao diện đăng ký
+        $('#my_signup').css('width', ($(window).width() < 992) ? '100%' : '90%'); // Hiển thị giao diện đăng ký
         $('.overlay').show(); // Hiển thị lớp phủ
     });
 
@@ -501,7 +501,7 @@ $(document).ready(function() {
         // Cập nhật chiều rộng của giao diện đăng nhập dựa trên kích thước màn hình
         updatePanelWidth();
         $('#my_signup').css('width', '0'); // Ẩn giao diện đăng ký
-        $('#my_login').css('width', '90%'); // Hiển thị giao diện đăng nhập
+        $('#my_login').css('width', ($(window).width() < 992) ? '100%' : '90%'); // Hiển thị giao diện đăng nhập
         $('.overlay').show(); // Hiển thị lớp phủ
     });
 
