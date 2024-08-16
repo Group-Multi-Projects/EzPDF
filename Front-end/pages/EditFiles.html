@@ -7,103 +7,13 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        /* styles.css */
-
-body, html {
-    height: 100%;
-    margin: 0;
-    font-family: Arial, sans-serif;
-}
-
-.container-fluid {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.toolbar {
-    background-color: #ffffff;
-    z-index: 2;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-}
-
-.pdf-viewer {
-    flex-grow: 1;
-    background-color: #e5e5e5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.pdf-page {
-    width: 80%;
-    height: 100%;
-    background-color: white;
-    border: 1px solid #ccc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
-}
-.logo img
-{
-    height: 4rem;
-    width: 4rem;
-}
-.btn-show-pages
-{
-    background-color: white;
-    border: 0.3px solid rgb(207, 207, 207);
-    border-radius: 5px;
-    margin: 0 1.5rem;
-}
-.btn-show-pages img
-{
-    height: 2.5rem;
-    width: 2.5rem;
-}
-.btn-outline-secondary img
-{
-    height: 1.5rem;
-    width: 1.5rem;
-}
-.btn {
-    --bs-btn-padding-x: 0.5rem;
-    --bs-btn-padding-y: 0.3rem;
-}
-.btn-outline-secondary 
-{
-    --bs-btn-color: #6c757d;
-    --bs-btn-border-color: #cecece;
-    --bs-btn-hover-color: #fff;
-    --bs-btn-hover-bg: #cfcfcf;
-    --bs-btn-hover-border-color: #6c757d;
-}
-.draw
-{
-    margin: 0 4rem;
-}  
-
-#myColor {
-  width: 2rem;   
-  height: 2rem;  
-  border-radius: 50%;  
-  padding: 0;    
-  border: 1px solid #dfdfdf; 
-  cursor: pointer;  
-}
-
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../assets/css/EditFiles.css">
 </head>
 <body>
     <div class="container-fluid p-0">
         <!-- Toolbar -->
-        <div class="shadow d-flex align-items-center toolbar p-2">
+        <div class=" shadow d-flex align-items-center toolbar p-2">
             <a href="">
                 <div class="logo">
                     <img src="../assets/images/Logo.png" alt="">
@@ -111,43 +21,106 @@ body, html {
             </a>
             <div class="btn-show-pages" ><img src="../assets/images/show pages.png" alt=""></div>
             
-            
+            <!-- Draw -->
             <div class="draw">
-                <div class="btn-group" role="group" id="pen" >
-                    <button type="button" class="btn btn-outline-secondary">
+                <div class="btn-group" role="group" >
+                    <button type="button" class="btn btn-outline-secondary" id="pen">
                         <img src="../assets/images/draw-icon.png" alt="">
                     </button>
-                    <button type="button" class="btn btn-outline-secondary">
+                    <button type="button" class="btn btn-outline-secondary" id="saveDrawing">
                         <img src="../assets/images/save-draws.png" alt="">
                     </button>
-                    <button type="button" class="btn btn-outline-secondary">
+                    <button type="button" class="btn btn-outline-secondary" id="redraw">
                         <img src="../assets/images/reload.png" alt="">
                     </button>
                   </div>
                   <div class="text-center">
-                    <span style="font-weight: 700;">Drawing</span>
+                    <span style="font-weight: 500;">Drawing</span>
                   </div>
             </div>
 
 
-            <div>
+            <div class="color-picker">
                 <form>
                     <input type="color" class="form-control form-control-color" id="myColor" value="#D251C7" title="Choose a color">
                   </form>
             </div>
-        </div>
 
-        <!-- PDF Viewer -->
-        <div class="pdf-viewer">
+            <!-- Add Texts -->
+            <div class="write">
+                <div class="btn-group" role="group" >
+                    <button type="button" class="btn btn-outline-secondary" id="add_text">
+                        <img src="../assets/images/add text icon.png" alt="">
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary" id="readdtext">
+                        <img src="../assets/images/xoay-icon.png" alt="">
+                    </button>
+                  </div>
+                  <div class="text-center">
+                    <span style="font-weight: 700;">AddText</span>
+                  </div>
+            </div>
+
+            <!-- Add images -->
+            <div class="images">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-secondary" id="add_image">
+                        <img src="../assets/images/add_images.png" alt="">
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary" id="save_image">
+                        <img src="../assets/images/save-images.png" alt="">
+                    </button>
+                  </div>
+                  <div class="text-center">
+                    <span style="font-weight: 700;">AddImages</span>
+                  </div>
+            </div>
+
+
+
+            <!-- AddShapes -->
+             <div class="add_shapes">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-secondary button_shape circle">
+                        <img src="../assets/images/circle.png" alt="">
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary button_shape square">
+                        <img src="../assets/images/square.png" alt="">
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary button_shape rectangle">
+                        <img src="../assets/images/rectangle.png" alt="">
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary button_shape triangle">
+                        <img src="../assets/images/triangle.png" alt="">
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary" id="saveshapes">
+                        <img src="../assets/images/save-shapes.png" alt="">
+                    </button>
+                </div>
+
+                <div class="text-center">
+                    <span style="font-weight: 700;">AddShapes</span>
+                </div>
+              </div>
+
+              <button class="d-flex ms-auto me-5 save-all">
+                <i class="bi bi-download"></i>
+                <span style="color: white; font-weight: 700;">Save All</span>
+              </button>
+        </div>
+          <!-- PDF Viewer -->
+          <div class="pdf-viewer">
             <div class="pdf-page">Page 1 content goes here</div>
         </div>
     </div>
 
+      
+
     
      <!-- Thêm đoạn JavaScript này trong file HTML trước thẻ đóng  -->
     <script>
-        document.querySelector('.btn-light:contains("Save")').addEventListener('click', function() {
-            alert('Save button clicked!');
+        document.querySelector('.save').addEventListener('click', function() {
+            alert('Saved');
         });
     </script>
     <!-- Bootstrap JS -->
