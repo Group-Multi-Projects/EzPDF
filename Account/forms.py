@@ -7,7 +7,7 @@ class SignUpForm(forms.ModelForm):
     
     class Meta:
         model = AccountModel
-        fields = ['email', 'username', 'profile_image']
+        fields = ['email', 'username']
 
     def validate_password_match(self):
         password1 = self.cleaned_data.get("password1")

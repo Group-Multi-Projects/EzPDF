@@ -121,3 +121,5 @@ def get_put_delete_file_api(request, id):
         model.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
+def index(request):
+    return render(request,"File/index.html")

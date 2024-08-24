@@ -1,4 +1,16 @@
 
+.content {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+#pdfContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 .pdfCanvas {
     border: 1px solid #000;
     cursor: move;
@@ -12,9 +24,7 @@
     /* resize: both; */
     overflow: auto;
 }
-canvas {
-    margin-left: 20vw;
-}
+
 .add_shapes {
     display: flex;
     justify-content: left;

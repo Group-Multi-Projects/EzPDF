@@ -1,168 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <title>Page not found at /media/images_added/image-1722720302986_Ghwmr4L.jpeg</title>
-  <meta name="robots" content="NONE,NOARCHIVE">
-  <style type="text/css">
-    html * { padding:0; margin:0; }
-    body * { padding:10px 20px; }
-    body * * { padding:0; }
-    body { font:small sans-serif; background:#eee; color:#000; }
-    body>div { border-bottom:1px solid #ddd; }
-    h1 { font-weight:normal; margin-bottom:.4em; }
-    h1 span { font-size:60%; color:#666; font-weight:normal; }
-    table { border:none; border-collapse: collapse; width:100%; }
-    td, th { vertical-align:top; padding:2px 3px; }
-    th { width:12em; text-align:right; color:#666; padding-right:.5em; }
-    #info { background:#f6f6f6; }
-    #info ol { margin: 0.5em 4em; }
-    #info ol li { font-family: monospace; }
-    #summary { background: #ffc; }
-    #explanation { background:#eee; border-bottom: 0px none; }
-    pre.exception_value { font-family: sans-serif; color: #575757; font-size: 1.5em; margin: 10px 0 10px 0; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Chế Độ Vẽ với Fabric.js</title>
+    <!-- Tải thư viện Fabric.js từ CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.4.0/fabric.min.js"></script>
+    <style>
+        canvas {
+            border: 1px solid #000;
+        }
+        .controls {
+            margin-bottom: 10px;
+        }
+        .controls > * {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
-  <div id="summary">
-    <h1>Page not found <span>(404)</span></h1>
-    <pre class="exception_value">“D:\Python_Project\EzPDF\media\images_added\image-1722720302986_Ghwmr4L.jpeg” does not exist</pre>
-    <table class="meta">
-      <tr>
-        <th>Request Method:</th>
-        <td>GET</td>
-      </tr>
-      <tr>
-        <th>Request URL:</th>
-        <td>http://127.0.0.1:8000/media/images_added/image-1722720302986_Ghwmr4L.jpeg</td>
-      </tr>
-      
-      <tr>
-        <th>Raised by:</th>
-        <td>django.views.static.serve</td>
-      </tr>
-      
-    </table>
-  </div>
-  <div id="info">
-    
-      <p>
-      Using the URLconf defined in <code>EzPDF.urls</code>,
-      Django tried these URL patterns, in this order:
-      </p>
-      <ol>
-        
-          <li>
-            
-                admin/
-                
-            
-          </li>
-        
-          <li>
-            
-                
-                
-            
-                listfiles/
-                [name='list_files']
-            
-          </li>
-        
-          <li>
-            
-                
-                
-            
-                edit/&lt;int:file_id&gt;/
-                [name='edit_file']
-            
-          </li>
-        
-          <li>
-            
-                
-                
-            
-                upload_file/
-                [name='upload_file']
-            
-          </li>
-        
-          <li>
-            
-                
-                
-            
-                
-                [name='home']
-            
-          </li>
-        
-          <li>
-            
-                
-                
-            
-                file_api/
-                [name='get_post_api']
-            
-          </li>
-        
-          <li>
-            
-                
-                
-            
-                file_api/&lt;int:id&gt;/
-                [name='get_put_delete_api']
-            
-          </li>
-        
-          <li>
-            
-                account/
-                
-            
-          </li>
-        
-          <li>
-            
-                auth/
-                
-            
-          </li>
-        
-          <li>
-            
-                tools/
-                
-            
-          </li>
-        
-          <li>
-            
-                ^media/(?P&lt;path&gt;.*)$
-                
-            
-          </li>
-        
-      </ol>
-      <p>
-        
-          The current path, <code>media/images_added/image-1722720302986_Ghwmr4L.jpeg</code>,
-        
-        matched the last one.
-      </p>
-    
-  </div>
+    <div class="controls">
+        <button id="toggleDrawingMode">Tắt Chế Độ Vẽ</button>
+        <label for="colorPicker">Màu Bút:</label>
+        <input type="color" id="colorPicker" value="#000000">
+        <label for="brushSize">Kích Thước Bút:</label>
+        <input type="range" id="brushSize" min="1" max="50" value="5">
+        <button id="clearCanvas">Xóa Canvas</button>
+    </div>
+    <canvas id="fabricCanvas" width="800" height="600"></canvas>
 
-  <div id="explanation">
-    <p>
-      You’re seeing this error because you have <code>DEBUG = True</code> in
-      your Django settings file. Change that to <code>False</code>, and Django
-      will display a standard 404 page.
-    </p>
-  </div>
+    <script>
+        // Khởi tạo canvas Fabric.js
+        var canvas = new fabric.Canvas('fabricCanvas');
+
+        // Bật chế độ vẽ
+        canvas.isDrawingMode = true;
+
+        // Lấy các phần tử DOM
+        var toggleDrawingModeBtn = document.getElementById('toggleDrawingMode');
+        var colorPicker = document.getElementById('colorPicker');
+        var brushSize = document.getElementById('brushSize');
+        var clearCanvasBtn = document.getElementById('clearCanvas');
+
+        // Thiết lập mặc định cho bút vẽ
+        canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+        canvas.freeDrawingBrush.color = colorPicker.value;
+        canvas.freeDrawingBrush.width = parseInt(brushSize.value, 10) || 1;
+
+        // Sự kiện thay đổi màu bút
+        colorPicker.addEventListener('change', function() {
+            if (!(canvas.freeDrawingBrush instanceof fabric.EraserBrush)) {
+                canvas.freeDrawingBrush.color = this.value;
+            }
+        });
+
+        // Sự kiện thay đổi kích thước bút
+        brushSize.addEventListener('change', function() {
+            canvas.freeDrawingBrush.width = parseInt(this.value, 10) || 1;
+        });
+
+        // Sự kiện bật/tắt chế độ vẽ
+        toggleDrawingModeBtn.addEventListener('click', function() {
+            canvas.isDrawingMode = !canvas.isDrawingMode;
+            this.textContent = canvas.isDrawingMode ? 'Tắt Chế Độ Vẽ' : 'Bật Chế Độ Vẽ';
+        });
+
+
+        // Sự kiện xóa canvas
+        clearCanvasBtn.addEventListener('click', function() {
+            canvas.clear();
+            // Sau khi xóa, cần bật lại chế độ vẽ và thiết lập lại màu và kích thước bút
+            canvas.isDrawingMode = true;
+            canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+            canvas.freeDrawingBrush.color = colorPicker.value;
+            canvas.freeDrawingBrush.width = parseInt(brushSize.value, 10) || 1;
+            toggleDrawingModeBtn.textContent = 'Tắt Chế Độ Vẽ';
+        });
+    </script>
 </body>
 </html>

@@ -2,13 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import DrawModel, TextModel, ToolModel, ImageModel, ShapeModel
+from .models import DrawModel, TextModel, ImageModel, ShapeModel
 from File.models import FileModel
 import json
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 from rest_framework.response import Response
-from .serializers import DrawSerializers, TextSerializers, ToolsSerializers, ImageSerializers, ShapeSerializers
+from .serializers import DrawSerializers, TextSerializers, ImageSerializers, ShapeSerializers
 from rest_framework.permissions import IsAuthenticated
 from django.core.files.base import ContentFile
 import base64
@@ -49,8 +49,13 @@ def draw_save_data(request,data, file_instance):
             item_id=item_id,
             page=draw.get('page', None),
             defaults={
-                'coordinates': draw.get('coordinates', []),
-                'updated_at': timezone.now()  # Cập nhật thời gian chỉnh sửa
+                'path_coordinates': draw.get('path_coordinates', []),
+                'coord_in_canvas_X': float(draw['coord_in_canvas_X']),
+                'coord_in_canvas_Y': float(draw['coord_in_canvas_Y']),   
+                'width': float(draw['width']),
+                'color': draw['color'],
+                
+                'updated_at': timezone.now()
             }
         )
 def add_text_save_data(request,data,file_instance):
@@ -69,13 +74,12 @@ def add_text_save_data(request,data,file_instance):
                 'content': text['content'],
                 'color': text['color'],
                 'coord_in_canvas_X': float(text['coord_in_canvas_X']),
-                'coord_in_canvas_Y': float(text['coord_in_canvas_Y']),
-                'coord_in_doc_X': float(text['coord_in_doc_X']),
-                'coord_in_doc_Y': float(text['coord_in_doc_Y']),
+                'coord_in_canvas_Y': float(text['coord_in_canvas_Y']),         
                 'font_size': text.get('font_size'),
                 'font_family': text.get('font_family'),
                 'bold': text.get('bold'),
                 'italic': text.get('italic'),
+                # 'priority':int(text.get('priority')),
                 'updated_at': timezone.now()  # Cập nhật thời gian chỉnh sửa
             }
         )
@@ -99,11 +103,10 @@ def add_image_save_data(request, data, file_instance):
                 'image': image_converted,
                 'coord_in_canvas_X': float(image['coord_in_canvas_X']),
                 'coord_in_canvas_Y': float(image['coord_in_canvas_Y']),
-                'coord_in_doc_X': float(image['coord_in_doc_X']),
-                'coord_in_doc_Y': float(image['coord_in_doc_Y']),
+
                 'height': float(image['height']),
                 'width': float(image['width']),
-                'canvas_id': int(image['canvas_id']),
+                'angle':float(image['angle']),
                 'updated_at': timezone.now()  # Cập nhật thời gian chỉnh sửa
             }
         )
@@ -119,13 +122,11 @@ def add_shape_save_data(request,data, file_instance):
             defaults={
                 'coord_in_canvas_X': float(shape['coord_in_canvas_X']),
                 'coord_in_canvas_Y': float(shape['coord_in_canvas_Y']),
-                'coord_in_doc_X': float(shape['coord_in_doc_X']),
-                'coord_in_doc_Y': float(shape['coord_in_doc_Y']),
+
                 'height': float(shape['height']),
                 'width': float(shape['width']),
-                'borderRadius':shape['borderRadius'],
-                'canvas_id': int(shape['canvas_id']),
-                'shapeType': (shape['shapeType']),
+                'radius':shape['radius'],
+                'shape_type': (shape['shape_type']),
                 'updated_at': timezone.now()  # Cập nhật thời gian chỉnh sửa
             }
         )
@@ -149,8 +150,59 @@ def get_post_tools_api(request):
             TextSerializers.save()
             return  Response({"Success":"Success"})
         
+@api_view(["GET", "DELETE"])
+def get_delete_tools_api(request, item_id):
+    try:
+        type = item_id.split("-")[0]
+        print(type)
+        if type == "textBox":
+            text_model = TextModel.objects.get(item_id=item_id)
+            if request.method == "GET":
+                text_serializer = TextSerializers(text_model)
+                return Response(text_serializer.data, status=status.HTTP_200_OK)
+            elif request.method == "DELETE":
+                text_model.delete()
+                return Response({"message": "Item deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+
+        elif type == "image":
+            image_model = ImageModel.objects.get(item_id=item_id)
+            if request.method == "GET":
+                image_serializer = ImageSerializers(image_model)
+                return Response(image_serializer.data, status=status.HTTP_200_OK)
+            elif request.method == "DELETE":
+                image_model.delete()
+                return Response({"message": "Item deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        elif type == "draw":
+            image_model = DrawModel.objects.get(item_id=item_id)
+            if request.method == "GET":
+                image_serializer = DrawSerializers(image_model)
+                return Response(image_serializer.data, status=status.HTTP_200_OK)
+            elif request.method == "DELETE":
+                image_model.delete()
+                return Response({"message": "Item deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+
+        elif type == "shape":
+            shape_model = ShapeModel.objects.get(item_id=item_id)
+            if request.method == "GET":
+                shape_serializer = ShapeSerializers(shape_model)
+                return Response(shape_serializer.data, status=status.HTTP_200_OK)
+            elif request.method == "DELETE":
+                shape_model.delete()
+                return Response({"message": "Item deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response({"error": "Invalid item type"}, status=status.HTTP_400_BAD_REQUEST)
+
+    except TextModel.DoesNotExist:
+        return Response({"error": "Text item not found"}, status=status.HTTP_404_NOT_FOUND)
+    except ImageModel.DoesNotExist:
+        return Response({"error": "Image item not found"}, status=status.HTTP_404_NOT_FOUND)
+    except ShapeModel.DoesNotExist:
+        return Response({"error": "Shape item not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
 @api_view(["GET"])
-def get_put_delete_draw_added_api(request,id):
+def get_draw_added_api(request,id):
     file = FileModel.objects.get(id = id)
     draw_model = DrawModel.objects.filter(
         file = file
@@ -161,7 +213,7 @@ def get_put_delete_draw_added_api(request,id):
     
    
 @api_view(["GET"])
-def get_put_delete_text_added_api(request,id):
+def get_text_added_api(request,id):
     file = FileModel.objects.get(id = id)
     text_model = TextModel.objects.filter(
         file = file
@@ -171,7 +223,7 @@ def get_put_delete_text_added_api(request,id):
         return Response(text_serializers.data)
     
 @api_view(["GET"])
-def get_put_delete_image_added_api(request,id):
+def get_image_added_api(request,id):
     file = FileModel.objects.get(id = id)
     text_model = ImageModel.objects.filter(
         file = file
@@ -181,7 +233,7 @@ def get_put_delete_image_added_api(request,id):
         return Response(image_serializers.data)
     
 @api_view(["GET"])
-def get_put_delete_shape_added_api(request,id):
+def get_shape_added_api(request,id):
     file = FileModel.objects.get(id = id)
     shape_model = ShapeModel.objects.filter(
         file = file
@@ -190,4 +242,3 @@ def get_put_delete_shape_added_api(request,id):
         shape_serializers = ShapeSerializers(shape_model,many = True)
         return Response(shape_serializers.data)
     
-   

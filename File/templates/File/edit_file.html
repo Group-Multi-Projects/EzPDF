@@ -2,7 +2,6 @@
 {% block content %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/edit_file.css' %}">
-
     <div id="tools_list">
         <div class="draw">
             <button id="pen">Pen</button>
@@ -12,47 +11,36 @@
         <hr>
         <div class="write">
             <button id="add_text">Add Text</button>
-            
+            <button id="readdtext">ReAddText</button>
         </div>
         <hr>
-        <div class="add_image">
+        <div>
             <label for="add_image">Add Image:</label>
             <input type="file" id="add_image" name="add_image">
             <button id="save_image">Save Images</button>
         </div>
         <hr>
         <div class="add_shapes">
-            <div class="button_shape circle" name = "circle">
-            </div>
+            <div class="button_shape circle" name = "circle"></div>
             <div class="button_shape square" name = "square"></div>
             <div class="button_shape rectangle" name = "rectangle"></div>
             <div class="button_shape triangle" name = "triangle"></div>
             <button id="saveshapes">save shapes</button>
         </div>
         <hr>
-        <div class="restore">
-            <button onclick="undo_canvas()" id="undo">Undo canvas</button>
-            <button onclick="undo_html()" id="undo">Undo html</button>
-            <button onclick="clear_canvas()" id="clear">Clear</button>
-        </div>
         <hr>
         <button id="save_all_changes">Save All</button>
     </div>
-    <p id="file_id" style="opacity: 0;">{{file.id}}</p>
+    <p id="file_id" style="display: none;">{{file.id}}</p>
     <p id="file_path" style="display: none;">{{file_path}}</p>
     <p id="num_pages" style="display: none;">{{num_pages}}</p>
-    <div id="pdfContainer">
-    </div>
-   
+    <div id="pdfContainer" style=""></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-    <script src="{% static 'js/render_pages.js' %}"></script>
-
-    <script src="{% static 'js/draw.js' %}"></script> 
-    <script src="{% static 'js/add_text.js' %}"></script>
-    <script src="{% static 'js/add_image.js' %}"></script>
-    <script src="{% static 'js/add_shapes.js' %}"></script>
-
-    <script src="{% static 'js/undo_clear.js' %}"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.4.0/fabric.min.js"></script>
+    <script src="{% static 'js/render_pages2.js' %}"></script>
+    <script src="{% static 'js/draw2.js' %}"></script> 
+    <script src="{% static 'js/add_text2.js' %}"></script>
+    <script src="{% static 'js/add_image2.js' %}"></script>
+    <script src="{% static 'js/add_shapes2.js' %}"></script>
 {% endblock content %}
