@@ -56,3 +56,18 @@ def signout(request):
     logout(request)
     return redirect("File:index")
 
+def profile(request):
+
+    return render(request,"Account/profile.html")
+
+from django.http import JsonResponse
+
+def get_user_info(request):
+    if request.method == "GET":
+        account = AccountModel.objects.get(username = request.user.username)
+        user_info = {
+            "username": account.username,
+            "email": account.email
+        }
+        return JsonResponse(user_info)
+    return render(request,"Account/profile.html")

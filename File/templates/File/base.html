@@ -83,7 +83,7 @@
                                       <div class="avatar-user d-flex flex-column justify-content-center align-items-center">
                                         <span style="font-size: 1.5rem; color: white;">AL</span>
                                       </div>
-                                      <span>{{request.user.username}}</span>
+                                      <a href="{% url 'Account:profile' %}"><span>{{request.user.username}}</span></a>
                                     </div>
                                   </li>
                                   <li><hr class="dropdown-divider"></li>
