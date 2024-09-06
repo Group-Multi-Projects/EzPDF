@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'Account',
     'File',
     'jwt_auth',
-    'tools'
+    'tools',
+    'conversion'
 ]
 
 MIDDLEWARE = [

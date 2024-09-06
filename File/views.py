@@ -17,6 +17,7 @@ from django.contrib.auth import authenticate
 from tools.models import TextModel,DrawModel
 logger = logging.getLogger(__name__)
 # Create your views here.
+
 def home(request):
     return render(request,"File/home.html")
 @login_required(login_url=settings.LOGIN_URL)
@@ -122,4 +123,5 @@ def get_put_delete_file_api(request, id):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 def index(request):
-    return render(request,"File/index.html")
+    return render(request,"File/main_index.html")
+

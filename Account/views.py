@@ -54,5 +54,5 @@ def signin(request):
     return render(request,"File/index.html",context)
 def signout(request):
     logout(request)
-    return redirect("File:home")
+    return redirect("File:index")
 

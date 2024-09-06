@@ -338,7 +338,7 @@ function handleEditEvents(textBox,tools_edit_text,activeObject,textId,fabricCanv
                 const item_id = listObjectTextBoxInfo[indexToRemove].item_id
 
                 listObjectTextBoxInfo.splice(indexToRemove, 1); // Xóa phần tử khỏi danh sách
-                var tools_api_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI3NjkzNDU3LCJpYXQiOjE3MjI1MDk0NTcsImp0aSI6Ijk3MDg3ZGQ0ZWFiMzQ1NGRiOGMwZGRhMDYzYzQ4MWRmIiwidXNlcl9pZCI6Mn0._hZZoyZpB6RdTnubLUd0u0ZrZ44KJXVWqHY2npVooYk";
+                var tools_api_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMwNjE2MTg1LCJpYXQiOjE3MjU0MzIxODUsImp0aSI6IjU0MDc1ODgxZjUwYTRkYjk5MzE2NDc0ZjI5M2I0MzAyIiwidXNlcl9pZCI6MX0.5l3za3A_CWEOS6zLmgU5TboTbHYslPyZ4O5bfdNJYHQ";
                 console.log(item_id)
                 $.ajax({
                     type: "DELETE",
@@ -392,7 +392,7 @@ $("#readdtext").click(function (e) {
     
 });
 function renderText() {
-    var tools_api_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI3NjkzNDU3LCJpYXQiOjE3MjI1MDk0NTcsImp0aSI6Ijk3MDg3ZGQ0ZWFiMzQ1NGRiOGMwZGRhMDYzYzQ4MWRmIiwidXNlcl9pZCI6Mn0._hZZoyZpB6RdTnubLUd0u0ZrZ44KJXVWqHY2npVooYk";
+    var tools_api_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMwNjE2MTg1LCJpYXQiOjE3MjU0MzIxODUsImp0aSI6IjU0MDc1ODgxZjUwYTRkYjk5MzE2NDc0ZjI5M2I0MzAyIiwidXNlcl9pZCI6MX0.5l3za3A_CWEOS6zLmgU5TboTbHYslPyZ4O5bfdNJYHQ";
     $.ajax({
         type: "GET",
         url: `http://127.0.0.1:8000/tools/text_added_api/${file_id}/`,

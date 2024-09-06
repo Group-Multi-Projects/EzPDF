@@ -1,7 +1,14 @@
-{% extends 'File/base.html' %}
-{% block content %}
-{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
 <link rel="stylesheet" href="{% static 'css/edit_file.css' %}">
+
+</head>
+<body>
     <div id="tools_list">
         <div class="draw">
             <button id="pen">Pen</button>
@@ -35,12 +42,16 @@
     <p id="file_path" style="display: none;">{{file_path}}</p>
     <p id="num_pages" style="display: none;">{{num_pages}}</p>
     <div id="pdfContainer" style=""></div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.4.0/fabric.min.js"></script>
-    <script src="{% static 'js/render_pages2.js' %}"></script>
-    <script src="{% static 'js/draw2.js' %}"></script> 
-    <script src="{% static 'js/add_text2.js' %}"></script>
-    <script src="{% static 'js/add_image2.js' %}"></script>
-    <script src="{% static 'js/add_shapes2.js' %}"></script>
-{% endblock content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.4.0/fabric.min.js"></script>
+<script src="{% static 'js/render_pages2.js' %}"></script>
+<script src="{% static 'js/draw2.js' %}"></script> 
+<script src="{% static 'js/add_text2.js' %}"></script>
+<script src="{% static 'js/add_image2.js' %}"></script>
+<script src="{% static 'js/add_shapes2.js' %}"></script>
+ 
+</body>
+</html>
+
+ 

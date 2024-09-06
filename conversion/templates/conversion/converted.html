@@ -1,0 +1,11 @@
+<a id="download-link" href="#" download="output.docx">Tải xuống file Word</a>
+{{file_path}}
+{% load static %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var downloadLink = document.getElementById('download-link');
+        downloadLink.href = "http://127.0.0.1:8000/media/files/converted_files/output.docx";
+        console.log(downloadLink.href) 
+    });
+    
+</script>

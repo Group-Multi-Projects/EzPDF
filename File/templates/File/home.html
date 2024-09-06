@@ -27,7 +27,10 @@
      <a style="text-decoration: none;" href="">
       <div class=" d-flex flex-column justify-content-center align-items-center p-1 list-selection">
         <div class=" d-flex align-items-center justify-content-center icon-container">
-          <img class="icon" src="{% static 'images/word_icon.png' %}" alt="">
+          <a href="{% url 'conversion:convert_file_after_login' 'pdf2word' %}">
+            <img class="icon" src="{% static 'images/word_icon.png' %}" alt="">
+
+          </a>
         </div>
         <span class="text-center">PDF to Word</span>
       </div>
@@ -37,7 +40,10 @@
      <a style="text-decoration: none;" href="">
       <div class=" d-flex flex-column justify-content-center align-items-center p-1 list-selection">
         <div class=" d-flex align-items-center justify-content-center icon-container">
-          <img class="icon" src="{% static 'images/excel_icon.png' %}" alt="">
+          <a href="{% url 'conversion:convert_file_after_login' 'pdf2excel' %}">
+            <img class="icon" src="{% static 'images/excel_icon.png' %}" alt="">
+
+          </a>
         </div>
         <span class="text-center">PDF to Excel</span>
       </div>
@@ -47,7 +53,10 @@
      <a style="text-decoration: none;" href="">
       <div class=" d-flex flex-column justify-content-center align-items-center p-1 list-selection">
         <div class=" d-flex align-items-center justify-content-center icon-container">
-          <img class="icon" src="{% static 'images/ppt_icon.png' %}" alt="">
+          <a href="{% url 'conversion:convert_file_after_login' 'pdf2ppt' %}">
+            <img class="icon" src="{% static 'images/ppt_icon.png' %}" alt="">
+
+          </a>
         </div>
         <span class="text-center">PDF to PPT</span>
       </div>
