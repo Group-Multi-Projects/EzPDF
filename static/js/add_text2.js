@@ -32,20 +32,32 @@ function setupTextAdding(fabricCanvas,numPages) {
                 let textBox = objTextEdit.textBox;
                 $('body').append(textBox);
                 textBox.focus();
-                textBox.on('keypress', function(e) {
-                    if (e.which === 13 && isCreated == false) {
-                        let textValue = textBox.text();
-                        let textId = textBox.attr("id");
-                        if (textValue.trim()) {
-                            var objInfo = handleCreateFabricText(fabricCanvas, textBox, pointer,numPages);
-                            listObjectTextBoxInfo.push(objInfo);
-                        }
-                        textBox.css({ display:'none' });
-                        tools_edit_text.css({ display:"none" });
-                        isAddTextActive = false;
-                        fabricCanvas.off('mouse:down');
-                    }
-                });
+        textBox.on('keypress', function(e) {
+            if (e.which === 13 && isCreated == false) {  // Kiểm tra phím Enter (mã phím 13)
+                handleTextCreation();
+            }
+        });
+
+        // Sự kiện khi click ra ngoài textbox
+        textBox.on('blur', function() {
+            if (isCreated == false) {
+                handleTextCreation();
+            }
+        });
+
+        function handleTextCreation() {
+            let textValue = textBox.text();
+            let textId = textBox.attr("id");
+            if (textValue.trim()) {  // Kiểm tra nếu không phải là chuỗi rỗng
+                var objInfo = handleCreateFabricText(fabricCanvas, textBox, pointer, numPages);
+                listObjectTextBoxInfo.push(objInfo);
+            }
+            textBox.css({ display: 'none' });
+            tools_edit_text.css({ display: "none" });
+            isAddTextActive = false;
+            fabricCanvas.off('mouse:down');
+        }
+
                 isAddTextActive = false;
             }
         });

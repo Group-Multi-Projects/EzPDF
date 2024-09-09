@@ -112,7 +112,7 @@ function handleFreeDrawLineEvents(fabricCanvas,path, tools_edit_draw) {
         tools_edit_draw.css({
             position: 'absolute',
             display: 'block',
-            left: this.left + 100 + 'px',
+            left: this.left + 400 + 'px',
             top: this.top - 40 + 'px',
         });
     })
@@ -222,14 +222,7 @@ function renderDraws() {
                     </div>`
                 );
                 $("#pdfContainer").append(tools_edit_draw);
-                tools_edit_draw.css(
-                    {
-                        position: 'absolute',
-                        display: 'none',
-                        left: element.coord_in_canvas_X + 100 + 'px',
-                        top: element.coord_in_canvas_Y - 40 + 'px',
-                    }
-                )
+            
              
                 let queriedPath = fabricCanvasInstances[element.page].getObjects().find(obj => obj.id === element.item_id);
                 console.log("Query:",queriedPath)

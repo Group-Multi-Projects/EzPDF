@@ -35,6 +35,18 @@
         <span class="text-center">PDF to Word</span>
       </div>
     </a>
+     <!-- PDF to HTML -->
+     <a style="text-decoration: none;" href="">
+      <div class=" d-flex flex-column justify-content-center align-items-center p-1 list-selection">
+        <div class=" d-flex align-items-center justify-content-center icon-container">
+          <a href="{% url 'conversion:convert_file_after_login' 'pdf2html' %}">
+            <img class="icon" src="{% static 'images/word_icon.png' %}" alt="">
+
+          </a>
+        </div>
+        <span class="text-center">PDF to HTML</span>
+      </div>
+    </a>
 
      <!--PDF to Excel -->
      <a style="text-decoration: none;" href="">
