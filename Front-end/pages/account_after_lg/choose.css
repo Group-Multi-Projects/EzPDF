@@ -1,0 +1,58 @@
+.title
+{
+    display: flex;
+    justify-content: center;
+}
+
+
+/* UpdateIn4 component */
+.updateIn4 {
+    display: flex;
+    flex-direction: column; /* Để các phần tử xếp theo cột */
+    align-items: center; /* Căn giữa các phần tử theo chiều ngang */
+    justify-content: center; /* Căn giữa các phần tử theo chiều dọc */
+}
+.input-title
+{
+    font-weight: 700;
+}
+.input-item {
+    margin: 1rem 0;
+    padding: 1rem 0 ;
+    width: 100%; /* Đảm bảo rằng phần tử con bên trong có chiều rộng đầy đủ nếu cần */
+    max-width: 60vw; /* Giới hạn chiều rộng để tránh quá rộng */
+    border-bottom: 1.5px solid #a1a1a1;
+}
+
+.input-child {
+    display: flex;
+    justify-content: space-between; /* Giữ nút button bên phải */
+    align-items: center;
+    width: 100%;
+}
+.input-child input
+{
+    padding: 0.5rem 1rem ;
+    width: 50vw;
+    border: 0;
+    outline: none;
+}
+.btn-input{
+    background-color: rgb(41, 89, 177);
+    height: 2rem;
+    padding: 0 1.3rem;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin: 0 1rem;
+    transition: letter-spacing 0.3s ease;
+}
+.btn-input:hover { 
+    background-color:rgb(33, 73, 141); 
+}
+@media (max-width: 575px) {
+    .input-item{
+        width: auto;
+        max-width: 100vw;
+    }
+}

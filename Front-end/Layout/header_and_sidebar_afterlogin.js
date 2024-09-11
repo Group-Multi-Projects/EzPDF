@@ -1,26 +1,3 @@
-// HIỆU ỨNG NÚT MENU BÊN TRÁI CỦA TOP-NAV 
-window.addEventListener('DOMContentLoaded', event => {
-
-  // Toggle the side navigation
-  const sidebarToggle = document.body.querySelector('#sidebarToggle');
-  if (sidebarToggle) {
-      sidebarToggle.addEventListener('click', event => {
-          event.preventDefault();
-          
-          // Toggle the class that controls the icon change
-          
-          sidebarToggle.classList.toggle('bi-text-indent-left');
-          sidebarToggle.classList.toggle('bi-list');
-          // Add smooth rotation effect
-          sidebarToggle.classList.toggle('rotate');
-
-          // Toggle the sidebar
-          document.body.classList.toggle('sb-sidenav-toggled');
-          localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
-      });
-  }
-
-});
 
 
 // TẠO 1 KHỐI HTML SIDEBAR
@@ -29,20 +6,20 @@ sidebar.innerHTML = `
                 <div class="d-flex justify-content-center">
                   <img id="logo" src="../assets/images/Logo.png"  alt="">
                 </div>
-                <div class="list-group list-group-flush">
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">
+               <div class="list-group list-group-flush">
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../pages/home_after_login.html">
                       <i class="bi bi-house-door-fill"></i>
                       Home
                     </a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../pages/project_after_login.html">
                       <i class="bi bi-file-earmark-bar-graph-fill"></i>
                       Projects
                     </a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../pages/account_after_login.html">
                       <i class="bi bi-person-lines-fill"></i>
                       Account
                     </a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../pages/trash_after_login.html">
                       <i class="bi bi-trash-fill"></i>
                       Trash
                     </a>                 
