@@ -24,6 +24,8 @@ urlpatterns = [
     path('account/', include("Account.urls")),
     # path('convert/', include("convert.urls")),
     path('auth/', include("jwt_auth.urls")),
+    path('tools/', include("tools.urls")),
+    path('conversion/', include("conversion.urls")),
     
     
 ]

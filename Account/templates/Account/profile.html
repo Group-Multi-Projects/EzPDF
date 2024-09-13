@@ -1,0 +1,30 @@
+{% extends "File/base.html" %}
+{% block content %}
+{% load static %}
+    
+<link rel="stylesheet" href="{% static 'css/header_and_sidebar_afterlogin.css' %}">
+<link rel="stylesheet" href="{% static 'edit_choose_filestatic/choose.css' %}">
+<link rel="stylesheet" href="{% static 'css/home_after_login.css' %}">
+<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+<div class="d-flex" id="wrapper">
+    <!-- Sidebar-->
+    <div class="border-end sidebar" id="sidebar-wrapper"></div>
+    <div id="page-content-wrapper">
+        <!-- Top navigation-->
+        <div class="topnav-after-login"></div>
+        <!-- Page content-->
+        <div class="container-fluid pt-5">
+            <div class="root"></div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/header_and_sidebar_afterlogin.js' %}"></script>
+<script src="{% static 'js/Layout/toggle.js' %}"></script>
+<script type="text/babel" src="{% static 'edit_choose_filestatic/preview_avatar.js' %}"></script>
+<script type="text/babel" src="{% static 'edit_choose_filestatic/choose.js' %}"></script>
+<script type="text/babel" src="{% static 'edit_choose_filestatic/update_in4.js' %}"></script>
+
+{% endblock content %}

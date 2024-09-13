@@ -1,27 +1,30 @@
-# forms.py
 from django import forms
 from .models import FileModel
 from Account.models import AccountModel
 
 class UploadFileForm(forms.ModelForm):
-    username = forms.CharField(max_length=100)
-    
     class Meta:
         model = FileModel
         fields = ['file']
-        widgets = {
-            'file': forms.ClearableFileInput(attrs={'label': 'Select your file:'}),
+        labels = {
+            'file': 'Chọn file của bạn:',
         }
-    
-    def save(self, commit=True):
+        widgets = {
+            'file': forms.ClearableFileInput(),
+        }
+ 
+
+
+    def save(self, commit=True,username = None):
         # Lấy tài khoản dựa trên tên người dùng
-        username = self.cleaned_data["username"]
-        account = AccountModel.objects.get(username=username)
-        
+        try:
+            account = AccountModel.objects.get(username=username)
+       
+        except AccountModel.DoesNotExist:
+            account = None
         # Lấy đối tượng FileModel
         file_instance = super().save(commit=False)
         file_instance.account = account
-        
         if commit:
             file_instance.save()
         

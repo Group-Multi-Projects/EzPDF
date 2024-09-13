@@ -45,7 +45,9 @@ INSTALLED_APPS = [
     
     'Account',
     'File',
-    'jwt_auth'
+    'jwt_auth',
+    'tools',
+    'conversion'
 ]
 
 MIDDLEWARE = [
@@ -84,12 +86,12 @@ WSGI_APPLICATION = 'EzPDF.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "EzPDF",
-        "USER": "postgres",
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "ezpdf",
+        "USER": "root",
         "PASSWORD": "dinhthai2004",
         "HOST": "127.0.0.1",
-        "PORT": "5432",
+        "PORT": "3306",
     }
 }
 
