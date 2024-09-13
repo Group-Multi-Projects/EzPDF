@@ -15,10 +15,12 @@ function setupDrawAdding(fabricCanvas, numPages) {
         isAddTextActive = false;
         isAddImageActive = false;
         isAddShapesActive = false;
-        
-        let path = handleCreateFreeLine(fabricCanvas, numPages);
-        console.log(path)
-    
+        if (isDrawActive) {
+            let path = handleCreateFreeLine(fabricCanvas, numPages);
+            console.log(path)   
+            isDrawActive = false
+            console.log("Isdrawactive",isDrawActive)
+        } 
     });
 }
 
@@ -71,6 +73,8 @@ function handleCreateFreeLine(fabricCanvas, numPages) {
             fabricCanvas.isDrawingMode = false;
             fabricCanvas.off("mouse:up");
             isDrawActive = false
+            console.log("Isdrawactive",isDrawActive)
+
         });
         
     }

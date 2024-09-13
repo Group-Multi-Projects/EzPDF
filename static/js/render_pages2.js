@@ -91,6 +91,7 @@ function renderPage(num) {
                 let fabricCanvasInstance = new fabric.Canvas(fabricCanvas);
                 fabricCanvasInstances[num] = fabricCanvasInstance
                 console.log('Fabric canvas created for page:', num);
+         
                 setupTextAdding(fabricCanvasInstance,num);
                 setupImageAdding(fabricCanvasInstance,num);
                 setupShapesAdding(fabricCanvasInstance,num);
