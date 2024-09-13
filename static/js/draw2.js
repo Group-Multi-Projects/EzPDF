@@ -15,6 +15,7 @@ function setupDrawAdding(fabricCanvas, numPages) {
         isAddTextActive = false;
         isAddImageActive = false;
         isAddShapesActive = false;
+        
         let path = handleCreateFreeLine(fabricCanvas, numPages);
         console.log(path)
     
@@ -69,6 +70,7 @@ function handleCreateFreeLine(fabricCanvas, numPages) {
  
             fabricCanvas.isDrawingMode = false;
             fabricCanvas.off("mouse:up");
+            isDrawActive = false
         });
         
     }
@@ -90,10 +92,7 @@ function handleCreateToolsEditDraw(fabricCanvas,path,queriedPath) {
             top: path.top - 40 + 'px',
         }
     )
-  
     handleFreeDrawLineEvents(fabricCanvas,queriedPath,tools_edit_draw)
-  
- 
 }
 function handleFreeDrawLineEvents(fabricCanvas,path, tools_edit_draw) {
     path.lockMovementX = true;
@@ -124,7 +123,6 @@ function handleFreeDrawLineEvents(fabricCanvas,path, tools_edit_draw) {
             const item_id = listObjectDrawInfo[index].item_id; 
             listObjectDrawInfo.splice(index, 1);
             var tools_api_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMwNjE2MTg1LCJpYXQiOjE3MjU0MzIxODUsImp0aSI6IjU0MDc1ODgxZjUwYTRkYjk5MzE2NDc0ZjI5M2I0MzAyIiwidXNlcl9pZCI6MX0.5l3za3A_CWEOS6zLmgU5TboTbHYslPyZ4O5bfdNJYHQ";
-
             $.ajax({
                 type: "DELETE",
                 url: `http://127.0.0.1:8000/tools/tools_api/${item_id}/`,
@@ -146,10 +144,7 @@ function handleFreeDrawLineEvents(fabricCanvas,path, tools_edit_draw) {
             display:"none"
         })
     })
-    
-
 }
-
 function updatePathCoordinates(path) {
     const objectInfo = listObjectDrawInfo.find(info => info.item_id === path.id);
     if (objectInfo) {
@@ -162,7 +157,6 @@ function updatePathCoordinates(path) {
             }
             return [command, ...coords];
         });
-
         objectInfo.path_coordinates = updatedPath;
 
         objectInfo.coord_in_canvas_X = path.left;

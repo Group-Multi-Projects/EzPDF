@@ -12,7 +12,18 @@ from .serializers import DrawSerializers, TextSerializers, ImageSerializers, Sha
 from rest_framework.permissions import IsAuthenticated
 from django.core.files.base import ContentFile
 import base64
-
+from django.http import JsonResponse
+import fitz 
+import os
+from django.conf import settings
+# Dictionary to map font names to file paths
+FONT_FILES = {
+    'Arial': os.path.join(settings.MEDIA_URL, 'fonts', 'Arial.ttf'),
+    'Times New Roman': os.path.join(settings.MEDIA_URL, 'fonts', 'TimesNewRoman.ttf'),
+    'Courier New': os.path.join(settings.MEDIA_URL, 'fonts', 'CourierNew.ttf'),
+    'Verdana': os.path.join(settings.MEDIA_URL, 'fonts', 'Verdana.ttf'),
+    'Tahoma': os.path.join(settings.MEDIA_URL, 'fonts', 'Tahoma.ttf')
+}
 @csrf_exempt
 def get_obj_all_changes_event(request):
     if request.method == 'POST':
@@ -20,15 +31,17 @@ def get_obj_all_changes_event(request):
             data = json.loads(request.body)
             file_id = int(data.get('file_id'))
             file_instance = FileModel.objects.get(id=file_id)
-
+            file_path = str(file_instance.get_file_path())
+            file_path = os.path.join(settings.MEDIA_ROOT,file_path)
+            doc = fitz.open(file_path)
             # Lưu dữ liệu vẽ
-            draw_save_data(request,data, file_instance)
+            draw_save_data(data, file_instance,doc)
             # Lưu dữ liệu văn bản
-            add_text_save_data(request,data, file_instance)
+            add_text_save_data(data, file_instance,doc)
             # Lưu dữ liệu hình ảnh
-            add_image_save_data(request,data, file_instance)
+            add_image_save_data(data, file_instance,doc)
             # Lưu dữ liệu hình dạng
-            add_shape_save_data(request,data, file_instance)
+            add_shape_save_data(data, file_instance,doc)
 
             return JsonResponse({'status': 'success', 'message': 'Data saved successfully!'})
         except FileModel.DoesNotExist:
@@ -40,7 +53,7 @@ def get_obj_all_changes_event(request):
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method.'})
 
-def draw_save_data(request,data, file_instance):
+def draw_save_data(data, file_instance,doc):
     draw_data = data.get('draw', [])
     for draw in draw_data:
         item_id = draw.get("item_id")
@@ -58,10 +71,28 @@ def draw_save_data(request,data, file_instance):
                 'updated_at': timezone.now()
             }
         )
-def add_text_save_data(request,data,file_instance):
+        
+
+def text_editing(doc,text_data):
+
+    output_file = os.path.join(settings.MEDIA_ROOT,'files', 'converted_files', 'output.pdf')
+    print("Page:",text_data['page'])
+
+    page_number = int(text_data['page']) - 1 
+    page = doc[page_number]  
+    text = text_data['content']
+    position = fitz.Point(float(text_data['coord_in_canvas_X']), float(text_data['coord_in_canvas_Y'])) 
+    font_size = float(text_data.get('font_size'))
+
+    page.insert_text(position, text, fontsize=font_size, fontname="helv", color=(0, 0, 0))
+
+    output_pdf_path = output_file
+    doc.save(output_pdf_path)
+
+def add_text_save_data(data,file_instance,doc):
     text_data = data.get('addtext', [])
-    
     for text in text_data:
+        text_editing(doc,text)
         item_id = text.get('item_id')
         # font_size = text['font_size']
         # font_family = text['font_family']
@@ -83,7 +114,23 @@ def add_text_save_data(request,data,file_instance):
                 'updated_at': timezone.now()  # Cập nhật thời gian chỉnh sửa
             }
         )
-def add_image_save_data(request, data, file_instance):
+
+def image_editing(doc, image_data,image_path):
+ 
+    output_file = os.path.join(settings.MEDIA_ROOT,'files', 'converted_files', 'output.pdf')
+    print("Page:",image_data['page'])
+
+    page_number = int(image_data['page']) - 1 # Chuyển đổi giá trị trang từ chuỗi sang số nguyên
+    page = doc[page_number]  # Truy cập trang bằng số nguyên
+    x0,y0 = float(image_data['coord_in_canvas_X']),float(image_data['coord_in_canvas_Y'])
+    x1, y1 = x0 + float(image_data['width']), y0 + float(image_data['height'])
+    rect = fitz.Rect(x0, y0, x1, y1)
+    page.insert_image(rect, filename=image_path)
+    output_pdf_path = output_file
+    doc.save(output_pdf_path)
+
+    
+def add_image_save_data(data, file_instance,doc):
     image_data = data.get('addimage', [])
     for image in image_data:
         item_id = image.get('item_id')
@@ -92,8 +139,13 @@ def add_image_save_data(request, data, file_instance):
             ext = format.split('/')[-1]
 
             image_converted = ContentFile(base64.b64decode(imgstr), name=f"{item_id}.{ext}")
+            # image_path = os.path.join(settings.MEDIA_ROOT,'images', image_converted)
+       
         except:
             image_converted = image.get('image').replace('/media/', '')
+        # image_path = os.path.join(settings.MEDIA_ROOT, image_converted)
+
+        # image_editing(doc,image,image_path)
         ImageModel.objects.update_or_create(
             file=file_instance,
             item_id=item_id,
@@ -103,14 +155,16 @@ def add_image_save_data(request, data, file_instance):
                 'image': image_converted,
                 'coord_in_canvas_X': float(image['coord_in_canvas_X']),
                 'coord_in_canvas_Y': float(image['coord_in_canvas_Y']),
-
                 'height': float(image['height']),
                 'width': float(image['width']),
                 'angle':float(image['angle']),
                 'updated_at': timezone.now()  # Cập nhật thời gian chỉnh sửa
             }
         )
-def add_shape_save_data(request,data, file_instance):
+
+def shape_editing(doc, shape_data):
+    pass
+def add_shape_save_data(data, file_instance,doc):
     shapes_data = data.get("addshape",[])
     for shape in shapes_data:
         item_id = shape.get('item_id')
