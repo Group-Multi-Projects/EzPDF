@@ -1,4 +1,7 @@
+<<<<<<< HEAD:Front-end/Layout/toggle.js
+=======
 
+>>>>>>> main:static/js/Layout/toggle.js
 // HIỆU ỨNG NÚT MENU BÊN TRÁI CỦA TOP-NAV 
 window.addEventListener('DOMContentLoaded', event => {
 
@@ -22,3 +25,7 @@ window.addEventListener('DOMContentLoaded', event => {
     }
   
   });
+<<<<<<< HEAD:Front-end/Layout/toggle.js
+  
+=======
+>>>>>>> main:static/js/Layout/toggle.js

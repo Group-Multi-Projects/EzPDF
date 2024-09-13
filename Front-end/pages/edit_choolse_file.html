@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="../assets/css/api_boostrap_v5.2.3.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/css/header_and_sidebar_afterlogin.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="../assets/css/convert_before_login.css">
+    <title>AfterLogin EditPDF Choose</title>
+</head>
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar-->
+        <div class=" border-end sidebar" id="sidebar-wrapper"></div>
+
+        <!-- Page content wrapper-->
+        <div id="page-content-wrapper">
+
+            <!-- Top navigation-->
+            <div class="topnav-after-login"></div>
+
+            <!-- Page content-->
+            <div class="container-fluid pt-5 mb-5">
+                <div class="container ">
+                    <div class=" text-center ">
+                        <!-- H1 -->
+                        <h1 style="font-weight: 900;" >Edit PDF</h1>             
+                    </div>
+                        <div class=" content text-center d-flex flex-column justify-content-center align-items-center" >
+                            <div class="container  d-flex flex-column justify-content-center ">
+                                <i class="bi bi-cloud-arrow-up"></i>
+                            </div>
+                            <input type="file" name="" id="upload-file" style="display: none;">
+                            <label for="upload-file" type="button" class="btn mb-3 choolse-files" style="background-color: #C754A8; color: white;">
+                                <i class="bi bi-plus-circle "></i>
+                                <span>Choolse your files</span>
+                            </label>
+                            
+                            <div class="choolse-dep">
+                                <div class="d-flex justify-content-center">
+                                    <span class="formats-dep" style="font-weight: 700;">The supported formats are:</span>
+                                </div>
+                                <div class="d-flex justify-content-center" >
+                                    <div style="background-color: #7998E7;" class="box-formats">HTML</div>
+                                    <div style="background-color: #FF9090; color: #FC0A0A;" class="box-formats">PDF</div>
+                                    <div style="background-color: #94F1FE; color: #1647F3;" class="box-formats">Word</div>
+                                    <div style="background-color: #CDFFBB; color: #00A124;" class="box-formats">Excel</div>
+                                    <div style="background-color: #FF7E47; color: #fff;" class="box-formats">PPT</div>
+                                    <div style="background-color: #FFF2C5; color: #FFA000;" class="box-formats">JPG</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+<script src="../Layout/header_and_sidebar_afterlogin.js"></script>
+</body>
+</html>
