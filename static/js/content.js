@@ -171,19 +171,19 @@ function Content() {
         element.preview = preview
         
     });
-    
+//     <div className="btn-add">
+//     <i className="bi bi-plus-lg"></i>
+//     <label className="btn-add-label" htmlFor="upload">Add</label>
+//     <input
+//         type="file"
+//         id="upload"
+//         style={{ display: 'none' }}
+//         onChange={handleUpload}
+//     />
+// </div>
     return (
 <div className="content">
-    <div className="btn-add">
-        <i className="bi bi-plus-lg"></i>
-        <label className="btn-add-label" htmlFor="upload">Add</label>
-        <input
-            type="file"
-            id="upload"
-            style={{ display: 'none' }}
-            onChange={handleUpload}
-        />
-    </div>
+
     <table>
         <thead>
             <tr>
