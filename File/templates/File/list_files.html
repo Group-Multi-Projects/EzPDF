@@ -1,9 +1,6 @@
 {% extends 'File/base.html' %}
 {% block content %}
 {% load static %}
-{% block css %}
-    
-{% endblock css %}
 <link rel="stylesheet" href="{% static 'css/list_files.css' %}">
 <div class="pdf-container">
     {% for file in files %}
@@ -17,8 +14,8 @@
 
     {% endfor %}
 </div>
-{% block js %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 <script src="{% static 'js/list_files.js' %}"></script>
-{% endblock js %}
+<script src="{% static 'js/Layout/toggle.js' %}"></script>
+
 {% endblock content %}

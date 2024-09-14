@@ -5,15 +5,17 @@ from django.conf import settings
 from .forms import ConversionForm
 from .models import ConversionModel
 import requests 
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 
-
+def upload_to_convert(request):
+    pass
 def convert_file_after_login(request, type):
     form = ConversionForm()
     file = ""
     if type == "pdf2word":
         docx_file = os.path.join(settings.MEDIA_ROOT,'files', 'converted_files', 'output.docx')
         docx_file = docx_file.replace("/", "\\")
-
         if request.method == "POST":
             form = ConversionForm(request.POST,request.FILES)
             if form.is_valid():
@@ -41,17 +43,46 @@ def convert_file_after_login(request, type):
     context = {
         "form":form,
         "type": type,
-        "file": file
+        "file": file,
+        "link":f"conversion:convert_file_after_login"
     }
-    return render(request, "conversion/conversion.html", context)
+    return render(request, "File/upload_file.html", context)
 
 def convert_file_before_login(request, type):
-    form = ConversionForm()
+    if type == "pdf2word":
+        docx_file = os.path.join(settings.MEDIA_ROOT,'files', 'converted_files', 'output.docx')
+        docx_file = docx_file.replace("/", "\\")
+        if request.method == "POST":
+            uploaded_file = request.FILES["original_file"]
+            file_name = uploaded_file.name
+            file_path = os.path.join('files', 'original_files', file_name)
+            saved_path = default_storage.save(file_path, ContentFile(uploaded_file.read()))
+            full_file_path = os.path.join(settings.MEDIA_ROOT, saved_path)
+            print(saved_path,full_file_path)
+            pdf_to_word(full_file_path, docx_file)
+
+            file = 'output.docx'
+            return redirect("conversion:converted",filename = file)
+    elif type == "pdf2html":
+        docx_file = os.path.join(settings.MEDIA_ROOT,'files', 'converted_files', 'output.html')
+        docx_file = docx_file.replace("/", "\\")
+        if request.method == "POST":
+            uploaded_file = request.FILES["original_file"]
+            file_name = uploaded_file.name
+            file_path = os.path.join('files', 'original_files', file_name)
+            saved_path = default_storage.save(file_path, ContentFile(uploaded_file.read()))
+            full_file_path = os.path.join(settings.MEDIA_ROOT, saved_path)
+            print(saved_path,full_file_path)
+            pdf_to_html(full_file_path, docx_file)
+
+            file = 'output.html'
+            return redirect("conversion:converted",filename = file)
     context = {
-        "form":form,
         "type": type,
+        "link":f"conversion:convert_file_before_login"
+
     }
-    return render(request, "conversion/conversion_before_login.html", context)
+    return render(request, "File/upload_file.html", context)
 
 def converted(request, filename):
     print(filename)
@@ -59,7 +90,8 @@ def converted(request, filename):
     
     context = {
         "file_name": filename,
-        "file_path": file_path
+        "file_path": file_path,
+
     }
     return render(request, "conversion/converted.html", context)
 
@@ -76,9 +108,6 @@ def pdf_to_html(pdf_file_path,output_file_path):
     Password = ""
     PlainHtml = False
     ColumnLayout = False
-
-
-
     def convertPdfToHtml(uploadedFileUrl, destinationFile):
         """Converts PDF To Html using PDF.co Web API"""
 

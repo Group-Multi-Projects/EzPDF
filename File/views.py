@@ -18,10 +18,15 @@ from tools.models import TextModel,DrawModel
 from django.http import JsonResponse
 logger = logging.getLogger(__name__)
 # Create your views here.
+def index(request):
+    if request.user.is_authenticated:
+        return redirect("File:home")
+    else:
+        return render(request, "File/main_index.html")
 
+@login_required(login_url=settings.LOGIN_URL)
 def home(request):
     return render(request,"File/home.html")
-@login_required(login_url=settings.LOGIN_URL)
 def list_files(request):
     account = AccountModel.objects.get(username = request.user.username)
     files = FileModel.objects.filter(
@@ -85,7 +90,8 @@ def upload_file(request):
         form = UploadFileForm()
 
     context = {
-        "form": form
+        "form": form,
+        "link":'File:upload_file',
     }
     return render(request, 'File/upload_file.html', context)
 
@@ -123,8 +129,7 @@ def get_put_delete_file_api(request, id):
         model.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-def index(request):
-    return render(request,"File/main_index.html")
+
 
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
