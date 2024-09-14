@@ -3,6 +3,7 @@
     overflow-x: auto; 
     padding: 10px;
     gap: 10px; 
+
 }
 .pdf-item {
     flex: 0 0 auto; 

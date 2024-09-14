@@ -8,19 +8,18 @@ var objectDrawInfo = {
     width: 10,
     path_coordinates: [] 
 };
-
 function setupDrawAdding(fabricCanvas, numPages) {
     $("#pen").on("click", function () {
         isDrawActive = true;
         isAddTextActive = false;
         isAddImageActive = false;
         isAddShapesActive = false;
+
+        // Kiểm tra isDrawActive trước khi vẽ
         if (isDrawActive) {
             let path = handleCreateFreeLine(fabricCanvas, numPages);
-            console.log(path)   
-            isDrawActive = false
-            console.log("Isdrawactive",isDrawActive)
-        } 
+            console.log(path);
+        }
     });
 }
 
@@ -71,12 +70,16 @@ function handleCreateFreeLine(fabricCanvas, numPages) {
         fabricCanvas.on("mouse:up", function () {
  
             fabricCanvas.isDrawingMode = false;
+            disableDrawingModeForAll(fabricCanvasInstances)
             fabricCanvas.off("mouse:up");
             isDrawActive = false
             console.log("Isdrawactive",isDrawActive)
-
         });
-        
+        function disableDrawingModeForAll(canvases) {
+            canvases.forEach(function (canvas) {
+                canvas.isDrawingMode = false;
+            });
+        }
     }
     return path
 }

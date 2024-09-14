@@ -1,0 +1,231 @@
+const initState = {
+    listFiles: []
+};
+
+// Actions
+const ADD_FILE = 'add';
+const DELETE_FILE = 'delete';
+
+const addFile = (payload) => ({
+    type: ADD_FILE,
+    payload
+});
+const deleteFile = (payload) => ({
+    type: DELETE_FILE,
+    payload
+});
+
+// Reducer function
+const reducer = (state, action) => {
+    switch (action.type) {
+        case ADD_FILE:
+            console.log(state)
+            console.log(action.payload)
+            return {
+                ...state,
+           
+                listFiles: [action.payload, ...state.listFiles]
+            };
+        case DELETE_FILE:
+
+            console.log(action.payload);
+            console.log("Trước",state.listFiles[0])
+
+            state.listFiles[0] = state.listFiles[0].filter((_, index) => index !== action.payload);
+            console.log("Sau",state.listFiles[0])
+            return {
+                listFiles: state.listFiles.filter((_, index) => index !== action.payload),       
+                ...state,
+            };
+        default:
+            throw new Error("Invalid action.");
+    }
+};
+function Content() {
+    console.log("Init state:",initState)
+    const [state, dispatch] = React.useReducer(reducer, initState);
+    const listFiles = state.listFiles;
+    console.log("44",state)
+    const [showPass, setShowPass] = React.useState(false);
+    const [showMenu, setShowMenu] = React.useState(null);
+    // Fetch list of files on component mount
+    React.useEffect(() => {
+        // const token = localStorage.getItem('authToken'); // Lấy token từ localStorage
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMwNjE2MTg1LCJpYXQiOjE3MjU0MzIxODUsImp0aSI6IjU0MDc1ODgxZjUwYTRkYjk5MzE2NDc0ZjI5M2I0MzAyIiwidXNlcl9pZCI6MX0.5l3za3A_CWEOS6zLmgU5TboTbHYslPyZ4O5bfdNJYHQ"
+        fetch('http://127.0.0.1:8000/get_list_files/', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("59:",data.list_files)
+            dispatch({ type: ADD_FILE, payload: data.list_files });
+        })
+        .catch(error => {
+            console.error('Error fetching files:', error);
+        });
+    }, []);
+    const Toggle = () => {
+        setShowPass(!showPass);
+    };
+    const handleClick = (id) => {
+        setShowMenu((prevId) => (prevId === id ? null : id));
+    };
+    const handleUpload = (event) => {
+        const newFile = event.target.files[0];
+        if (newFile) {
+            let fileName = newFile.name;
+            if (fileName.length > 30) {
+                const ext = fileName.slice(fileName.lastIndexOf('.'));
+                fileName = `${fileName.slice(0, 20)}...${ext}`;
+            }
+            const fileType = newFile.name.split('.').pop().toLowerCase();
+            let preview;
+            
+            if (fileType === 'png' || fileType === 'jpg' || fileType === 'jpeg') {
+                preview = URL.createObjectURL(newFile);
+            } else {
+                switch (fileType) {
+                    case 'html':
+                        preview = 'https://cdn-icons-png.flaticon.com/128/186/186320.png';
+                        break;
+                    case 'docx':
+                        preview = 'https://cdn-icons-png.flaticon.com/128/716/716935.png';
+                        break;
+                    case 'pdf':
+                        preview = 'https://cdn-icons-png.flaticon.com/128/337/337946.png';
+                        break;
+                    case 'xlsx':
+                    case 'xls':
+                        preview = 'https://cdn-icons-png.flaticon.com/128/9704/9704734.png';
+                        break;
+                    case 'pptx':
+                    case 'ppt':
+                        preview = 'https://cdn-icons-png.flaticon.com/128/337/337949.png';
+                        break;
+                    case 'svg':
+                        preview = 'https://cdn-icons-png.flaticon.com/128/337/337954.png';
+                        break;
+                    default:
+                        preview = 'path-to-default-file-icon.png';
+                }
+            }
+            const fileObject = {
+                file: fileName,
+                preview: preview
+            };
+            dispatch(addFile(fileObject));
+        }
+    };
+   
+    
+    const handleDelete = (index) => {
+        dispatch(deleteFile(index));
+    };
+    const files = listFiles.flat();
+    function get_preview(fileName) {
+        if (fileName.length > 30) {
+            const ext = fileName.slice(fileName.lastIndexOf('.'));
+            fileName = `${fileName.slice(0, 20)}...${ext}`;
+        }
+
+        const fileType = fileName.split('.').pop().toLowerCase();
+        let preview;
+        
+        if (fileType === 'png' || fileType === 'jpg' || fileType === 'jpeg') {
+            preview = URL.createObjectURL(fileName);
+        } else {
+            switch (fileType) {
+                case 'html':
+                    preview = 'https://cdn-icons-png.flaticon.com/128/186/186320.png';
+                    break;
+                case 'docx':
+                    preview = 'https://cdn-icons-png.flaticon.com/128/716/716935.png';
+                    break;
+                case 'pdf':
+                    preview = 'https://cdn-icons-png.flaticon.com/128/337/337946.png';
+                    break;
+                case 'xlsx':
+                case 'xls':
+                    preview = 'https://cdn-icons-png.flaticon.com/128/9704/9704734.png';
+                    break;
+                case 'pptx':
+                case 'ppt':
+                    preview = 'https://cdn-icons-png.flaticon.com/128/337/337949.png';
+                    break;
+                case 'svg':
+                    preview = 'https://cdn-icons-png.flaticon.com/128/337/337954.png';
+                    break;
+                default:
+                    preview = 'path-to-default-file-icon.png';
+            }
+        }
+        return preview
+    }
+    files.forEach(element => {
+        if (element.file.includes('/media/files/')) {
+            element.file = element.file.replace('/media/files/', '');
+        }
+        let preview = get_preview(element.file)
+        element.preview = preview
+        
+    });
+    
+    return (
+<div className="content">
+    <div className="btn-add">
+        <i className="bi bi-plus-lg"></i>
+        <label className="btn-add-label" htmlFor="upload">Add</label>
+        <input
+            type="file"
+            id="upload"
+            style={{ display: 'none' }}
+            onChange={handleUpload}
+        />
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Preview</th>
+                <th>Name</th>
+                <th>Set</th>
+            </tr>
+        </thead>
+        <tbody>
+            {files.map((file, index) => (
+                <tr id={`tr-${index}`} key={index}>
+                    <td>
+                        <img
+                            src={file.preview}
+                            alt={file.file}
+                            style={{
+                                width: '50px',
+                                height: '50px',
+                                borderRadius: '10px',
+                                objectFit: 'cover'
+                            }}
+                        />
+                    </td>
+                    <td>{file.file}</td>
+                    <td>
+                        <i
+                            className="bi bi-three-dots-vertical"
+                            onClick={() => handleClick(index)}
+                        ></i>
+                        {showMenu === index && (
+                            <div>
+                                {/* Render Menu component within a valid container */}
+                                <Menu index={index} handleRemove={handleDelete}/>
+                            </div>
+                        )}
+                    </td>
+                </tr>
+            ))}
+        </tbody>
+    </table>
+</div>
+
+    );
+}
+

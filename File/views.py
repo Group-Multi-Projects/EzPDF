@@ -15,6 +15,7 @@ from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from tools.models import TextModel,DrawModel
+from django.http import JsonResponse
 logger = logging.getLogger(__name__)
 # Create your views here.
 
@@ -30,7 +31,7 @@ def list_files(request):
     context = {
         "files":files
     }
-    return render(request,"File/list_files.html",context)
+    return render(request,"File/project_after_login.html",context)
 def get_jwt_token(username, password):
     url = 'http://127.0.0.1:8000/auth/api/token/'
     data = {
@@ -125,3 +126,20 @@ def get_put_delete_file_api(request, id):
 def index(request):
     return render(request,"File/main_index.html")
 
+@api_view(["GET", "POST"])
+@permission_classes([IsAuthenticated])
+def get_list_files(request):
+    if request.method == "GET":
+        try:
+            account = AccountModel.objects.get(username=request.user.username)
+            files = FileModel.objects.filter(account=account)
+            serializers = FileSerializer(files, many=True)
+            return Response({"list_files": serializers.data}, status=status.HTTP_200_OK)
+        except AccountModel.DoesNotExist:
+            return Response({"error": "Account not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    elif request.method == "POST":
+        # Xử lý dữ liệu POST ở đây nếu cần
+        return Response({"message": "POST method is not implemented"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)

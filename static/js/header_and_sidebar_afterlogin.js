@@ -1,4 +1,3 @@
-// HIỆU ỨNG NÚT MENU BÊN TRÁI CỦA TOP-NAV 
 window.addEventListener('DOMContentLoaded', event => {
 
   // Toggle the side navigation
@@ -23,7 +22,7 @@ window.addEventListener('DOMContentLoaded', event => {
 });
 
 // TẠO 1 KHỐI HTML SIDEBAR
-let sidebar = document.querySelector('.sidebar')
+// let sidebar = document.querySelector('.sidebar')
 // sidebar.innerHTML = ` 
 //                 <div class="d-flex justify-content-center">
 //                   <img id="logo" src="/static/images/Logo.png"  alt="">

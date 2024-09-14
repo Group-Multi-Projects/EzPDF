@@ -1,0 +1,35 @@
+{% extends "File/base.html" %}
+    {% load static %}
+    {% block content %}
+    <link rel="stylesheet" href="{% static 'css/api_boostrap_v523.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header_and_sidebar_afterlogin.css' %}">
+    <link rel="stylesheet" href="{% static 'css/choose.css' %}">
+    <link rel="stylesheet" href="{% static 'css/project.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    {% comment %} <link rel="stylesheet" href="{% static 'css/edit_file.css' %}"> {% endcomment %}
+
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar-->
+        <div class="border-end sidebar" id="sidebar-wrapper"></div>
+        <div id="page-content-wrapper">
+            <div class="topnav-after-login"></div>
+            <div class="container-fluid pt-3">
+                <div class="root">
+   
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="{% static 'js/list_files.js' %}"></script>
+    <script src="{% static 'js/header_and_sidebar_afterlogin.js' %}"></script>
+    <script src="{% static 'js/Layout/toggle.js' %}"></script>
+    <script type="text/babel" src="{% static 'js/project.js' %}"></script>
+    <script type="text/babel" src="{% static 'js/menu.js' %}"></script>
+    <script type="text/babel" src="{% static 'js/content.js' %}"></script>
+    {% endblock content %}

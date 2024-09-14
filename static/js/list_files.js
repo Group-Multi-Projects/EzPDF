@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     fileElements.forEach(item => {
         const canvasId = item.querySelector('canvas').id;
-        const fileUrl = item.querySelector('p').textContent; // Lấy URL từ liên kết
+        const fileUrl = item.querySelector('p').textContent; 
 
         pdfjsLib.getDocument(fileUrl).promise.then(pdf => {
             pdf.getPage(1).then(page => {

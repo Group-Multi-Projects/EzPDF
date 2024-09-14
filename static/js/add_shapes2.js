@@ -71,7 +71,8 @@ function createFabricShape(fabricCanvas,shapeType, left, top, uniqueId,tool_edit
                 shape = new fabric.Circle({
                     left: left,
                     top: top,
-                    radius: 50,
+                    
+                    radius: objInfo.width /2 || 50,
                     fill: 'red',
                     selectable: true,
                     id: uniqueId
@@ -229,6 +230,7 @@ function updateShapeInfo(shape) {
         objectInfo.fill = shape.fill,
         objectInfo.radius = shape.radius || 0,
         objectInfo.angle = shape.angle
+        console.log(objectInfo.width,objectInfo.height)
     }
 }
 function reAddShapes(listObjectShapesInfo) {

@@ -12,6 +12,7 @@ urlpatterns = [
     path('file_api/',views.get_post_file_api,name="get_post_api"),
     path('file_api/<int:id>/',views.get_put_delete_file_api,name="get_put_delete_api"),
     path("index/",views.index),
+    path("get_list_files/",views.get_list_files,name="get_list_files"),
 
     
 ]

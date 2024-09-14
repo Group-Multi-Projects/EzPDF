@@ -20,5 +20,7 @@ pdf2docx
 pdf2pptx
 pdf2xls
 requests 
+
 # pip install -r requirements.txt
-# pip list
+# python manage.py migrate
+# python manage.py runserver
