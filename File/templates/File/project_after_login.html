@@ -6,6 +6,7 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
     <link rel="stylesheet" href="{% static 'css/list_files.css' %}">
+    <p id="user-token" hidden>{{access}}</p>
     <div class="pdf-container">
         {% for file in files %}
             <div class="pdf-item" id="pdf-item-{{ file.id }}">

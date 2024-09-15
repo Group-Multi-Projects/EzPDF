@@ -6,6 +6,9 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from django.contrib import messages
+from rest_framework_simplejwt.tokens import RefreshToken
+
 def signup(request):
     form = SignUpForm()
 
@@ -24,34 +27,36 @@ def signup(request):
 
 def signin(request):
     next = request.GET.get("next")
-    form =SignInForm()
+    form = SignInForm()
+
     if request.method == 'POST':
         email_login = request.POST.get("email_login")
         password_login = request.POST.get("password_login")
         form = SignInForm(request, data=request.POST)
+        
         user = authenticate(request, username=email_login, password=password_login)
+        
         if user is not None:
             login(request, user)
+            # Thêm thông báo cho người dùng
+            messages.success(request, "Đăng nhập thành công!")
+            refresh = RefreshToken.for_user(user)
+            print(refresh.access_token)
+            # Sử dụng resolve_url để xử lý URL an toàn hơn
             if next:
                 return redirect(next)
+            
             return redirect('File:list_files')
-        # if form.is_valid():
-            # email = form.cleaned_data['username']
-            # password = form.cleaned_data['password']
-            # email = email_login
-            # password = password_login
-            # user = authenticate(request, username=email, password=password)
-            # if user is not None:
-            #     login(request, user)
-            #     if next:
-            #         return redirect(next)
-            #     return redirect('File:list_files')
-    # else:
-    #     form = SignInForm()
+        else:
+            # Nếu xác thực thất bại, thêm thông báo lỗi
+            messages.error(request, "Email hoặc mật khẩu không đúng!")
+
     context = {
-        "form_signin":form
+        "form_signin": form,
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
     }
-    return render(request,"File/index.html",context)
+    return render(request, "File/index.html", context)
 def signout(request):
     logout(request)
     return redirect("File:index")
