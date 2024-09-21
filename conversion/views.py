@@ -20,7 +20,7 @@ def convert_file_after_login(request, type):
             form = ConversionForm(request.POST,request.FILES)
             if form.is_valid():
                 input_file_path = form.save(request)
-                input_file_path = input_file_path.replace("/", "\\")
+                # input_file_path = input_file_path.replace("/", "\\")
                 pdf_to_word(input_file_path, docx_file)
                 print("Input file:",input_file_path)
                 print("Basename:",os.path.basename(docx_file))
