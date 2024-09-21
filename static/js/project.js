@@ -4,11 +4,9 @@
 
        return (
            <div className="projects-container">
-             <div className="slider">
-                <h1>Projects</h1>
+             <div className="slider-12">
              </div>
              <Content/>
-           
            </div>
        )
   }

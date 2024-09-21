@@ -11,11 +11,11 @@ sidebar.innerHTML = `
                       <i class="bi bi-house-door-fill"></i>
                       Home
                     </a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../pages/project_after_login.html">
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://127.0.0.1:8000/listfiles/">
                       <i class="bi bi-file-earmark-bar-graph-fill"></i>
                       Projects
                     </a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../pages/account_after_login.html">
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://127.0.0.1:8000/account/profile/">
                       <i class="bi bi-person-lines-fill"></i>
                       Account
                     </a>
