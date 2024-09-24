@@ -50,12 +50,14 @@ function renderPage(num) {
         // Create container div
         var divCanvas = document.createElement('div');
         divCanvas.className = 'all-canvas'
+        divCanvas.style.marginBottom = '20px'
         // Create and append PDF canvas
         var pdfCanvas = document.createElement('canvas');
         pdfCanvas.className = 'pdfCanvas';
         pdfCanvas.id = 'pdfCanvas' + num;
         pdfCanvas.width = viewport.width;
         pdfCanvas.height = viewport.height;
+        pdfCanvas.style.border = '0.5px solid #949494'; 
         divCanvas.appendChild(pdfCanvas);
 
         // Create and append Fabric.js canvas

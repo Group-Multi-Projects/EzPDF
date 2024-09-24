@@ -83,7 +83,9 @@ function handleCreateTextBox(e) {
                 <input type="checkbox" id="italic">
                 <i>i</i>
             </label>
-            <button class="icon" id="textdelete"><img src="https://img.icons8.com/material-outlined/24/000000/trash--v1.png" alt="Delete"></button>
+            <button class="icon btn btn-outline-secondary btn-sm" id="textdelete">
+                <i class="bi bi-trash"></i>
+            </button>        
         </div>`
     );
     textBox.css({

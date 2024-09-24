@@ -86,8 +86,7 @@ function handleCreateFreeLine(fabricCanvas, numPages) {
 function handleCreateToolsEditDraw(fabricCanvas,path,queriedPath) {
     let tools_edit_draw = $(
         `<div class="editor-toolbar" id="toolfor${fabricCanvas.freeDrawingBrush.id}">
-            <button class="icon" id="drawdelete"><img src="https://img.icons8.com/material-outlined/24/000000/trash--v1.png" alt="Delete"></button>
-            <button class="icon" id="toolsdelete">X</button>
+            <button class="btn btn-outline-secondary" id="drawdelete"><i class="bi bi-trash"></i></button>
         </div>`
     );
     $("#pdfContainer").append(tools_edit_draw);

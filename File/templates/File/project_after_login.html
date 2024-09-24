@@ -72,7 +72,7 @@
             <div class="topnav-after-login"></div>
             <div class="container-fluid pt-3">
                 <h1>Projects</h1>
-                <div class="pdf-container">
+                <div class="pdf-container mb-3 mt-3">
                     {% for file in files %}
                         <div class="pdf-item" id="pdf-item-{{ file.id }}">
                             <a href="{% url 'File:edit_file' file.id %}">
