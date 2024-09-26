@@ -247,7 +247,12 @@ function setupEditTextDoubleClick(fabricCanvas) {
             // Cập nhật văn bản khi thay đổi trong div
             $textBox.on("input", function () {
                 let newText = this.textContent;
-                
+                this.style.height = 'auto';  // Reset chiều cao để tính lại
+                this.style.height = this.scrollHeight + 'px';
+
+                // Điều chỉnh chiều rộng dựa trên nội dung
+                this.style.width = 'auto';   // Reset chiều rộng để tính lại
+                this.style.width = this.scrollWidth + 'px';
                 activeObject.set({ text: newText });
                 fabricCanvas.renderAll(); // Cập nhật canvas
                 listObjectTextBoxInfo.forEach(objInfo => {
