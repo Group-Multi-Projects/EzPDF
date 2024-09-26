@@ -70,26 +70,73 @@
         <div class="border-end sidebar" id="sidebar-wrapper"></div>
         <div id="page-content-wrapper">
             <div class="topnav-after-login"></div>
-            <div class="container-fluid pt-3">
-                <h1>Projects</h1>
-                <div class="pdf-container mb-3 mt-3">
+            <div class="pdf-slider-container">
+                <button class="slider-btn prev-btn">
+                    <i class="bi bi-caret-left-fill"></i>
+                </button>
+                <div class="pdf-container mt-3 mb-3">
                     {% for file in files %}
                         <div class="pdf-item" id="pdf-item-{{ file.id }}">
                             <a href="{% url 'File:edit_file' file.id %}">
                                 <canvas id="canvas-{{ file.id }}"></canvas>
                             </a>
                             <p hidden>{{file.file.url}}</p>
-                
                         </div>
-                
                     {% endfor %}
+                </div>
+                <button class="slider-btn next-btn">
+                    <i class="bi bi-caret-right-fill"></i>
+                </button>
             </div>
+            
                 <div class="root">
                    
                 </div>
             </div>
         </div>
     </div>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const sliderContainer = document.querySelector(".pdf-slider-container");
+            const pdfContainer = document.querySelector(".pdf-container");
+            const pdfItems = document.querySelectorAll(".pdf-item");
+            const prevBtn = document.querySelector(".prev-btn");
+            const nextBtn = document.querySelector(".next-btn");
+            
+            let currentIndex = 0;
+            const itemWidth = pdfItems[0].offsetWidth + 20; // 20 is the gap between items
+            const visibleItemsCount = Math.floor(sliderContainer.offsetWidth / itemWidth);
+            const maxIndex = pdfItems.length - visibleItemsCount;
+        
+            function updateSlider() {
+                const offset = currentIndex * itemWidth;
+                pdfContainer.style.transform = `translateX(-${offset}px)`;
+        
+                prevBtn.classList.toggle("hidden", currentIndex === 0);
+                nextBtn.classList.toggle("hidden", currentIndex === maxIndex);
+            }
+        
+            prevBtn.addEventListener("click", function () {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateSlider();
+                }
+            });
+        
+            nextBtn.addEventListener("click", function () {
+                if (currentIndex < maxIndex) {
+                    currentIndex++;
+                    updateSlider();
+                }
+            });
+        
+            // Initialize the slider
+            updateSlider();
+        });
+        
+    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <script src="{% static 'js/list_files.js' %}"></script>

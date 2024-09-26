@@ -207,7 +207,13 @@ function Content() {
                             }}
                         />
                     </td>
-                    <td>{file.file}</td>
+                    <td>
+                        <a href={`http://127.0.0.1:8000/edit/${file.id}/`}
+                           style={{ textDecoration: 'none', color: 'black' }}
+                        >
+                            {file.file}   
+                        </a>
+                    </td>
                     <td>
                         <i
                             className="bi bi-three-dots-vertical"
