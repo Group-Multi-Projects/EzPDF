@@ -1,9 +1,11 @@
 .pdf-container {
-    display: flex; 
-    overflow-x: auto; 
-    padding: 10px;
-    gap: 10px; 
-
+    display: flex;
+    align-items: center;
+}
+canvas {
+    height: 100px;
+    width: 70px;
+    border: 0.5px solidrgb(192, 192, 192)e;
 }
 .pdf-item {
     flex: 0 0 auto; 

@@ -51,7 +51,7 @@ function Content() {
     // Fetch list of files on component mount
     React.useEffect(() => {
         // const token = localStorage.getItem('authToken'); // Lấy token từ localStorage
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMwNjE2MTg1LCJpYXQiOjE3MjU0MzIxODUsImp0aSI6IjU0MDc1ODgxZjUwYTRkYjk5MzE2NDc0ZjI5M2I0MzAyIiwidXNlcl9pZCI6MX0.5l3za3A_CWEOS6zLmgU5TboTbHYslPyZ4O5bfdNJYHQ"
+        const token = document.querySelector("#user-token").textContent
         fetch('http://127.0.0.1:8000/get_list_files/', {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -183,7 +183,7 @@ function Content() {
 // </div>
     return (
 <div className="content">
-
+        
     <table>
         <thead>
             <tr>

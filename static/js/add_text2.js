@@ -83,7 +83,9 @@ function handleCreateTextBox(e) {
                 <input type="checkbox" id="italic">
                 <i>i</i>
             </label>
-            <button class="icon" id="textdelete"><img src="https://img.icons8.com/material-outlined/24/000000/trash--v1.png" alt="Delete"></button>
+            <button class="icon btn btn-outline-secondary btn-sm" id="textdelete">
+                <i class="bi bi-trash"></i>
+            </button>        
         </div>`
     );
     textBox.css({
@@ -350,14 +352,14 @@ function handleEditEvents(textBox,tools_edit_text,activeObject,textId,fabricCanv
                 const item_id = listObjectTextBoxInfo[indexToRemove].item_id
 
                 listObjectTextBoxInfo.splice(indexToRemove, 1); // Xóa phần tử khỏi danh sách
-                var tools_api_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMwNjE2MTg1LCJpYXQiOjE3MjU0MzIxODUsImp0aSI6IjU0MDc1ODgxZjUwYTRkYjk5MzE2NDc0ZjI5M2I0MzAyIiwidXNlcl9pZCI6MX0.5l3za3A_CWEOS6zLmgU5TboTbHYslPyZ4O5bfdNJYHQ";
+                const token = document.querySelector("#user-token").textContent
                 console.log(item_id)
                 $.ajax({
                     type: "DELETE",
                     url: `http://127.0.0.1:8000/tools/tools_api/${item_id}/`,
                     dataType: "json",
                     headers: {
-                        "Authorization": "Bearer " + tools_api_token
+                        "Authorization": "Bearer " + token
                     },
                     success: function (response) {
                         console.log("Text deleted successfully");
@@ -404,13 +406,13 @@ $("#readdtext").click(function (e) {
     
 });
 function renderText() {
-    var tools_api_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMwNjE2MTg1LCJpYXQiOjE3MjU0MzIxODUsImp0aSI6IjU0MDc1ODgxZjUwYTRkYjk5MzE2NDc0ZjI5M2I0MzAyIiwidXNlcl9pZCI6MX0.5l3za3A_CWEOS6zLmgU5TboTbHYslPyZ4O5bfdNJYHQ";
+    const token = document.querySelector("#user-token").textContent
     $.ajax({
         type: "GET",
         url: `http://127.0.0.1:8000/tools/text_added_api/${file_id}/`,
         dataType: "json",
         headers: {
-            "Authorization": "Bearer " + tools_api_token
+            "Authorization": "Bearer " + token
         },
         success: function (response) {
             listObjectTextBoxInfo = response;

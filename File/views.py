@@ -18,18 +18,28 @@ from tools.models import TextModel,DrawModel
 from django.http import JsonResponse
 logger = logging.getLogger(__name__)
 # Create your views here.
+def index(request):
+    if request.user.is_authenticated:
+        return redirect("File:home")
+    else:
+        return render(request, "File/main_index.html")
 
+@login_required(login_url=settings.LOGIN_URL)
 def home(request):
     return render(request,"File/home.html")
-@login_required(login_url=settings.LOGIN_URL)
 def list_files(request):
     account = AccountModel.objects.get(username = request.user.username)
+    print(account.email)
     files = FileModel.objects.filter(
         account = account
     )
-    print(account)
+    refresh = RefreshToken.for_user(account)
+
+    print(files)
     context = {
-        "files":files
+        "files":files,
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
     }
     return render(request,"File/project_after_login.html",context)
 def get_jwt_token(username, password):
@@ -55,13 +65,17 @@ def edit_file(request, file_id):
         file = file
     )
     num_pages = file.get_num_pages()
+    account = AccountModel.objects.get(username = request.user.username)
+
+    refresh = RefreshToken.for_user(account)
 
     context = {
         'textboxs':textboxs,
         "file": file,
         "file_path":file_path,
-        "num_pages":num_pages
-        # "access_token": access_token
+        "num_pages":num_pages,
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),    
     }
     return render(request, "File/edit_file.html", context)
 
@@ -85,7 +99,8 @@ def upload_file(request):
         form = UploadFileForm()
 
     context = {
-        "form": form
+        "form": form,
+        "link":'File:upload_file',
     }
     return render(request, 'File/upload_file.html', context)
 
@@ -123,8 +138,7 @@ def get_put_delete_file_api(request, id):
         model.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-def index(request):
-    return render(request,"File/main_index.html")
+
 
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
@@ -132,6 +146,7 @@ def get_list_files(request):
     if request.method == "GET":
         try:
             account = AccountModel.objects.get(username=request.user.username)
+
             files = FileModel.objects.filter(account=account)
             serializers = FileSerializer(files, many=True)
             return Response({"list_files": serializers.data}, status=status.HTTP_200_OK)

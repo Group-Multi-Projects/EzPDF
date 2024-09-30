@@ -1,4 +1,11 @@
-
+.contain-tool
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
 .content {
     display: flex;
     width: 100%;
@@ -9,6 +16,12 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 5rem 0;
+}
+#tools_list
+{
+    display: flex;
+    padding: 1rem 0;
 }
 
 .pdfCanvas {
@@ -32,12 +45,12 @@
 .add_shapes > div{
     margin-left: 40px;
 }
-.circle {
+/* .circle {
     width: 20px;
     height: 20px;
     background-color: #3498db;
     border-radius: 50%;
-}
+} */
 .square {
     width: 20px;
     height: 20px;
@@ -63,3 +76,9 @@
     transform: translate(-50%, -50%);
     color: white;
 }
+
+.bi-trash
+{
+    font-size: 20px;
+}
+

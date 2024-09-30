@@ -1,7 +1,7 @@
 var isShapeAdded = false;
-var isAddShapesActive = false; // Khai báo biến toàn cục nếu chưa có
+var isAddShapesActive = false; 
 var listObjectShapesInfo = [];
-var currentShapeType = null; // Biến toàn cục để lưu hình dạng hiện tại
+var currentShapeType = null; 
 var objectShapeInfo = {
     item_id: "",
     type: "addshape",
@@ -15,29 +15,35 @@ var objectShapeInfo = {
     shape_type:''
 }
 function setupShapesAdding(fabricCanvas, numPages) {
-    $(".button_shape").click(function (shapeEvent) {
+    // Thiết lập sự kiện click cho tất cả các phần tử có class là .button_shape
+    $(".button_shape").on("click", function (shapeEvent) {
         isShapeAdded = true;
-        $shape = $(shapeEvent.target);
+        // Lấy phần tử đã được nhấn
+        $shape = $(this); // Sử dụng `this` để lấy phần tử hiện tại
         isDrawActive = false;
         isAddTextActive = false;
         isAddShapesActive = true;
         isAddImageActive = false;
+        
+        // Lấy giá trị của thuộc tính `name` của phần tử
         currentShapeType = $shape.attr('name');
         console.log("Add:", currentShapeType);
+
+        // Thiết lập sự kiện mouse:down cho canvas
         fabricCanvas.on("mouse:down", function (e) {
             if (isShapeAdded && currentShapeType) {
                 console.log("helo");
-                handleCreateFabricShape(fabricCanvas, currentShapeType, e,numPages);
-                isShapeAdded = false;
+                handleCreateFabricShape(fabricCanvas, currentShapeType, e, numPages);
+                isShapeAdded = false; // Đặt lại trạng thái để ngăn thêm hình ảnh nhiều lần
             }
         });
     });
 }
+
 function handleCreateFabricShape(fabricCanvas, shapeType, mouseEvent,numPages) {
     if (isAddShapesActive) {
         let pointer = fabricCanvas.getPointer(mouseEvent.e);
         let uniqueId = 'shape-' + Date.now()
-
         let tool_edit_shape = 
         $(`
         <div class="editor-toolbar" id="toolfor${uniqueId}">
@@ -45,7 +51,6 @@ function handleCreateFabricShape(fabricCanvas, shapeType, mouseEvent,numPages) {
         </div>
         `)
         let shape = createFabricShape(fabricCanvas,shapeType,pointer.x,pointer.y,uniqueId,tool_edit_shape,objectShapeInfo)
-        
         var objectInfo = Object.assign({}, objectShapeInfo, {
             item_id: shape.id,
             shape_type: shapeType,
@@ -59,7 +64,6 @@ function handleCreateFabricShape(fabricCanvas, shapeType, mouseEvent,numPages) {
             angle:shape.angle
         });
         listObjectShapesInfo.push(objectInfo);
-        // Render the canvas to show the shape
         fabricCanvas.renderAll();
     }
 }
@@ -140,14 +144,14 @@ function createFabricShape(fabricCanvas,shapeType, left, top, uniqueId,tool_edit
                 const item_id = listObjectShapesInfo[indexToRemove].item_id
 
                 listObjectShapesInfo.splice(indexToRemove, 1);
-                var tools_api_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMwNjE2MTg1LCJpYXQiOjE3MjU0MzIxODUsImp0aSI6IjU0MDc1ODgxZjUwYTRkYjk5MzE2NDc0ZjI5M2I0MzAyIiwidXNlcl9pZCI6MX0.5l3za3A_CWEOS6zLmgU5TboTbHYslPyZ4O5bfdNJYHQ";
+                const token = document.querySelector("#user-token").textContent
                 console.log(item_id)
                 $.ajax({
                     type: "DELETE",
                     url: `http://127.0.0.1:8000/tools/tools_api/${item_id}/`,
                     dataType: "json",
                     headers: {
-                        "Authorization": "Bearer " + tools_api_token
+                        "Authorization": "Bearer " + token
                     },
                     success: function (response) {
                         console.log("Text deleted successfully");
@@ -252,13 +256,13 @@ $("#saveshapes").on("click",function () {
 })
 function renderShapes() {
     $(document).ready(function () {
-        var tools_api_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMwNjE2MTg1LCJpYXQiOjE3MjU0MzIxODUsImp0aSI6IjU0MDc1ODgxZjUwYTRkYjk5MzE2NDc0ZjI5M2I0MzAyIiwidXNlcl9pZCI6MX0.5l3za3A_CWEOS6zLmgU5TboTbHYslPyZ4O5bfdNJYHQ";
+        const token = document.querySelector("#user-token").textContent
         $.ajax({
             type: "GET",
             url: `http://127.0.0.1:8000/tools/shape_added_api/${file_id}/`,
             dataType: "json",
             headers: {
-                "Authorization": "Bearer " + tools_api_token
+                "Authorization": "Bearer " + token
             },
             success: function (response) {
                 console.log("Shape api received:", response); 

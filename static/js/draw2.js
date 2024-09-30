@@ -86,8 +86,7 @@ function handleCreateFreeLine(fabricCanvas, numPages) {
 function handleCreateToolsEditDraw(fabricCanvas,path,queriedPath) {
     let tools_edit_draw = $(
         `<div class="editor-toolbar" id="toolfor${fabricCanvas.freeDrawingBrush.id}">
-            <button class="icon" id="drawdelete"><img src="https://img.icons8.com/material-outlined/24/000000/trash--v1.png" alt="Delete"></button>
-            <button class="icon" id="toolsdelete">X</button>
+            <button class="btn btn-outline-secondary" id="drawdelete"><i class="bi bi-trash"></i></button>
         </div>`
     );
     $("#pdfContainer").append(tools_edit_draw);
@@ -129,13 +128,14 @@ function handleFreeDrawLineEvents(fabricCanvas,path, tools_edit_draw) {
         if (index !== -1) {
             const item_id = listObjectDrawInfo[index].item_id; 
             listObjectDrawInfo.splice(index, 1);
-            var tools_api_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMwNjE2MTg1LCJpYXQiOjE3MjU0MzIxODUsImp0aSI6IjU0MDc1ODgxZjUwYTRkYjk5MzE2NDc0ZjI5M2I0MzAyIiwidXNlcl9pZCI6MX0.5l3za3A_CWEOS6zLmgU5TboTbHYslPyZ4O5bfdNJYHQ";
+            const token = document.querySelector("#user-token").textContent
+
             $.ajax({
                 type: "DELETE",
                 url: `http://127.0.0.1:8000/tools/tools_api/${item_id}/`,
                 dataType: "json",
                 headers: {
-                    "Authorization": "Bearer " + tools_api_token
+                    "Authorization": "Bearer " + token
                 },
                 success: function (response) {
                     console.log("Draw line deleted successfully");
@@ -201,14 +201,14 @@ $("#redraw").on("click", function () {
 });
 //lấy dữ liệu các textbox đã lưu
 function renderDraws() {
-    var tools_api_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMwNjE2MTg1LCJpYXQiOjE3MjU0MzIxODUsImp0aSI6IjU0MDc1ODgxZjUwYTRkYjk5MzE2NDc0ZjI5M2I0MzAyIiwidXNlcl9pZCI6MX0.5l3za3A_CWEOS6zLmgU5TboTbHYslPyZ4O5bfdNJYHQ";
+    const token = document.querySelector("#user-token").textContent
     
     $.ajax({
         type: "GET",
         url: `http://127.0.0.1:8000/tools/draw_added_api/${file_id}/`,
         dataType: "json",
         headers: {
-            "Authorization": "Bearer " + tools_api_token
+            "Authorization": "Bearer " + token
         },
         success: function (response) {
             listObjectDrawInfo = response;

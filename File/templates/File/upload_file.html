@@ -1,11 +1,18 @@
 {% extends 'File/base.html' %}
 {% block content %}
 {% load static %}
+<link rel="stylesheet" href="{% static 'css/convert_before_login.css' %}">
+
 <main>
     <!-- LINK-HOME -->
     <span class="d-flex link-home">
         <a href="../index.html"><i class="bi bi-house-door"></i> Home</a>
-        <a href="#"><i class="bi bi-arrow-right-short"></i> Upload File</a> 
+        {% if type %}
+        <a href="#"><i class="bi bi-arrow-right-short"></i>{{type}}</a> 
+        {% endif %}
+        {% if not type %}
+        <a href="#"><i class="bi bi-arrow-right-short"></i>Edit File</a> 
+        {% endif %}
     </span>
 
     <div class="container">
@@ -21,8 +28,18 @@
                 <i class="bi bi-plus-circle"></i>
                 <span>Choose your files</span>
             </button>
-       
-            <form action="{% url 'File:upload_file' %}" method="post" enctype="multipart/form-data">
+            {% if type %}
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" id="id_file" style="display: none;" name="original_file">
+                <button type="submit" class="btn mb-3 upload-files" style="background-color: #C754A8; color: white;display: none;">
+                    <i class="bi bi-plus-circle"></i>
+                    <span>Convert</span>
+                </button>
+            </form>
+            {% endif %}
+            {% if not type %}
+            <form action="{% url link %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input type="file" id="id_file" style="display: none;" name="file">
                 <button type="submit" class="btn mb-3 upload-files" style="background-color: #C754A8; color: white;display: none;">
@@ -30,6 +47,7 @@
                     <span>Upload</span>
                 </button>
             </form>
+            {% endif %}
             <div class="choolse-dep">
                 <div class="d-flex justify-content-center">
                     <span class="formats-dep" style="font-family: 'NotoSans-Bold';">The supported formats are:</span>

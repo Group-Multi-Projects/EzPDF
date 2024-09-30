@@ -1,0 +1,5 @@
+Bước 1: cd tới folder chứa file manage.py
+Bước 2: chạy lệnh /pip install -r requirements.txt/ (chạy lần đầu)
+Bước 3: chạy lệnh python manage.py makemigrations
+Bước 4: chạy lệnh python manage.py migrate
+Bước 5: chạy lệnh python manage.py runserver
