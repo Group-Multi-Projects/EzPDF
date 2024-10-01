@@ -135,6 +135,7 @@ function Content() {
                 // "Authorization": "Bearer " + token
             },
             success: function (response) {
+                $(`#pdf-item-${file_id}`).remove()
                 console.log("Xoá thành công");
             },
             error: function (jqXHR, textStatus, errorThrown) {
