@@ -1,5 +1,4 @@
-import fitz  # PyMuPDF
-
+import fitz
 from django.db import models
 from Account.models import AccountModel
 
@@ -9,7 +8,7 @@ class FileModel(models.Model):
     num_pages = models.IntegerField(null=True, blank=True)
     file_format = models.CharField(verbose_name="Format", max_length=20, null=True,default="pdf")
     created_at = models.DateTimeField(auto_now_add=True)
-
+    trash = models.BooleanField(null=True, default=False)
     def __str__(self):
         return f"{self.file}.{self.file_format}"
 

@@ -52,7 +52,7 @@ tr:hover {
 {
     position: absolute;
     right: 1rem;
-    top:-200%;
+    top: -70px;
     display: inline-block;
     border: 0.5px solid rgb(202, 202, 202);
     background-color: white;

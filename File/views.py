@@ -16,6 +16,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from tools.models import TextModel,DrawModel
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 logger = logging.getLogger(__name__)
 # Create your views here.
 def index(request):
@@ -31,7 +32,8 @@ def list_files(request):
     account = AccountModel.objects.get(username = request.user.username)
     print(account.email)
     files = FileModel.objects.filter(
-        account = account
+        account = account,
+        trash = 0
     )
     refresh = RefreshToken.for_user(account)
 
@@ -142,12 +144,20 @@ def get_put_delete_file_api(request, id):
 
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
-def get_list_files(request):
+def get_list_files(request,page_type):
     if request.method == "GET":
         try:
             account = AccountModel.objects.get(username=request.user.username)
-
-            files = FileModel.objects.filter(account=account)
+            if page_type == "files":
+                files = FileModel.objects.filter(
+                    account=account,
+                    trash = 0
+                    )
+            elif page_type == "trash":
+                files = FileModel.objects.filter(
+                    account=account,
+                    trash = 1
+                    )
             serializers = FileSerializer(files, many=True)
             return Response({"list_files": serializers.data}, status=status.HTTP_200_OK)
         except AccountModel.DoesNotExist:
@@ -158,3 +168,30 @@ def get_list_files(request):
     elif request.method == "POST":
         # Xử lý dữ liệu POST ở đây nếu cần
         return Response({"message": "POST method is not implemented"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+
+def trash_view(request):
+    account = AccountModel.objects.get(username = request.user.username)
+    print(account.email)
+    files = FileModel.objects.filter(
+        account = account,
+        trash = 1
+    )
+    refresh = RefreshToken.for_user(account)
+
+    print(files)
+    context = {
+        "files":files,
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    }
+    return render(request,"File/trash.html",context)
+@csrf_exempt  
+def add_to_trash(request, id):
+    if request.method == "POST":
+        file = get_object_or_404(FileModel, id=id)
+        file.trash = 1
+        file.save()
+        return JsonResponse({"status": "true"})
+    return JsonResponse({"status": "false", "message": "Invalid request method."}, status=400)

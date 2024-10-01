@@ -50,9 +50,11 @@ function Content() {
     const [showMenu, setShowMenu] = React.useState(null);
     // Fetch list of files on component mount
     React.useEffect(() => {
+        const page_type = document.querySelector("#page_type").textContent
+
         // const token = localStorage.getItem('authToken'); // Lấy token từ localStorage
         const token = document.querySelector("#user-token").textContent
-        fetch('http://127.0.0.1:8000/get_list_files/', {
+        fetch(`http://127.0.0.1:8000/get_list_files/${page_type}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -120,8 +122,43 @@ function Content() {
     };
    
     
-    const handleDelete = (index) => {
-        dispatch(deleteFile(index));
+    const handleDelete = (index,file_id) => {
+        console.log("Click xoa")
+        dispatch(deleteFile(index));  
+
+        $.ajax({
+            type: "POST",
+            url: `http://127.0.0.1:8000/trash/${file_id}/`,
+            headers: {
+                "X-CSRFToken": getCookie('csrftoken'), // CSRF token if necessary
+                // Uncomment and set the Authorization header if you're using token authentication
+                // "Authorization": "Bearer " + token
+            },
+            success: function (response) {
+                console.log("Xoá thành công");
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('Lỗi trong yêu cầu AJAX cho PDF:', textStatus, errorThrown);
+            }
+        });
+        
+        // Function to get the CSRF token from cookies
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Check if this cookie string begins with the name we want
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        
     };
     const files = listFiles.flat();
     function get_preview(fileName) {
@@ -171,6 +208,7 @@ function Content() {
         element.preview = preview
         
     });
+
 //     <div className="btn-add">
 //     <i className="bi bi-plus-lg"></i>
 //     <label className="btn-add-label" htmlFor="upload">Add</label>
@@ -181,6 +219,7 @@ function Content() {
 //         onChange={handleUpload}
 //     />
 // </div>
+
     return (
 <div className="content">
         
@@ -207,7 +246,13 @@ function Content() {
                             }}
                         />
                     </td>
-                    <td>{file.file}</td>
+                    <td>
+                        <a href={`http://127.0.0.1:8000/edit/${file.id}/`}
+                           style={{ textDecoration: 'none', color: 'black' }}
+                        >
+                            {file.file}   
+                        </a>
+                    </td>
                     <td>
                         <i
                             className="bi bi-three-dots-vertical"
@@ -216,7 +261,7 @@ function Content() {
                         {showMenu === index && (
                             <div>
                                 {/* Render Menu component within a valid container */}
-                                <Menu index={index} handleRemove={handleDelete}/>
+                                <Menu index={index} file_id={file.id} handleRemove={handleDelete}/>
                             </div>
                         )}
                     </td>
