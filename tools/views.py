@@ -16,6 +16,7 @@ from django.http import JsonResponse
 import fitz 
 import os
 from django.conf import settings
+from .utils import text_editing, image_editing, shape_editing
 # Dictionary to map font names to file paths
 FONT_FILES = {
     'Arial': os.path.join(settings.MEDIA_URL, 'fonts', 'Arial.ttf'),
@@ -73,21 +74,7 @@ def draw_save_data(data, file_instance,doc):
         )
         
 
-def text_editing(doc,text_data):
 
-    output_file = os.path.join(settings.MEDIA_ROOT,'files', 'converted_files', 'output.pdf')
-    print("Page:",text_data['page'])
-
-    page_number = int(text_data['page']) - 1 
-    page = doc[page_number]  
-    text = text_data['content']
-    position = fitz.Point(float(text_data['coord_in_canvas_X']), float(text_data['coord_in_canvas_Y'])) 
-    font_size = float(text_data.get('font_size'))
-
-    page.insert_text(position, text, fontsize=font_size, fontname="helv", color=(0, 0, 0))
-
-    output_pdf_path = output_file
-    doc.save(output_pdf_path)
 
 def add_text_save_data(data,file_instance,doc):
     text_data = data.get('addtext', [])
@@ -115,59 +102,58 @@ def add_text_save_data(data,file_instance,doc):
             }
         )
 
-def image_editing(doc, image_data,image_path):
- 
-    output_file = os.path.join(settings.MEDIA_ROOT,'files', 'converted_files', 'output.pdf')
-    print("Page:",image_data['page'])
 
-    page_number = int(image_data['page']) - 1 # Chuyển đổi giá trị trang từ chuỗi sang số nguyên
-    page = doc[page_number]  # Truy cập trang bằng số nguyên
-    x0,y0 = float(image_data['coord_in_canvas_X']),float(image_data['coord_in_canvas_Y'])
-    x1, y1 = x0 + float(image_data['width']), y0 + float(image_data['height'])
-    rect = fitz.Rect(x0, y0, x1, y1)
-    page.insert_image(rect, filename=image_path)
-    output_pdf_path = output_file
-    doc.save(output_pdf_path)
 
-    
-def add_image_save_data(data, file_instance,doc):
+def add_image_save_data(data, file_instance, doc):
     image_data = data.get('addimage', [])
     for image in image_data:
         item_id = image.get('item_id')
         try:
+            # Split the base64 data into header and content
             format, imgstr = image['image'].split(';base64,')
-            ext = format.split('/')[-1]
-
+            ext = format.split('/')[-1]  # Get the extension
+            
+            # Decode the image data
             image_converted = ContentFile(base64.b64decode(imgstr), name=f"{item_id}.{ext}")
-            # image_path = os.path.join(settings.MEDIA_ROOT,'images', image_converted)
-       
-        except:
-            image_converted = image.get('image').replace('/media/', '')
-        # image_path = os.path.join(settings.MEDIA_ROOT, image_converted)
+            
+            # Define the path where the image will be saved
+            image_path = os.path.join(settings.MEDIA_ROOT, 'images', f"{item_id}.{ext}")
+            
+            # Save the image to the specified path
+            with open(image_path, 'wb') as img_file:
+                img_file.write(image_converted.read())
 
-        # image_editing(doc,image,image_path)
+        except Exception as e:
+            print(f"Error processing image for item_id {item_id}: {e}")
+            continue  # Skip this iteration if there's an error
+
+        # Perform any additional image editing
+        image_editing(doc, image, image_path)
+
+        # Update or create the image record in the database
         ImageModel.objects.update_or_create(
             file=file_instance,
             item_id=item_id,
             page=image['page'],
-            # tool_type=image['type'],
             defaults={
-                'image': image_converted,
+                'image': f"images/{item_id}.{ext}",  # Save relative path for the ImageModel
                 'coord_in_canvas_X': float(image['coord_in_canvas_X']),
                 'coord_in_canvas_Y': float(image['coord_in_canvas_Y']),
                 'height': float(image['height']),
                 'width': float(image['width']),
-                'angle':float(image['angle']),
-                'updated_at': timezone.now()  # Cập nhật thời gian chỉnh sửa
+                'angle': float(image['angle']),
+                'updated_at': timezone.now()  # Update the timestamp
             }
         )
 
-def shape_editing(doc, shape_data):
-    pass
+
+
+
 def add_shape_save_data(data, file_instance,doc):
     shapes_data = data.get("addshape",[])
     for shape in shapes_data:
         item_id = shape.get('item_id')
+        shape_editing(doc, shape)
         ShapeModel.objects.update_or_create(
             file=file_instance,
             item_id=item_id,
