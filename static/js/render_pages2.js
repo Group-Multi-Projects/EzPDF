@@ -21,6 +21,9 @@ var objAllChangesEvent = {
     addimage:[],
     addshape:[],
 }
+
+// function start_loading_page() {} here
+// function end_loading_page() {} here
 $.ajax({
     type: "GET",
     url: `http://127.0.0.1:8000/media/${file_path}`,
@@ -29,12 +32,15 @@ $.ajax({
     },
     success: function (pdfResponse) {
         var typedArray = new Uint8Array(pdfResponse);
+        // start_loading_page()
         pdfjsLib.getDocument(typedArray).promise.then(function (pdf) {
             pdfDocument = pdf;
             renderAllPages();
+
         }).catch(function (error) {
             console.error('Lỗi tải PDF:', error);
         });
+        // end_loading_page()
     },
     error: function (jqXHR, textStatus, errorThrown) {
         console.error('Lỗi trong yêu cầu AJAX cho PDF:', textStatus, errorThrown);

@@ -19,7 +19,7 @@ sidebar.innerHTML = `
                       <i class="bi bi-person-lines-fill"></i>
                       Account
                     </a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="../pages/trash_after_login.html">
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://127.0.0.1:8000/trash">
                       <i class="bi bi-trash-fill"></i>
                       Trash
                     </a>                 

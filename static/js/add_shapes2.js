@@ -48,8 +48,11 @@ function handleCreateFabricShape(fabricCanvas, shapeType, mouseEvent,numPages) {
         $(`
         <div class="editor-toolbar" id="toolfor${uniqueId}">
             <button class="icon" id="shapedelete"><img src="https://img.icons8.com/material-outlined/24/000000/trash--v1.png" alt="Delete"></button>
+            <input type="color" id="shapefavcolor-${uniqueId}" name="favcolor" value="#ff0000">
+
         </div>
         `)
+        // shape kiểu dữ liệu là fabric object
         let shape = createFabricShape(fabricCanvas,shapeType,pointer.x,pointer.y,uniqueId,tool_edit_shape,objectShapeInfo)
         var objectInfo = Object.assign({}, objectShapeInfo, {
             item_id: shape.id,
@@ -61,7 +64,8 @@ function handleCreateFabricShape(fabricCanvas, shapeType, mouseEvent,numPages) {
             fill: shape.fill,
             radius:shape.radius || 0,
             page:numPages,
-            angle:shape.angle
+            angle:shape.angle,
+            // color:shape.fill
         });
         listObjectShapesInfo.push(objectInfo);
         fabricCanvas.renderAll();
@@ -75,7 +79,6 @@ function createFabricShape(fabricCanvas,shapeType, left, top, uniqueId,tool_edit
                 shape = new fabric.Circle({
                     left: left,
                     top: top,
-                    
                     radius: objInfo.width /2 || 50,
                     fill: 'red',
                     selectable: true,
@@ -163,7 +166,33 @@ function createFabricShape(fabricCanvas,shapeType, left, top, uniqueId,tool_edit
             }
         }
     })
-    // Add the shape to the canvas
+    $(`#shapefavcolor-${shape.id}`).on("input", function() {
+        // Get the hex color value from the input
+        let hexColor = $(this).val();
+    
+        // Set the fill color of the shape
+        shape.set({ fill: hexColor }); // Update the shape's fill property
+    
+        // Convert hex color to RGB (optional)
+        let rgbColor = hexToRgb(hexColor);
+        console.log("RGB Color:", rgbColor); // Example output: { r: 255, g: 87, b: 51 }
+    
+        // Re-render the canvas to reflect the color change
+        fabricCanvas.renderAll();
+    });
+    function hexToRgb(hex) {
+        // Remove the '#' if present
+        hex = hex.replace("#", "");
+    
+        // Parse the hex color values
+        let r = parseInt(hex.substring(0, 2), 16);
+        let g = parseInt(hex.substring(2, 4), 16);
+        let b = parseInt(hex.substring(4, 6), 16);
+    
+        // Return RGB values in an object
+        return { r: r, g: g, b: b };
+    }
+    // Add the shape to the canvas 
     fabricCanvas.add(shape);
     handleMouseShapeEvents(shape,fabricCanvas,tool_edit_shape)
 
@@ -244,6 +273,7 @@ function reAddShapes(listObjectShapesInfo) {
         $(`
         <div class="editor-toolbar" id="toolfor${element.item_id}">
             <button class="icon" id="shapedelete"><img src="https://img.icons8.com/material-outlined/24/000000/trash--v1.png" alt="Delete"></button>
+            <input type="color" id="shapefavcolor-${element.item_id}" name="favcolor" value="#ff0000">
         </div>
         `)
         let shape = createFabricShape(fabricCanvas,element.shape_type,element.coord_in_canvas_X,element.coord_in_canvas_Y,element.item_id,tool_edit_shape,element)

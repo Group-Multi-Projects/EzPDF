@@ -21,7 +21,7 @@ function setupTextAdding(fabricCanvas,numPages) {
         isAddImageActive = false;
         isAddShapesActive = false;
         var objTextEdit = {};
-
+        
         // Đặt sự kiện cho Fabric.js canvas
         fabricCanvas.on('mouse:down', function(event) {
             if (isAddTextActive) {
@@ -64,6 +64,7 @@ function setupTextAdding(fabricCanvas,numPages) {
         setupEditTextDoubleClick(fabricCanvas);
     });
 }
+// hàm tạo textbox và tools edit từ người dùng
 function handleCreateTextBox(e) {
     let uniqueId = 'textBox-' + Date.now();
     let textBox = $(`<div class="textBox" contenteditable="true" id="${uniqueId}">Enter text here</div>`);
@@ -86,6 +87,7 @@ function handleCreateTextBox(e) {
             <button class="icon btn btn-outline-secondary btn-sm" id="textdelete">
                 <i class="bi bi-trash"></i>
             </button>        
+            <input type="color" id="favcolor" name="favcolor" value="#ff0000">
         </div>`
     );
     textBox.css({
@@ -111,6 +113,9 @@ function handleCreateTextBox(e) {
     };
     return objTextBoxEdit;
 }
+
+// hàm tạo textbox và tools edit từ database
+
 function handleCreateTextBoxExisted(objectInfo) {
     let textBox = $(`<div class="textBox" contenteditable="true" id="${objectInfo.item_id}">Enter text here</div>`);
     let tools_edit_text = $(
@@ -130,6 +135,7 @@ function handleCreateTextBoxExisted(objectInfo) {
                 <i>i</i>
             </label>
             <button class="icon" id="textdelete"><img src="https://img.icons8.com/material-outlined/24/000000/trash--v1.png" alt="Delete"></button>
+            <input type="color" id="favcolor" name="favcolor" value="#ff0000">
         </div>`
     );
     textBox.css({
@@ -185,7 +191,8 @@ function handleCreateFabricText(fabricCanvas, textBox, pointer,numPages) {
             page: numPages,
             font_family: text.fontFamily,
             bold: text.fontWeight === 'bold',
-            italic: text.fontStyle === 'italic'
+            italic: text.fontStyle === 'italic',
+            color: text.fill
         });
         // Theo dõi sự kiện di chuyển của đối tượng văn bản để cập nhật `objectInfo`
         text.on('moving', function() {
@@ -269,7 +276,6 @@ function setupEditTextDoubleClick(fabricCanvas) {
                     // Hiển thị lại đối tượng văn bản và cập nhật canvas
                     activeObject.set({ visible: true });
                     fabricCanvas.renderAll(); // Cập nhật canvas
-
                     $(document).off("click.hideTextBox"); // Hủy sự kiện click sau khi xử lý
                 }
             });
@@ -292,20 +298,35 @@ function handleEditEvents(textBox,tools_edit_text,activeObject,textId,fabricCanv
     });
     console.log(tools_edit_text.find("#fontsize"))
     tools_edit_text.find("#fontsize").on("input", function () {
+        // Retrieve current padding as an integer (assuming padding is in pixels)
+        let curren_height_tools_div = parseInt(tools_edit_text.css("height")) || 0;
+        let curren_width_tools_div = parseInt(tools_edit_text.css("width")) || 0;
         let newSize = $(this).val();
-        console.log('adha')
+        
+        // Update the padding by scaling it based on the new font size
+        tools_edit_text.css({
+            height: (curren_height_tools_div * newSize) + 'px',
+            width: (curren_width_tools_div * newSize) + 'px'
+        });
+    
+        console.log('Font size and padding updated');
+    
+        // Update the font size of the text box
         textBox.css({
             fontSize: newSize + 'px'  
         });
+    
+        // Update font size in active Fabric.js object, if applicable
         if (activeObject) {
-            activeObject.set({ fontSize: newSize });
-                listObjectTextBoxInfo.forEach(objInfo => {
-                    if(objInfo.item_id === textId) {
-                        objInfo.font_size = newSize
-                    }
+            activeObject.set({ fontSize: parseInt(newSize) });
+            listObjectTextBoxInfo.forEach(objInfo => {
+                if(objInfo.item_id === textId) {
+                    objInfo.font_size = parseInt(newSize);
+                }
             });
         }
     });
+    
         // Xử lý sự kiện cho checkbox chữ đậm
     tools_edit_text.find("#bold").on("change", function () {
         let isBold = $(this).is(':checked'); // Kiểm tra trạng thái của checkbox
@@ -371,7 +392,42 @@ function handleEditEvents(textBox,tools_edit_text,activeObject,textId,fabricCanv
             }
         }
     });
-}
+    tools_edit_text.find("#favcolor").on("input", function () {
+        // Get the hex color value from the input
+        let hexColor = $(this).val();
+    
+        // Convert hex color to RGB
+        let rgbColor = hexToRgb(hexColor);
+    
+        console.log("RGB Color:", rgbColor); // Example output: { r: 255, g: 87, b: 51 }
+        textBox.css({
+            color: hexColor
+        });
+        if (activeObject) {
+            activeObject.set({ fill: hexColor});
+            listObjectTextBoxInfo.forEach(objInfo => {
+                if (objInfo.item_id === textId) {
+                    objInfo.color = rgbColor;
+                }
+            });
+        }
+    });
+    
+    // Helper function to convert hex to RGB
+    function hexToRgb(hex) {
+        // Remove the '#' if present
+        hex = hex.replace("#", "");
+    
+        // Parse the hex color values
+        let r = parseInt(hex.substring(0, 2), 16);
+        let g = parseInt(hex.substring(2, 4), 16);
+        let b = parseInt(hex.substring(4, 6), 16);
+    
+        // Return RGB values in an object
+        return { r: r, g: g, b: b };
+    }
+    
+    }
 function readdtext(listObjectTextBoxInfo) {
     console.log(listObjectTextBoxInfo);
     listObjectTextBoxInfo.forEach(function (objInfo) {
