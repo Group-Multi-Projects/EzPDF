@@ -1,0 +1,149 @@
+
+.container-input
+{
+    border-radius: 10px;
+    background: linear-gradient(to right, #9F53E3, #C354AE, #EA5675);
+    height: 15rem;
+}
+h2.text-center
+{
+    color: white;
+    font-weight: 700;
+}
+.input
+{
+    position: relative;
+    margin: 0 6rem;
+}
+input.form-control::placeholder
+{
+    font-size: 1rem;
+}
+.bi-search
+{
+    position: absolute;
+    top: 15%;
+    font-size: 1.5rem;
+}
+img.icon
+{
+    height: 2rem;
+    width: 2rem;
+}
+.list-selection
+{
+    margin: 0 2rem;
+
+}
+.icon-container
+{
+    background-color: #ffffff;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+}
+.icon-container:hover
+{
+    background-color: #c29ee0;
+    border: 0.5px solid white ;
+}
+span.text-center
+{
+    color: white;
+    font-size: 0.8rem;
+}
+
+.tittle
+{
+    font-weight: 700;
+}
+p.paragrap
+{
+    font-size: 0.8rem;
+    color: rgb(143, 143, 143);
+}
+img.card-img-top
+{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    height: 12rem;
+}
+.object-second
+{
+    border-top: 0.2px solid #979797;
+}
+.card-content
+{
+    width: 20rem;
+    height: 21rem;
+    border: 0.2px solid #979797;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+/* REPONSIVE */
+@media (max-width: 991.98px) {
+    .col-lg-4.col-12 {
+        display: block !important;
+        border: none; /* Xóa border nếu có */
+    }
+    
+    .card-content {
+        display: flex;
+        width: 100%;
+        flex-direction: row; /* Sắp xếp các phần tử bên trong theo hàng ngang */
+        align-items: center; /* Căn giữa theo trục dọc nếu cần */
+        border: none; /* Xóa border của card-content */
+        border-radius: 0;
+    }
+
+    .card-content img {
+        width: 40%; /* Đặt chiều rộng của ảnh là 50% để chia đều */
+        margin-bottom: 0; /* Xóa khoảng cách dưới của ảnh */
+        border-radius: 0;
+    }
+
+    .card-body {
+        width: 60%; /* Đặt chiều rộng của phần chữ là 50% */
+        padding-left: 10px; /* Thêm khoảng cách giữa ảnh và phần chữ nếu cần */
+        border-top: none;
+    }
+
+    .object-second
+    {
+        border-top: 0;
+    }
+}
+
+
+@media (max-width: 575px)  
+{
+.input
+{
+    position: relative;
+    margin: 0;
+}
+.list-selection
+{
+    margin: 0 0.3rem;
+}
+.card-content {
+    display: flex;
+    width: 100%;
+    flex-direction: row; /* Sắp xếp các phần tử bên trong theo hàng ngang */
+    align-items: center; /* Căn giữa theo trục dọc nếu cần */
+    border: none; /* Xóa border của card-content */
+    border-radius: 0;
+}
+
+.card-content img {
+    width: 50%; /* Đặt chiều rộng của ảnh là 50% để chia đều */
+    margin-bottom: 0; /* Xóa khoảng cách dưới của ảnh */
+    border-radius: 0;
+}
+
+.card-body {
+    width: 50%; /* Đặt chiều rộng của phần chữ là 50% */
+    padding-left: 10px; /* Thêm khoảng cách giữa ảnh và phần chữ nếu cần */
+    border-top: none;
+}
+}

@@ -1,0 +1,116 @@
+{% extends 'File/base.html' %}
+{% block content %}
+{% load static %}
+<div class="container-fluid pt-5 mb-5">
+  <!-- Container input -->
+<div class="container-fluid d-flex flex-column container-input">
+  <h2 class="mt-4 text-center pt-2">Choose the tool you need</h2>
+  <div class="input">
+    <i class="bi bi-search ms-3"></i>
+    <input class="form-control form-control-lg ps-5" type="text" placeholder="Search your content" >
+  </div>
+  <!-- List selection -->
+  <div class="d-flex justify-content-center mt-4">
+    <!-- edit PDF -->
+    <a style="text-decoration: none;" href="">
+      <div class=" d-flex flex-column justify-content-center align-items-center p-1 list-selection">
+        <div class=" d-flex align-items-center justify-content-center icon-container">
+          <a href="{% url 'File:upload_file' %}">
+            <img class="icon" src="{% static 'images/edit-file.png' %}" alt="">
+          </a>
+        </div>
+        <span class="text-center">Edit PDF</span>
+      </div>
+    </a>
+
+     <!-- PDF to Word -->
+     <a style="text-decoration: none;" href="">
+      <div class=" d-flex flex-column justify-content-center align-items-center p-1 list-selection">
+        <div class=" d-flex align-items-center justify-content-center icon-container">
+          <a href="{% url 'conversion:convert_file_after_login' 'pdf2word' %}">
+            <img class="icon" src="{% static 'images/word_icon.png' %}" alt="">
+
+          </a>
+        </div>
+        <span class="text-center">PDF to Word</span>
+      </div>
+    </a>
+     <!-- PDF to HTML -->
+     <a style="text-decoration: none;" href="">
+      <div class=" d-flex flex-column justify-content-center align-items-center p-1 list-selection">
+        <div class=" d-flex align-items-center justify-content-center icon-container">
+          <a href="{% url 'conversion:convert_file_after_login' 'pdf2html' %}">
+            <img class="icon" src="{% static 'images/word_icon.png' %}" alt="">
+
+          </a>
+        </div>
+        <span class="text-center">PDF to HTML</span>
+      </div>
+    </a>
+
+     <!--PDF to Excel -->
+     <a style="text-decoration: none;" href="">
+      <div class=" d-flex flex-column justify-content-center align-items-center p-1 list-selection">
+        <div class=" d-flex align-items-center justify-content-center icon-container">
+          <a href="{% url 'conversion:convert_file_after_login' 'pdf2excel' %}">
+            <img class="icon" src="{% static 'images/excel_icon.png' %}" alt="">
+
+          </a>
+        </div>
+        <span class="text-center">PDF to Excel</span>
+      </div>
+    </a>
+
+     <!-- PDF to PPT -->
+     <a style="text-decoration: none;" href="">
+      <div class=" d-flex flex-column justify-content-center align-items-center p-1 list-selection">
+        <div class=" d-flex align-items-center justify-content-center icon-container">
+          <a href="{% url 'conversion:convert_file_after_login' 'pdf2ppt' %}">
+            <img class="icon" src="{% static 'images/ppt_icon.png' %}" alt="">
+
+          </a>
+        </div>
+        <span class="text-center">PDF to PPT</span>
+      </div>
+    </a>
+  </div>
+</div>
+
+<h3 style="font-weight: 700;" class="m-3">Why should you use EzPDF?</h3>
+<!-- 3 CỘT CONTENT -->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-4 col-12 d-flex justify-content-center">
+      <div class="card-content">
+        <img src="{% static 'images/how-to-edit-pdf-file.avif' %}" class="card-img-top" alt="...">
+        <div class="card-body p-2">
+          <p class="card-text tittle">Our tools help you process PDF files more easily</p>
+          <p class="card-text paragrap">Our website provides all the most useful tools for you to process PDF files</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-12 d-flex justify-content-center">
+      <div class="card-content">
+        <img src="{% static 'images/slider5_img.svg' %}" class="card-img-top" alt="...">
+        <div class="card-body p-2 object-second" >
+          <p class="card-text tittle">Work directly on your files</p>
+          <p class="card-text paragrap">Do more than just view PDFs, work with them directly on your site</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-12 d-flex justify-content-center">
+      <div class="card-content">
+        <img src="{% static 'images/slider4_left.svg' %}" class="card-img-top" alt="...">
+        <div class="card-body p-2">
+          <p class="card-text tittle">Simple and easy</p>
+          <p class="card-text paragrap">We make working with PDF files as easy as possible</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+     
+{% endblock content %}
+                

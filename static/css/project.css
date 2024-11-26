@@ -1,0 +1,76 @@
+.slider
+{
+    position: relative;
+    max-width: 100%;
+    height: 30vh;
+    background-color: rgb(136, 63, 204);
+    border-radius: 10px;
+}
+.slider h1{
+    color: white;
+    position: absolute;
+    bottom: 2rem;
+    left:2rem
+    
+}
+.btn-add
+{
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    margin: 1rem;
+    border: 0.5px solid rgb(160, 160, 160);
+    border-radius: 5px;
+    cursor: pointer;
+}
+.btn-add:hover{ background-color:rgb(240, 240, 240) ;}
+.btn-add-label
+{ 
+    margin-left: 0.5rem;
+    cursor: pointer;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    z-index: 0;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    text-align: left;
+}
+tr{
+    position: relative;
+}
+tr:hover {
+    background-color: #f5f5f5;
+}
+.menu
+{
+    position: absolute;
+    right: 1rem;
+    top: -70px;
+    display: inline-block;
+    border: 0.5px solid rgb(202, 202, 202);
+    background-color: white;
+    padding: 0.5rem 0.5rem ;
+    border-radius: 5px;
+    z-index: 10;
+}
+.menu>ul>li
+{
+    list-style-type: none;
+    padding: 0 1rem;
+}
+.menu>ul>li:hover {background-color: rgb(216, 213, 213);}
+.menu>ul { margin: 0; padding: 0;}
+@media (max-width: 575px) {
+    .slider h1{
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+    }
+}

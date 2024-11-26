@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="{% static 'css/api_boostrap_v523.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/header_and_sidebar_afterlogin.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/choose.css' %}">
+    <link rel="stylesheet" href="{% static 'css/project.css' %}">
+    <link rel="stylesheet" href="{% static 'css/list_files.css' %}">
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Projects</title>
+</head>
+<body>
+    <p id="user-token" hidden>{{access}}</p>
+    <p id="page_type" hidden>trash</p>
+    
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar-->
+        <div class="border-end sidebar" id="sidebar-wrapper"></div>
+        <div id="page-content-wrapper">
+            <div class="topnav-after-login"></div>
+            <div class="container-fluid pt-3">
+                <h1>Projects</h1>
+                <div class="pdf-container mb-3 mt-3">
+            <div class="pdf-slider-container">
+                <button class="slider-btn prev-btn">
+                    <i class="bi bi-caret-left-fill"></i>
+                </button>
+                <div class="pdf-container mt-3 mb-3">
+                    {% for file in files %}
+                        <div class="pdf-item" id="pdf-item-{{ file.id }}">
+                            <a href="{% url 'File:edit_file' file.id %}">
+                                <canvas id="canvas-{{ file.id }}"></canvas>
+                            </a>
+                            <p hidden>{{file.file.url}}</p>
+                        </div>
+                    {% endfor %}
+            </div>
+                        </div>
+                </div>
+                <button class="slider-btn next-btn">
+                    <i class="bi bi-caret-right-fill"></i>
+                </button>
+            </div>
+            
+                <div class="root">
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="{% static 'js/list_files.js' %}"></script>
+    <script src="{% static 'js/Layout/header_sidebar.js' %}"></script>
+    <script src="{% static 'js/Layout/toggle.js' %}"></script>
+    <script type="text/babel" src="{% static 'js/project.js' %}"></script>
+    <script type="text/babel" src="{% static 'js/menu.js' %}"></script>
+    <script type="text/babel" src="{% static 'js/content.js' %}"></script>
+
+</body>
+</html>

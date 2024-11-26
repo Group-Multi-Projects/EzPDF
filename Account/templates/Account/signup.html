@@ -1,0 +1,10 @@
+{% extends 'file/base.html' %}
+
+{% block content %}
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form_signup.as_p}}
+        <button type="submit">Đăng ký</button>
+    </form>
+{% endblock content %}
+    

@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/css/index.css">
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <script src="./assets/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/js/jquery-3.7.1.min.js"></script>
+    <script src="./assets/js/index.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>Index</title>
+</head>
+<body>
+    <header class="navbar navbar-expand-lg bg-body-tertiary shadow p-3 mb-5 bg-body rounded header">
+        <div class="container-fluid">
+          <a href="">
+            <img style="margin-right: 0.5rem;" class="logo" src="./assets/images/Logo.png" alt="">
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item dropdown me-3">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Tools
+                </a>
+                <ul class="dropdown-menu">
+                  <li class="dropdown-item-li"><a class="dropdown-item" href="#">Arrange PDF files</a></li>
+                  <li class="dropdown-item-li"><a class="dropdown-item" href="#">View & Edit PDF </a></li>
+                  <li class="dropdown-item-li"><a class="dropdown-item" href="#">PDF conversion</a></li>
+                  <li class="dropdown-item-li"><a class="dropdown-item" href="#">Sign</a></li>
+                </ul>
+              </li>
+              <li class="nav-item me-3">
+                <a class="nav-link" href="./pages/conversion_before_login.html">Conversion</a>
+              </li>
+              <li class="nav-item me-3">
+                <a class="nav-link" href="#">Merge</a>
+              </li>
+              <li class="nav-item me-3">
+                <a class="nav-link" href="#">Edit</a>
+              </li>
+            </ul>
+           
+              <span class="openbtn2" id="login__link" onclick="openNav2()">Login </span>
+              <button type="button" class="btn btn-primary openbtn" id="btn_tryfree" onclick="openNav()">Try it for free</button>
+          </div>
+        </div>
+    </header>
+   
+    <main class="container ">
+      <div class="row">      <!-- SLIDER1 -->
+        <div class="col-lg-6">
+            <h1 id="tittle">We make PDF processing easier.</h1>
+            <p id="depcriptsion">All the tools you need to work smarter and more efficiently with documents.</p>
+              <span class="openbtn" id="tittle-btn" onclick="openNav()">
+                <p id="tittle-btn-p">Try it for free</p>
+              </span>
+              <a id="tittle-link" href="#our-tools">
+                <span>
+                  Explore all PDF tools
+                </span>
+              </a>
+        </div>
+        <div class="col-lg-6">
+          <div class="img-fluid">
+            <img src="./assets/images/slider3_right.svg" alt="">
+          </div>
+        </div>
+    </div>
+
+
+            <!-- SLIDER2 -->
+          <div class="row g-4 mt-5 mb-5">
+            <div class="text-center">
+              <h1 style=" font-family: 'NotoSans-Bold';">
+                The most popular PDF tools
+              </h1>
+              <p>
+                Tools to convert and edit PDF for free. Try it today!
+              </p>
+            </div>
+
+
+            <div class="col-lg-4 col-sm-6">
+              <div class="p-3 ps-5 pe-5 border bg-light tool-item">
+                <a id="text" href="">
+                  <span>
+                    <img id="icon-tool" src="./assets/images/word icon.png" alt="">
+                    <img id="icon-arrow" src="./assets/images/chevron-right.svg" alt="">
+
+                  </span>
+                  <h4>PDF to Word</h4>
+                  <p>Convert PDF to editable Word documents</p>
+                </a>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-sm-6">
+              <div class="p-3 ps-5 pe-5 border bg-light tool-item">
+                <a id="text" href="">
+                  <span>
+                    <img id="icon-tool" src="./assets/images/database.png" alt="">
+                    <img id="icon-arrow" src="./assets/images/chevron-right.svg" alt="">
+
+                  </span>
+                  <h4>Merge pdf</h4>
+                  <p>Combine 2 or more PDF files into 1 unified file</p>
+                </a>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-sm-6">
+              <div class="p-3 ps-5 pe-5 border bg-light tool-item">
+                <a id="text" href="">
+                  <span>
+                    <img id="icon-tool" src="./assets/images/jpg.png" alt="">
+                    <img id="icon-arrow" src="./assets/images/chevron-right.svg" alt="">
+
+                  </span>
+                  <h4>PDF to JPG</h4>
+                  <p>Convert JPG, PNG, BMP, GIF to PDF and reverse</p>
+                </a>
+              </div>
+            </div>
+            
+            <div class="col-lg-4 col-sm-6">
+              <div class="p-3 ps-5 pe-5 border bg-light tool-item">
+                <a id="text" href="">
+                  <span>
+                    <img id="icon-tool" src="./assets/images/html.png" alt="">
+                    <img id="icon-arrow" src="./assets/images/chevron-right.svg" alt="">
+
+                  </span>
+                  <h4>PDF to HTML</h4>
+                  <p>
+                    Converting PDF files to HTML is easy</p>
+                </a>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-sm-6">
+              <div class="p-3 ps-5 pe-5 border bg-light tool-item">
+                <a id="text" href="">
+                  <span>
+                    <img id="icon-tool" src="./assets/images/edit-file.png" alt="">
+                    <img id="icon-arrow" src="./assets/images/chevron-right.svg" alt="">
+
+                  </span>
+                  <h4>Edit PDF</h4>
+                  <p>The best tool - Edit directly on PDF files</p>
+                </a>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-sm-6">
+              <div class="p-3 ps-5 pe-5 border bg-light tool-item">
+                <a id="text" href="">
+                  <span>
+                    <img id="icon-tool" src="./assets/images/ppt icon.png" alt="">
+                    <img id="icon-arrow" src="./assets/images/chevron-right.svg" alt="">
+
+                  </span>
+                  <h4>PDF to PPT</h4>
+                  <p>
+                    Can convert from PDF files to PowerPoint</p>
+                </a>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-center mt-4 mb-4">
+              <a href="#our-tools">
+                <button class=" btn btn-primary px-4 " type="submit" id="button-see-all">See all PDF tools</button>
+              </a>
+            </div>
+        </div>
+        
+
+
+
+
+
+          <!-- SLIDER3 -->
+          <div class="row mt-5 mb-5 align-items-center">      
+            <div class="col-lg-6">
+              <h3 class="slider-tittle"> Working directly on your files</h3>
+              <p class="pe-3">
+                Do more than just view PDF files. Highlight and add text, images, shapes, and annotations
+                 hands-free to your documents. You can connect with other tools to perform many other functions on your files.</p>
+                <a id="slider-link" href="">Edit PDF files now
+                  <i id="arrow-link" class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+            <div class="col-lg-6">
+              <div class="img-fluid">
+                <img src="./assets/images/slider5_img.svg" alt="">
+              </div>
+            </div>
+        </div>
+
+        <!-- SLIDER4 -->
+        <div class="row mt-5 mb-5 align-items-center">      
+          <div class="col-lg-6">
+            <div class="img-fluid">
+              <img src="./assets/images/slider4_left.svg" alt="">
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <h3 class="slider-tittle">Document management—All in one place</h3>
+            <p class="pe-3">
+              You don't need to work on many different applications anymore! 
+              Save time by storing, managing,and sharing files across multiple devices—from our web platform.</p>
+              <a id="slider-link" href="">
+                Manage now
+                <i id="arrow-link" class="bi bi-arrow-right"></i>
+              </a>
+          </div>
+          </div>
+
+
+          <!-- SLIDER5 -->
+        <div class="row mt-5 mb-5 align-items-center"> 
+          <div class="col-lg-5">
+            <h3 class="slider-tittle">Converting HTML files is not difficult</h3>
+            <p class="pe-3">
+              Online conversion from html files to other formats and from other formats to html.</p>
+              <a id="slider-link" href="">
+                Convert now
+                <i id="arrow-link" class="bi bi-arrow-right"></i>
+              </a>
+          </div>     
+          <div class="col-lg-7 d-flex align-items-stretch">
+            <div class="img-fluid">
+              <div class="img-html-convert"></div>
+            </div>
+          </div>
+        </div>
+       
+       <!-- OUR TOOLS -->
+       <div id="our-tools" class="row g-3 mt-5 mb-5">
+        <div class="text-center">
+          <h1 style=" font-family: 'NotoSans-Bold';">
+            Our tools
+          </h1>
+         
+        </div>
+
+        <!-- SIGN-NAME -->
+        <div class="col-lg-3 col-sm-6">
+          <div class="p-3 ps-4 pe-4 ">
+              <h5 class="text-center">Sign</h5>
+              <ul class="list-group">
+                <li id="list-item" class="list-group-item pt-3 pb-3 d-flex align-items-center">
+                  <img class="sign-icon me-3" src="./assets/images/sign-name.png" alt="">
+                  <a class="our-tools-link" href="">Sign your name</a>
+                </li>
+              </ul>
+          </div>
+        </div>
+
+
+        <!-- ARRANGE -->
+        <div class="col-lg-3 col-sm-6">
+          <div class="p-3 ps-4 pe-4 ">
+              <h5 class="text-center">Arrange</h5>
+              <ul class="list-group">
+                <li id="list-item" class="list-group-item pt-3 pb-3 d-flex align-items-center">
+                  <img class="sign-icon me-3" src="./assets/images/database.png" alt="">
+                  <a class="our-tools-link" href="">Merge PDF</a>
+                </li>
+                <li id="list-item" class="list-group-item pt-3 pb-3 d-flex align-items-center">
+                  <img class="sign-icon me-3" src="./assets/images/cut-icon.png" alt="">
+                  <a class="our-tools-link" href="">Cut PDF</a>
+                </li>
+                <li id="list-item" class="list-group-item pt-3 pb-3 d-flex align-items-center">
+                  <img class="sign-icon me-3" src="./assets/images/thungrac-color.png" alt="">
+                  <a class="our-tools-link" href="">Delete PDF pages</a>
+                </li>
+                <li id="list-item" class="list-group-item pt-3 pb-3 d-flex align-items-center">
+                  <img class="sign-icon me-3" src="./assets/images/spinning.png" alt="">
+                  <a class="our-tools-link" href="">
+                    Spining PDF</a>
+                </li>
+              </ul>
+          </div>
+        </div>
+
+
+
+        <!-- VIEW & EDIT -->
+        <div class="col-lg-3 col-sm-6">
+          <div class="p-3 ps-4 pe-4 ">
+              <h5 class="text-center">View & Edit</h5>
+              <ul class="list-group">
+                <li id="list-item" class="list-group-item pt-3 pb-3 d-flex align-items-center">
+                  <img class="sign-icon me-3" src="./assets/images/edit-file.png" alt="">
+                  <a class="our-tools-link" href="">Edit PDF</a>
+                </li>
+                </li>
+              </ul>
+          </div>
+        </div>
+
+        <!-- CONVERT -->
+        <div class="col-lg-3 col-sm-6">
+          <div class="p-3 ps-4 pe-4 ">
+              <h5 class="text-center">Convert</h5>
+              <ul class="list-group">
+                <li id="list-item" class="list-group-item pt-3 pb-3 d-flex align-items-center">
+                  <img class="sign-icon me-3" src="./assets/images/word icon.png" alt="">
+                  <a class="our-tools-link" href="">PDF to Word</a>
+                </li>
+                <li id="list-item" class="list-group-item pt-3 pb-3 d-flex align-items-center">
+                  <img class="sign-icon me-3" src="./assets/images/excel icon.png" alt="">
+                  <a class="our-tools-link" href="">PDF to Excel</a>
+                </li>
+                <li id="list-item" class="list-group-item pt-3 pb-3 d-flex align-items-center">
+                  <img class="sign-icon me-3" src="./assets/images/ppt icon.png" alt="">
+                  <a class="our-tools-link" href="">PDF to PPT</a>
+                </li>
+                <li id="list-item" class="list-group-item pt-3 pb-3 d-flex align-items-center">
+                  <img class="sign-icon me-3" src="./assets/images/html.png" alt="">
+                  <a class="our-tools-link" href="">PDF to HTML</a>
+                </li>
+                <li id="list-item" class="list-group-item pt-3 pb-3 d-flex align-items-center">
+                  <img class="sign-icon me-3" src="./assets/images/jpg.png" alt="">
+                  <a class="our-tools-link" href="">PDF to JPG</a>
+                </li>
+              </ul>
+          </div>
+        </div>
+      </div>    
+      
+
+
+
+      <!-- SIGNUP -->
+      <div id="my_signup" class="signup">
+        <div class="container container_signup">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">
+                <i class="bi bi-x-lg align-items-center"></i>
+            </a>
+    
+            <div class="col-lg-12 d-flex justify-content-center m-3">
+                <img id="signup-logo-web" src="./assets/images/Logo.png" alt="">
+            </div>
+    
+            <div class="col-lg-12 d-flex justify-content-center">
+                <h2 class="text-center">Create an EzFile account now</h2>
+            </div>
+    
+            <div class="col-lg-12 d-flex justify-content-center m-3">
+                <form>
+                    <!-- Email input -->
+                    <div class="mb-3">
+                        <div class="input">
+                            <i class="bi bi-envelope-fill" id="login-icon"></i>
+                            <input type="email" class="form-control" placeholder="Email address">
+                        </div>
+                    </div>
+                    
+                    <!-- Username input -->
+                    <div class="mb-3">
+                        <div class="input">
+                            <i class="bi bi-person-fill" id="login-icon"></i>
+                            <input type="text" class="form-control" placeholder="User name">
+                        </div>
+                    </div>
+                    
+                    <!-- Password input -->
+                    <div class="mb-3">
+                        <div class="input">
+                            <i class="bi bi-lock-fill" id="login-icon"></i>
+                            <input type="password" class="form-control" placeholder="Password" id="password-input">
+                            <i class="bi bi-eye-slash" id="toggle-password"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Confirm Password input -->
+                    <div class="mb-3">
+                        <div class="input">
+                            <i class="bi bi-check-circle-fill" id="login-icon"></i>
+                            <input type="password" class="form-control" placeholder="Confirm Password" id="confirm-password-input">
+                            <i class="bi bi-eye-slash" id="toggle-confirm-password"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Login prompt -->
+                    <div class="d-flex justify-content-center">
+                        <p class="signup-p me-1">Do you already have an account?</p>
+                        <a style="color: #C754A8;" href="#mySidepanel2">Login here</a>
+                    </div>
+                    
+                    <!-- Signup button -->
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn-signup">Signup</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    
+
+
+
+
+      <!-- LOGIN -->
+      <div id="my_login" class="login">
+        <div class="container container_login">
+          <a href="javascript:void(0)" class="closebtn2" onclick="closeNav2()">
+            <i class="bi bi-x-lg align-items-center"></i>
+          </a>
+
+            <div class="col-lg-12 d-flex justify-content-center m-3">
+              <img id="signup-logo-web" src="./assets/images/Logo.png" alt="">
+            </div>
+
+            <div class="col-lg-12 d-flex justify-content-center" >
+              <h2 class="text-center">EzPDF Login</h2>
+            </div>
+
+            <div class="col-lg-12 d-flex justify-content-center m-3">
+              <form>
+
+                 <!-- Email input -->
+                 <div class="mb-3">
+                  <div class="input">
+                      <i class="bi bi-envelope-fill" id="login-icon"></i>
+                      <input type="email" class="form-control" placeholder="Email address">
+                  </div>
+              </div>
+
+                 <!-- Password input -->
+                 <div class="mb-3">
+                  <div class="input">
+                      <i class="bi bi-lock-fill" id="login-icon"></i>
+                      <input type="password" class="form-control" placeholder="Password" id="login-password-input">
+                      <i class="bi bi-eye-slash" id="toggle-login-password"></i>                  
+                  </div>
+              </div> 
+
+                <!-- Login prompt -->
+                <div class="d-flex justify-content-center">
+                    <p class="signup-p me-1"> Do not have an account?</p>
+                    <a style="color: #C754A8;" href="#mySidepanel">Signup here</a>
+                </div>
+
+                <!-- Login button -->
+                <div class="d-flex justify-content-center">
+                  <button type="submit" class="btn-signup">Login</button>
+                </div>
+
+              </form>
+            </div>
+          </div>
+      </div>
+      
+      <div id="overlay" class="overlay"></div>
+      
+
+ 
+      
+    </main>
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+// CHUYỂN ĐỔI GIAO DIỆN TỪ LOGIN -> SIGNUP VÀ NGƯỢC LẠI
+$(document).ready(function() {
+    // Hàm để cập nhật chiều rộng của các giao diện
+    function updatePanelWidth() {
+        var screenWidth = $(window).width();
+        var panelWidth = (screenWidth < 992) ? '100%' : '90%';
+
+        // Cập nhật chiều rộng của giao diện đăng ký và đăng nhập dựa trên kích thước màn hình
+        $('#my_signup').css('width', panelWidth);
+        $('#my_login').css('width', panelWidth);
+    }
+
+    // Hiển thị giao diện đăng ký và lớp phủ khi nhấp vào liên kết "Signup here"
+    $('a[href="#mySidepanel"]').click(function(e) {
+        e.preventDefault(); // Ngăn chặn hành vi mặc định của liên kết
+
+        // Cập nhật chiều rộng của giao diện đăng ký dựa trên kích thước màn hình
+        updatePanelWidth();
+        $('#my_login').css('width', '0'); // Ẩn giao diện đăng nhập
+        $('#my_signup').css('width', ($(window).width() < 992) ? '100%' : '90%'); // Hiển thị giao diện đăng ký
+        $('.overlay').show(); // Hiển thị lớp phủ
+    });
+
+    // Hiển thị giao diện đăng nhập và lớp phủ khi nhấp vào liên kết "Login here"
+    $('a[href="#mySidepanel2"]').click(function(e) {
+        e.preventDefault(); // Ngăn chặn hành vi mặc định của liên kết
+
+        // Cập nhật chiều rộng của giao diện đăng nhập dựa trên kích thước màn hình
+        updatePanelWidth();
+        $('#my_signup').css('width', '0'); // Ẩn giao diện đăng ký
+        $('#my_login').css('width', ($(window).width() < 992) ? '100%' : '90%'); // Hiển thị giao diện đăng nhập
+        $('.overlay').show(); // Hiển thị lớp phủ
+    });
+
+    // Ẩn các giao diện và lớp phủ khi lớp phủ được nhấp
+    $('.overlay').click(function() {
+        $('#my_signup').css('width', '0'); // Ẩn giao diện đăng ký
+        $('#my_login').css('width', '0'); // Ẩn giao diện đăng nhập
+        $('.overlay').hide(); // Ẩn lớp phủ
+    });
+
+    // Cập nhật chiều rộng của các giao diện khi cửa sổ thay đổi kích thước
+    $(window).resize(function() {
+        // Nếu giao diện đang hiển thị, cập nhật lại chiều rộng
+        if ($('#my_signup').css('width') === '90%' || $('#my_signup').css('width') === '100%') {
+            updatePanelWidth();
+        }
+        if ($('#my_login').css('width') === '90%' || $('#my_login').css('width') === '100%') {
+            updatePanelWidth();
+        }
+    });
+});
+
+
+
+  // JavaScript to toggle password visibility
+const togglePassword = document.querySelector('#toggle-password');
+const passwordInput = document.querySelector('#password-input');
+
+togglePassword.addEventListener('click', function () {
+    // Toggle the type attribute
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+    
+    // Toggle the eye slash icon
+    this.classList.toggle('bi-eye');
+});
+
+// JavaScript to toggle confirm password visibility
+const toggleConfirmPassword = document.querySelector('#toggle-confirm-password');
+const confirmPasswordInput = document.querySelector('#confirm-password-input');
+
+toggleConfirmPassword.addEventListener('click', function () {
+    // Toggle the type attribute
+    const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    confirmPasswordInput.setAttribute('type', type);
+    
+    // Toggle the eye slash icon
+    this.classList.toggle('bi-eye');
+});
+
+// JavaScript to toggle password visibility for login form
+const toggleLoginPassword = document.querySelector('#toggle-login-password');
+const loginPasswordInput = document.querySelector('#login-password-input');
+
+toggleLoginPassword.addEventListener('click', function () {
+    const type = loginPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    loginPasswordInput.setAttribute('type', type);
+    this.classList.toggle('bi-eye');
+});
+</script>    
+</body>
+</html>

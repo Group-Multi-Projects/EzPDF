@@ -1,0 +1,84 @@
+.contain-tool
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+.content {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+#pdfContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5rem 0;
+}
+#tools_list
+{
+    display: flex;
+    padding: 1rem 0;
+}
+
+.pdfCanvas {
+    border: 1px solid #000;
+    cursor: move;
+    margin-bottom: 20px;
+}
+.textBox {
+    position: absolute;
+    border: 1px dashed #000;
+    padding: 5px;
+    display: none;
+    /* resize: both; */
+    overflow: auto;
+}
+
+.add_shapes {
+    display: flex;
+    justify-content: left;
+}
+.add_shapes > div{
+    margin-left: 40px;
+}
+/* .circle {
+    width: 20px;
+    height: 20px;
+    background-color: #3498db;
+    border-radius: 50%;
+} */
+.square {
+    width: 20px;
+    height: 20px;
+    background-color: #e74c3c;
+}
+.rectangle {
+    width: 25px;
+    height: 20px;
+    background-color: #2ecc71;
+}
+.triangle {
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid #f39c12;
+    display: inline-block;
+}
+.triangle::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+}
+
+.bi-trash
+{
+    font-size: 20px;
+}
+

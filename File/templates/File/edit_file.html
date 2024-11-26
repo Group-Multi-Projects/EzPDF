@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+<link rel="stylesheet" href="{% static 'css/edit_file.css' %}">
+<link rel="stylesheet" href="{% static 'css/api_boostrap_v523.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <p id="user-token" hidden>{{access}}</p>
+
+     <div class="container-fluied contain-tool">
+        <div id="tools_list" class="d-flex justify-content-between align-items-center p-2 bg-light border">
+           <div class="d-flex">
+                 <!-- Draw Button with Icon -->
+            <div class="draw pe-3">
+                <button id="pen" class="btn btn-secondary">
+                    <i class="bi bi-pencil"></i> <!-- Pencil Icon -->
+                </button>
+            </div>
+        
+            <!-- Add Text Button with Icon -->
+            <div class="write pe-3">
+                <button id="add_text" class="btn btn-secondary">
+                    <i class="bi bi-fonts"></i> <!-- Text Icon -->
+                </button>
+            </div>
+        
+            <!-- Add Image Input with Icon -->
+            <div class="d-flex align-items-center">
+                <label for="add_image" class="add_image mr-2 mb-0 btn btn-outline-secondary">
+                    <i class="bi bi-image"></i> <!-- Image Icon -->
+                </label>
+                <input type="file" id="add_image" name="add_image" class="form-control-file d-none">
+            </div>
+           </div>
+        
+            <!-- Shape Buttons with Icons -->
+            <div class="add_shapes d-flex">
+                <button class="btn btn-outline-secondary mx-1 button_shape" name="circle">
+                    <i class="bi bi-circle"></i> <!-- Circle Icon -->
+                </button>
+                <button class="btn btn-outline-secondary mx-1 button_shape" name="square">
+                    <i class="bi bi-square"></i> <!-- Square Icon -->
+                </button>
+                <button class="btn btn-outline-secondary mx-1 button_shape" name="rectangle">
+                    <i class="bi bi-file-break"></i> <!-- Rectangle Icon (using file icon as a placeholder) -->
+                </button>
+                <button class="btn btn-outline-secondary mx-1 button_shape" name="triangle">
+                    <i class="bi bi-triangle"></i> <!-- Triangle Icon -->
+                </button>
+            </div>
+        
+            <!-- Save All Button with Icon -->
+            <div>
+                <button id="save_all_changes" class="btn btn-primary">
+                    <i class="bi bi-download"></i> <!-- Save Icon -->
+                    Save all
+                </button>
+            </div>
+        </div>
+     </div>   
+
+    <p id="file_id" style="display: none;">{{file.id}}</p>
+    <p id="file_path" style="display: none;">{{file_path}}</p>
+    <p id="num_pages" style="display: none;">{{num_pages}}</p>
+    <div id="pdfContainer" style=""></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.4.0/fabric.min.js"></script>
+<script src="{% static 'js/render_pages2.js' %}"></script>
+<script src="{% static 'js/draw2.js' %}"></script> 
+<script src="{% static 'js/add_text2.js' %}"></script>
+<script src="{% static 'js/add_image2.js' %}"></script>
+<script src="{% static 'js/add_shapes2.js' %}"></script>
+ 
+</body>
+</html>
+
+ 
