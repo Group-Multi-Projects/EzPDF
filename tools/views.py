@@ -12,7 +12,6 @@ from .serializers import DrawSerializers, TextSerializers, ImageSerializers, Sha
 from rest_framework.permissions import IsAuthenticated
 from django.core.files.base import ContentFile
 import base64
-from django.http import JsonResponse
 import fitz 
 import os
 from django.conf import settings
@@ -281,4 +280,9 @@ def get_shape_added_api(request,id):
     if request.method == "GET":
         shape_serializers = ShapeSerializers(shape_model,many = True)
         return Response(shape_serializers.data)
-    
+from .tasks import test_func
+from django.http import HttpResponse
+
+def test_celery(request):
+    test_func.delay()
+    return HttpResponse("Success")

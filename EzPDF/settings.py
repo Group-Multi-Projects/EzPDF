@@ -40,17 +40,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
     'rest_framework',
     'rest_framework_simplejwt',
-    
+    'corsheaders',
     'Account',
     'File',
     'jwt_auth',
     'tools',
-    'conversion'
+    'conversion',
+    'django_celery_results'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -92,17 +96,26 @@ env = environ.Env(
 
 # Đọc file .env
 environ.Env.read_env()
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': env('DATABASE_NAME'),
+#         'USER': env('DATABASE_USER'),
+#         'PASSWORD': env('DATABASE_PASSWORD'),
+#         'HOST': env('DATABASE_HOST'),
+#         'PORT': env('DATABASE_PORT'),
+#     }
+# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': env('DATABASE_NAME'),
-        'USER': env('DATABASE_USER'),
-        'PASSWORD': env('DATABASE_PASSWORD'),
-        'HOST': env('DATABASE_HOST'),
-        'PORT': env('DATABASE_PORT'),
+        'NAME': 'ezpdf',
+        'USER': 'root',
+        'PASSWORD':'dinhthai2004',
+        'HOST': 'localhost',
+        'PORT':'3306',
     }
 }
-
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.sqlite3",
@@ -201,3 +214,29 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 LOGIN_URL = "/account/signin/"
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'DELETE',
+    'OPTIONS',
+]
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'authorization',
+    'x-csrftoken',
+]
+#celery settings
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Kolkata'
+CELERY_RESULT_BACKEND = 'django-db'

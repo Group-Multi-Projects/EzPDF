@@ -18,7 +18,8 @@ reportlab
 pdf2docx
 django-environ
 requests 
-
+django-cors-headers
+celery
 # pip install -r requirements.txt
 # python manage.py migrate
 # python manage.py runserver
