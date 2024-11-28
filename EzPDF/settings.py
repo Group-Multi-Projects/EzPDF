@@ -83,25 +83,56 @@ WSGI_APPLICATION = 'EzPDF.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-import environ
+# import environ
+# # Khởi tạo biến môi trường
+# env = environ.Env(
+#     DEBUG=(bool, False)
+# )
 
-# Khởi tạo biến môi trường
-env = environ.Env(
-    DEBUG=(bool, False)
-)
+# # Đọc file .env
+# environ.Env.read_env()
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': env('DATABASE_NAME'),
+#         'USER': env('DATABASE_USER'),
+#         'PASSWORD': env('DATABASE_PASSWORD'),
+#         'HOST': env('DATABASE_HOST'),
+#         'PORT': env('DATABASE_PORT'),
+#     }
+# }
 
-# Đọc file .env
-environ.Env.read_env()
+
+################################################### 
+# import environ
+
+# # Khởi tạo môi trường từ tệp .env
+# env = environ.Env()
+# environ.Env.read_env()
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': env('DATABASE_NAME'),
+#         'USER': env('DATABASE_USER'),
+#         'PASSWORD': env('DATABASE_PASSWORD'),
+#         'HOST': env('DATABASE_HOST'),
+#         'PORT': env('DATABASE_PORT'),
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': env('DATABASE_NAME'),
-        'USER': env('DATABASE_USER'),
-        'PASSWORD': env('DATABASE_PASSWORD'),
-        'HOST': env('DATABASE_HOST'),
-        'PORT': env('DATABASE_PORT'),
+        'NAME': 'ezpdf',
+        'USER': 'root',
+        'PASSWORD':'123456',
+        'HOST': 'localhost',
+        'PORT':'3306',
     }
 }
+# DEBUG = env('DEBUG')
+# ALLOWED_HOSTS = env('DJANGO_ALLOWED_HOSTS').split(',')
 
 # DATABASES = {
 #     "default": {
