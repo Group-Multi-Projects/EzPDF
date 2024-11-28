@@ -99,11 +99,11 @@ environ.Env.read_env()
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': env('DATABASE_NAME'),
-        'USER': env('DATABASE_USER'),
-        'PASSWORD': env('DATABASE_PASSWORD'),
-        'HOST': env('DATABASE_HOST'),
-        'PORT': env('DATABASE_PORT'),
+        'NAME': 'ezpdf',
+        'USER': 'root',
+        'PASSWORD': 'dinhthai2004',
+        'HOST': 'db',
+        'PORT': 3306,
     }
 }
 # DATABASES = {

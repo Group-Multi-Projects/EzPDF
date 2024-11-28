@@ -11,6 +11,8 @@ app.conf.update(timezone = 'Asia/Kolkata')
 
 app.config_from_object(settings, namespace = 'CELERY')
 
+app.conf.broker_url = 'redis://redis:6379/0'  # Kết nối Redis qua Docker service name
+
 app.autodiscover_tasks()
 
 @app.task(bind=True)

@@ -1,3 +1,4 @@
+version: '3'
 services:
   web:
     build: .
@@ -11,6 +12,9 @@ services:
       - .env
     depends_on:
       - db
+      - redis 
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0 
 
   db:
     image: mysql:8.0
@@ -23,6 +27,24 @@ services:
       - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+
+  redis:
+    image: redis:latest 
+    container_name: redis
+    ports:
+      - "6379:6379"  # Mở cổng Redis
+
+  celery:
+    build: .
+    container_name: celery_worker
+    command: celery -A EzPDF worker --loglevel=info
+    volumes:
+      - .:/app  
+    depends_on:
+      - redis 
+      - db    
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0  
 
 volumes:
   mysql_data:
