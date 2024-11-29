@@ -28,7 +28,7 @@ class DrawModel(ToolModel):
 
     def __str__(self):
         return f"Draw Tool - {self.tool_type}"
-
+    
 
 class TextModel(ToolModel):
     content = models.CharField(verbose_name="Content", max_length=500)

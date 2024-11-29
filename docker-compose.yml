@@ -1,6 +1,8 @@
+version: '3'
 services:
   web:
     build: .
+    # image: dinhthai0312/ezpdf:v1
     container_name: django_app
    # command: gunicorn EzPDF.wsgi:application --bind 0.0.0.0:8000  # Thay đổi ở đây
     volumes:
@@ -26,6 +28,23 @@ services:
         max-size: "10m"
         max-file: "3"
 
+  # redis:
+  #   image: redis:latest 
+  #   container_name: redis
+  #   ports:
+  #     - "6379:6379"  # Mở cổng Redis
+
+  # celery:
+  #   build: .
+  #   container_name: celery_worker
+  #   command: celery -A EzPDF worker --loglevel=info
+  #   volumes:
+  #     - .:/app  
+  #   depends_on:
+  #     - redis 
+  #     - db    
+  #   environment:
+  #     - CELERY_BROKER_URL=redis://redis:6379/0  
 
 
 # services:

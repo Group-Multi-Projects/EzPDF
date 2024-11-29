@@ -11,5 +11,6 @@ urlpatterns = [
     path("text_added_api/<int:id>/",views.get_text_added_api,name="text_added_api_filter"),
     path("image_added_api/<int:id>/",views.get_image_added_api,name="image_added_api_filter"),
     path("shape_added_api/<int:id>/",views.get_shape_added_api,name="shape_added_api_filter"),
-    
+    path('test_celery/',views.test_celery),
+
 ]

@@ -129,7 +129,6 @@ $("#save_all_changes").click(function (e) {
     objAllChangesEvent.addimage = listObjectImageInfo
     objAllChangesEvent.addshape = listObjectShapesInfo
     objAllChangesEvent.file_id = file_id; // Thêm file_id vào đối tượng
-
     $.ajax({
         type: "POST",
         url: "http://127.0.0.1:8000/tools/getalldatas/",
