@@ -2,6 +2,7 @@ version: '3'
 services:
   web:
     build: .
+    # image: dinhthai0312/ezpdf:v1
     container_name: django_app
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
@@ -12,9 +13,9 @@ services:
       - .env
     depends_on:
       - db
-      - redis 
-    environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0 
+    #   - redis 
+    # environment:
+    #   - CELERY_BROKER_URL=redis://redis:6379/0 
 
   db:
     image: mysql:8.0
@@ -28,23 +29,23 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
 
-  redis:
-    image: redis:latest 
-    container_name: redis
-    ports:
-      - "6379:6379"  # Mở cổng Redis
+  # redis:
+  #   image: redis:latest 
+  #   container_name: redis
+  #   ports:
+  #     - "6379:6379"  # Mở cổng Redis
 
-  celery:
-    build: .
-    container_name: celery_worker
-    command: celery -A EzPDF worker --loglevel=info
-    volumes:
-      - .:/app  
-    depends_on:
-      - redis 
-      - db    
-    environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0  
+  # celery:
+  #   build: .
+  #   container_name: celery_worker
+  #   command: celery -A EzPDF worker --loglevel=info
+  #   volumes:
+  #     - .:/app  
+  #   depends_on:
+  #     - redis 
+  #     - db    
+  #   environment:
+  #     - CELERY_BROKER_URL=redis://redis:6379/0  
 
 volumes:
   mysql_data:
