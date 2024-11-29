@@ -1,0 +1,294 @@
+1. Cấu hình Nginx để lắng nghe một cổng cụ thể:
+server {
+    listen 8080;
+    server_name localhost;
+
+    location / {
+        proxy_pass http://127.0.0.1:5000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+
+2. Cấu hình Nginx làm reverse proxy trỏ vào một cổng khác:
+server {
+    listen 80;
+    server_name example.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:5000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+
+3. Cấu hình lắng nghe trên nhiều cổng:
+server {
+    listen 80;
+    listen 8080;
+    server_name example.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:5000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+4. Cấu hình cho cổng HTTPS (443):
+server {
+    listen 443 ssl;
+    server_name example.com;
+
+    ssl_certificate /path/to/your/certificate.crt;
+    ssl_certificate_key /path/to/your/private.key;
+
+    location / {
+        proxy_pass http://127.0.0.1:5000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+
+sudo nano /etc/nginx/nginx.conf
+
+Bước 3: Chỉnh sửa hoặc thêm cấu hình trong thư mục sites-available/ và sites-enabled/
+sudo nano /etc/nginx/sites-available/mywebsite.conf
+server {
+    listen 80;  # Lắng nghe trên cổng 80
+    server_name mywebsite.com;  # Tên miền hoặc IP
+
+    location / {
+        proxy_pass http://127.0.0.1:5000;  # Chuyển tiếp đến cổng 5000
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+sudo ln -s /etc/nginx/sites-available/mywebsite.conf /etc/nginx/sites-enabled/
+Bước 4: Sửa file cấu hình tại conf.d/ (tùy chọn)
+sudo nano /etc/nginx/conf.d/mywebsite.conf
+sudo nano /etc/nginx/conf.d/mywebsite.conf
+
+
+
+
+
+1. Load Balancing với Nginx
+
+http {
+    upstream backend_servers {
+        # Danh sách các backend server
+        server 127.0.0.1:5000;
+        server 127.0.0.1:5001;
+        server 127.0.0.1:5002;
+    }
+
+    server {
+        listen 80;
+        server_name example.com;
+
+        location / {
+            proxy_pass http://backend_servers;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+}
+Tổng kết:
+upstream được sử dụng để cấu hình nhóm server cho load balancing.
+Nginx có các phương thức cân bằng tải khác nhau như round-robin, least connections, IP hash, hoặc weighted.
+Bạn có thể chuyển tiếp yêu cầu đến các server cụ thể dựa trên URL, phương thức HTTP, hoặc các điều kiện khác.
+Nginx hỗ trợ cấu hình health check (với phiên bản Plus) hoặc thiết lập timeout cho các server backend.
+
+
+Round-robin (mặc định): Các yêu cầu được phân phối lần lượt giữa các server backend
+
+Least connections: Nginx sẽ chuyển yêu cầu đến server có ít kết nối nhất tại thời điểm đó.
+upstream backend_servers {
+    least_conn;
+    server 127.0.0.1:5000;
+    server 127.0.0.1:5001;
+}
+
+IP hash: Các yêu cầu từ cùng một IP client sẽ được chuyển đến cùng một server backend (hữu ích để giữ phiên làm việc).
+upstream backend_servers {
+    ip_hash;
+    server 127.0.0.1:5000;
+    server 127.0.0.1:5001;
+}
+
+Weighted load balancing: Bạn có thể chỉ định trọng số (weight) để ưu tiên các server khác nhau.
+upstream backend_servers {
+    server 127.0.0.1:5000 weight=3;  # Server này sẽ nhận 3 lần yêu cầu so với server khác
+    server 127.0.0.1:5001;
+}
+
+
+Chuyển hướng đến các server cụ thể dựa trên điều kiện
+Chuyển tiếp yêu cầu đến server khác nhau dựa trên URL
+server {
+    listen 80;
+    server_name example.com;
+
+    # Chuyển tiếp các yêu cầu có URL bắt đầu bằng /api đến một server
+    location /api/ {
+        proxy_pass http://127.0.0.1:5000;
+    }
+
+    # Chuyển tiếp các yêu cầu còn lại đến một server khác
+    location / {
+        proxy_pass http://127.0.0.1:5001;
+    }
+}
+
+
+Chuyển tiếp yêu cầu dựa trên phương thức HTTP
+server {
+    listen 80;
+    server_name example.com;
+
+    # Nếu yêu cầu là GET, chuyển tiếp đến server 1
+    if ($request_method = GET) {
+        proxy_pass http://127.0.0.1:5000;
+    }
+
+    # Nếu yêu cầu là POST, chuyển tiếp đến server 2
+    if ($request_method = POST) {
+        proxy_pass http://127.0.0.1:5001;
+    }
+}
+
+Health Check cho các server backend
+upstream backend_servers {
+    server 127.0.0.1:5000 max_fails=3 fail_timeout=30s;
+    server 127.0.0.1:5001 max_fails=3 fail_timeout=30s;
+}
+max_fails=3: Sau 3 lần thất bại liên tiếp, Nginx sẽ tạm thời ngừng gửi yêu cầu đến server này.
+fail_timeout=30s: Sau 30 giây, Nginx sẽ thử gửi yêu cầu lại đến server này.
+6 check link available to enabled
+ls -l /etc/nginx/sites-enabled/
+
+
+
+
+server {
+  listen 80;
+  server_name localhost;
+
+  location / {
+    proxy_pass http://localhost:5000;
+  }
+}
+
+
+
+server {
+    listen 80;  # Nghe trên port 80
+    server_name localhost;  # Địa chỉ IP của server
+
+    root /home/ubuntu/huhihe;  # Thư mục chứa file index.html
+    index index.html;  # File mặc định được phục vụ
+
+    location / {
+        try_files $uri $uri/ =404;  # Xử lý các yêu cầu
+    }
+}
+
+user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
+include /etc/nginx/modules-enabled/*.conf;
+
+events {
+        worker_connections 768;
+        # multi_accept on;
+}
+
+http {
+
+        ##
+        # Basic Settings
+        ##
+
+        sendfile on;
+        tcp_nopush on;
+        types_hash_max_size 2048;
+        # server_tokens off;
+
+        # server_names_hash_bucket_size 64;
+        # server_name_in_redirect off;
+
+        include /etc/nginx/mime.types;
+        default_type application/octet-stream;
+
+        ##
+        # SSL Settings
+        ##
+
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3; # Dropping SSLv3, ref: POODLE
+        ssl_prefer_server_ciphers on;
+
+        ##
+        # Logging Settings
+        ##
+
+        access_log /var/log/nginx/access.log;
+        error_log /var/log/nginx/error.log;
+
+        ##
+        # Gzip Settings
+        ##
+
+        gzip on;
+
+        # gzip_vary on;
+        # gzip_proxied any;
+        # gzip_comp_level 6;
+        # gzip_buffers 16 8k;
+        # gzip_http_version 1.1;
+        # gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+
+        ##
+        # Virtual Host Configs
+        ##
+
+        include /etc/nginx/conf.d/*.conf;
+        include /etc/nginx/sites-enabled/*;
+}
+
+
+#mail {
+#       # See sample authentication script at:
+#       # http://wiki.nginx.org/ImapAuthenticateWithApachePhpScript
+#
+#       # auth_http localhost/auth.php;
+#       # pop3_capabilities "TOP" "USER";
+#       # imap_capabilities "IMAP4rev1" "UIDPLUS";
+#
+#       server {
+#               listen     localhost:110;
+#               protocol   pop3;
+#               proxy      on;
+#       }
+#
+#       server {
+#               listen     localhost:143;
+#               protocol   imap;
+#               proxy      on;
+#       }
+#}

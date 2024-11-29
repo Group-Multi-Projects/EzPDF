@@ -4,3 +4,4 @@ docker volume rm ezpdf_mysql_data___xóa volume
 docker-compose build --no-cache____build docker
 docker compose up -d
 docker compose restart
+docker image prune -f ____xóa image khong su dung
