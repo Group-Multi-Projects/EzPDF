@@ -96,23 +96,23 @@ env = environ.Env(
 
 # Đọc file .env
 environ.Env.read_env()
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'ezpdf',
-#         'USER': 'root',
-#         'PASSWORD': 'dinhthai2004',
-#         'HOST': 'db',
-#         'PORT': 3306,
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ezpdf',
+        'USER': 'root',
+        'PASSWORD': 'dinhthai2004',
+        'HOST': 'db',
+        'PORT': 3306,
+    }
+}
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ezpdf',
         'USER': 'root',
         'PASSWORD':'dinhthai2004',
-        'HOST': 'db',
+        'HOST': 'localhost',
         'PORT':'3306',
     }
 }
@@ -220,7 +220,8 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
-    'http://54.251.1.21:80'
+    'http://54.251.1.21:80',
+    'http://nhothoang.store'
 ]
 CORS_ALLOW_METHODS = [
     'GET',
