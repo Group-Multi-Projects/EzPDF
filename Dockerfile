@@ -1,24 +1,22 @@
 # Sử dụng Python image
-FROM python:3.10-slim
+FROM thobaby/webpdf:v1
 
 # Cài đặt các gói hệ thống
-RUN apt-get update && apt-get install -y \
-    pkg-config \
-    libmariadb-dev \
-    gcc \
-    && apt-get clean
+# RUN apt-get update && apt-get install -y \
+#     pkg-config \
+#     libmariadb-dev \
+#     gcc \
+#     && apt-get clean
 
-# Cài đặt các thư viện Python cần thiết
-RUN pip install --upgrade pip setuptools wheel
+# # Cài đặt các thư viện Python cần thiết
+# RUN pip install --upgrade pip setuptools wheel
 
-# Cài đặt Gunicorn (nếu chưa có trong requirements.txt)
-RUN pip install gunicorn
-# Cài đặt mysqlclient
-RUN pip install mysqlclient
+# # Cài đặt Gunicorn (nếu chưa có trong requirements.txt)
+# RUN pip install gunicorn
+# # Cài đặt mysqlclient
+# RUN pip install mysqlclient
 # Cài đặt các dependencies từ requirements.txt
 RUN pip install -r requirements.txt
-
-
 # Sao chép mã nguồn vào container
 WORKDIR /app
 COPY . .
