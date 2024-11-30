@@ -27,10 +27,8 @@ SECRET_KEY = 'django-insecure-!&g7=)(&gjq0$@#g_o!%h!*jvufn_j$2)-%^!#^6rl3a0%p6-7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ALLOWED_HOSTS = ['54.179.42.28', 'nhothoang.store', 'localhost', '127.0.0.1', '0.0.0.0']
 AUTH_USER_MODEL = "Account.AccountModel"
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -265,6 +263,13 @@ CORS_ALLOW_HEADERS = [
     'content-type',
     'authorization',
     'x-csrftoken',
+]
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY=None
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://nhothoang.store',
+    'https://nhothoang.store',  # nếu bạn sử dụng HTTPS
 ]
 
 

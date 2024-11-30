@@ -30,9 +30,6 @@ services:
         reservations:
           memory: 1G  # Bộ nhớ cần thiết tối thiểu
           cpus: "0.5"  # CPU cần thiết tối thiểu
- 
-
-
     ports:
       - "8000:8000"
     command: >
