@@ -143,7 +143,7 @@ DATABASES = {
         'NAME': 'ezpdf',
         'USER': 'root',
         'PASSWORD':'dinhthai2004',
-        'HOST': 'localhost',
+        'HOST': 'db',
         'PORT':'3306',
     }
 }
@@ -246,7 +246,7 @@ SIMPLE_JWT = {
 }
 LOGIN_URL = "/account/signin/"
 
-# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8000',
@@ -268,10 +268,10 @@ CORS_ALLOW_HEADERS = [
 ]
 
 
-# #celery settings
-# CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
-# CELERY_ACCEPT_CONTENT = ['application/json']
-# CELERY_RESULT_SERIALIZER = 'json'
-# CELERY_TASK_SERIALIZER = 'json'
-# CELERY_TIMEZONE = 'Asia/Kolkata'
-# CELERY_RESULT_BACKEND = 'django-db'
+#celery settings
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Kolkata'
+CELERY_RESULT_BACKEND = 'django-db'
