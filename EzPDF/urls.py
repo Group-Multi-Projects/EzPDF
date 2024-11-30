@@ -26,8 +26,7 @@ urlpatterns = [
     path('auth/', include("jwt_auth.urls")),
     path('tools/', include("tools.urls")),
     path('conversion/', include("conversion.urls")),
-    
-    
+
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
