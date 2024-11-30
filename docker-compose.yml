@@ -1,77 +1,185 @@
 version: "3.9"
 
 services:
+  # MySQL Service
   db:
-      image: mysql:8.0
-      container_name: mysql_db
-      restart: always
-      environment:
-        MYSQL_ROOT_PASSWORD: dinhthai2004
-        MYSQL_DATABASE: ezpdf
-      ports:
-        - "3307:3306"
-      volumes:
-        - mysql_data:/var/lib/mysql
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: dinhthai2004  # Mật khẩu root MySQL
+      MYSQL_DATABASE: ezpdf             # Tên database mặc định
+    ports:
+      - "3307:3306"                     # Map cổng host:container
+    volumes:
+      - mysql_data:/var/lib/mysql       # Mount dữ liệu MySQL vào host
+    healthcheck:                        # Kiểm tra trạng thái MySQL
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -pdinhthai2004 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
+  # Django Web Application
   web:
     build: .
     image: web_ezpdf:latest
-    # image: dinhthai0312/ezpdf:v1
     container_name: django_app
     restart: unless-stopped
-    # network_mode: host
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
     depends_on:
-      - db
+      db:
+        condition: service_healthy      # Chờ MySQL sẵn sàng trước khi chạy
     volumes:
-      - ./static:/app/static  # Mount thư mục static từ host vào container
-      - ./media:/app/media  # Mount thư mục media từ host vào container
+      - ./static:/app/static            # Mount static files
+      - ./media:/app/media              # Mount media files
     env_file:
-      - .env 
-    # environment:
-    #   - DJANGO_SUPERUSER_USERNAME=admin
-    #   - DJANGO_SUPERUSER_EMAIL=admin@example.com
-    #   - DJANGO_SUPERUSER_PASSWORD=strongpassword123
+      - .env                            # Sử dụng file .env để thiết lập biến môi trường
     deploy:
-      resources:
+      resources:                        # Giới hạn tài nguyên
         limits:
-          memory: 1G  # Giới hạn bộ nhớ tối đa
-          cpus: "1.0"  # Giới hạn CPU tối đa
+          memory: 1G
+          cpus: "1.0"
         reservations:
-          memory: 1G  # Bộ nhớ cần thiết tối thiểu
-          cpus: "0.5"  # CPU cần thiết tối thiểu
+          memory: 1G
+          cpus: "0.5"
     ports:
-      - "8000:8000"
-    # command: >
-    #   sh -c "python manage.py migrate &&
-    #     python manage.py runserver 0.0.0.0:8000"
-    command: >
+      - "8000:8000"                     # Map cổng host:container
+    command: >                          # Lệnh khởi động Django
       sh -c "python manage.py migrate &&
-        python manage.py shell < create_superuser.py &&
-        python manage.py runserver 0.0.0.0:8000"
+             python manage.py shell < create_superuser.py &&
+             python manage.py runserver 0.0.0.0:8000"
 
-
+  # Nginx Service
   nginx:
     build: ./nginx
     container_name: nginx
     environment:
-      - SERVER_NAME=0.0.0.0
-    restart: always
+      - SERVER_NAME=0.0.0.0             # Tên server
+    restart: unless-stopped
     network_mode: host
     volumes:
-      - ./nginx/logs:/var/log/nginx  # Mount thư mục logs từ container Nginx ra host
-    logging:
+      - ./nginx/logs:/var/log/nginx     # Mount logs Nginx vào host
+    logging:                            # Giới hạn log của Nginx
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "3"
+
 volumes:
-  mysql_data:
-  # redis:
+  mysql_data:                           # Volume lưu trữ dữ liệu MySQL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# version: "3.9"
+
+# services:
+#   db:
+#     image: mysql:8.0
+#     container_name: mysql_db
+#     restart: always
+#     environment:
+#       MYSQL_ROOT_PASSWORD: dinhthai2004
+#       MYSQL_DATABASE: ezpdf
+#     ports:
+#       - "3307:3306"
+#     volumes:
+#       - mysql_data:/var/lib/mysql
+
+#   healthcheck:
+#     test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -prootpassword || exit 1"]
+#     interval: 10s
+#     timeout: 5s
+#     retries: 3
+
+
+
+
+#   web:
+#     build: .
+#     image: web_ezpdf:latest
+#     # image: dinhthai0312/ezpdf:v1
+#     container_name: django_app
+#     restart: unless-stopped
+#     # network_mode: host
+#     logging:
+#       driver: "json-file"
+#       options:
+#         max-size: "10m"
+#         max-file: "3"
+#     depends_on:
+#       - db:
+#           condition: service_healthy
+#     volumes:
+#       - ./static:/app/static  # Mount thư mục static từ host vào container
+#       - ./media:/app/media  # Mount thư mục media từ host vào container
+#     env_file:
+#       - .env 
+#     # environment:
+#     #   - DJANGO_SUPERUSER_USERNAME=admin
+#     #   - DJANGO_SUPERUSER_EMAIL=admin@example.com
+#     #   - DJANGO_SUPERUSER_PASSWORD=strongpassword123
+#     deploy:
+#       resources:
+#         limits:
+#           memory: 1G  # Giới hạn bộ nhớ tối đa
+#           cpus: "1.0"  # Giới hạn CPU tối đa
+#         reservations:
+#           memory: 1G  # Bộ nhớ cần thiết tối thiểu
+#           cpus: "0.5"  # CPU cần thiết tối thiểu
+#     ports:
+#       - "8000:8000"
+#     # command: >
+#     #   sh -c "python manage.py migrate &&
+#     #     python manage.py runserver 0.0.0.0:8000"
+#     command: >
+#       sh -c "python manage.py migrate &&
+#         python manage.py shell < create_superuser.py &&
+#         python manage.py runserver 0.0.0.0:8000"
+
+
+#   nginx:
+#     build: ./nginx
+#     container_name: nginx
+#     environment:
+#       - SERVER_NAME=0.0.0.0
+#     restart: always
+#     network_mode: host
+#     volumes:
+#       - ./nginx/logs:/var/log/nginx  # Mount thư mục logs từ container Nginx ra host
+#     logging:
+#       driver: "json-file"
+#       options:
+#         max-size: "10m"
+#         max-file: "3"
+# volumes:
+#   mysql_data:
+
+
+
+
+
+#   # redis:
   #   image: redis:latest 
   #   container_name: redis
   #   ports:
