@@ -12,7 +12,7 @@ django-js-asset
 Jinja2
 redis
 template
-bcrypt
+bcryptpip
 PyMuPDF
 reportlab
 pdf2docx
@@ -24,3 +24,9 @@ django-celery-results
 # pip install -r requirements.txt
 # python manage.py migrate
 # python manage.py runserver
+
+
+root@063318baf6e9:/# ^C
+
+
+apt install -y libjpeg-dev zlib1g-dev libfreetype6-dev liblcms2-dev libopenjpeg-dev libtiff-dev libwebp-dev

@@ -246,13 +246,14 @@ SIMPLE_JWT = {
 }
 LOGIN_URL = "/account/signin/"
 
-# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True
 
-# CORS_ALLOWED_ORIGINS = [
-#     'http://localhost:8000',
-#     'http://127.0.0.1:8000',
-#     'http://54.251.1.21:80'
-# ]
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'http://54.179.42.28',
+    'http://nhothoang.store/'
+]
 # CORS_ALLOW_METHODS = [
 #     'GET',
 #     'POST',

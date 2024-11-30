@@ -15,13 +15,13 @@ RUN pip install --upgrade pip setuptools wheel
 RUN pip install gunicorn
 # Cài đặt mysqlclient
 RUN pip install mysqlclient
+# Cài đặt các dependencies từ requirements.txt
+RUN pip install -r requirements.txt
+
 
 # Sao chép mã nguồn vào container
 WORKDIR /app
 COPY . .
-
-# Cài đặt các dependencies từ requirements.txt
-RUN pip install -r requirements.txt
 
 
 
