@@ -21,7 +21,6 @@ services:
   web:
     build: .
     image: web_ezpdf:latest
-    # image: dinhthai0312/ezpdf:v1
     container_name: django_app
     restart: unless-stopped
     depends_on:
@@ -35,22 +34,18 @@ services:
     deploy:
       resources:
         limits:
-          memory: 1G  # Giới hạn bộ nhớ tối đa
-          cpus: "1.0"  # Giới hạn CPU tối đa
+          memory: 1G 
+          cpus: "1.0" 
         reservations:
-          memory: 1G  # Bộ nhớ cần thiết tối thiểu
-          cpus: "0.5"  # CPU cần thiết tối thiểu
+          memory: 1G  
+          cpus: "0.5" 
     ports:
       - "8000:8000"
     command: >
       sh -c "python manage.py migrate &&
+        python manage.py shell < create_superuser.py &&
         python manage.py runserver 0.0.0.0:8000"
-    # command: >
-    #   sh -c "python manage.py migrate &&
-    #     python manage.py shell < create_superuser.py &&
-    #     python manage.py runserver 0.0.0.0:8000"
 
- 
   nginx:
     build: ./nginx
     container_name: nginx
