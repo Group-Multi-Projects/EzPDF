@@ -21,6 +21,6 @@ COPY . .
 # Cài đặt các dependencies từ requirements.txt
 RUN pip install -r requirements.txt
 
-# Expose port và chạy server
-EXPOSE 8000
+# # Expose port và chạy server
+# EXPOSE 8000
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

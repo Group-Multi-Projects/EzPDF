@@ -60,6 +60,8 @@ services:
 #       - .env
 #     depends_on:
 #       - db
+# command: >
+#   sh -c "./wait-for-it.sh db:3306 -- python manage.py runserver 0.0.0.0:8000"
 
   db:
     image: mysql:8.0
