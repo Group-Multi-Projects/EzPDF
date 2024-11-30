@@ -20,6 +20,7 @@ from django.views.decorators.csrf import csrf_exempt
 logger = logging.getLogger(__name__)
 # Create your views here.
 def index(request):
+
     if request.user.is_authenticated:
         return redirect("File:home")
     else:

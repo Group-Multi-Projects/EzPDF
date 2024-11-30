@@ -303,6 +303,5 @@ function renderShapes() {
                 console.error('Error in AJAX request for PDF:', textStatus, errorThrown);
             }
         });
-    });
-    
+    });   
 }
