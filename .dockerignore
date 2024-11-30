@@ -5,3 +5,6 @@ vevn
 .gitignore
 gui
 install_app
+.git
+static
+media
