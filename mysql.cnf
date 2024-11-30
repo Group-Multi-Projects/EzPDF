@@ -1,0 +1,7 @@
+[mysqld]
+general_log = 1                  # Bật log chung
+general_log_file = /var/log/mysql/general.log  # File log chung
+log_error = /var/log/mysql/error.log           # File log lỗi
+slow_query_log = 1               # Bật log truy vấn chậm
+slow_query_log_file = /var/log/mysql/slow.log  # File log truy vấn chậm
+long_query_time = 2              # Thời gian tối thiểu (giây) để ghi log truy vấn chậm
