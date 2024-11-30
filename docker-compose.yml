@@ -22,6 +22,14 @@ services:
     #   - DJANGO_SUPERUSER_USERNAME=admin
     #   - DJANGO_SUPERUSER_EMAIL=admin@example.com
     #   - DJANGO_SUPERUSER_PASSWORD=strongpassword123
+    deploy:
+      resources:
+        limits:
+          memory: 1G  # Giới hạn bộ nhớ tối đa
+          cpus: "1.0"  # Giới hạn CPU tối đa
+        reservations:
+          memory: 1G  # Bộ nhớ cần thiết tối thiểu
+          cpus: "0.5"  # CPU cần thiết tối thiểu
     ports:
       - "8000:8000"
     command: >
@@ -31,15 +39,7 @@ services:
     #   sh -c "python manage.py migrate &&
     #     python manage.py shell < create_superuser.py &&
     #     python manage.py runserver 0.0.0.0:8000"
-    deploy:
-      resources:
-        limits:
-          memory: 1G  # Giới hạn bộ nhớ tối đa
-          cpus: "1.0"  # Giới hạn CPU tối đa
-        reservations:
-          memory: 1G  # Bộ nhớ cần thiết tối thiểu
-          cpus: "0.5"  # CPU cần thiết tối thiểu
- 
+
  
   nginx:
     build: ./nginx
