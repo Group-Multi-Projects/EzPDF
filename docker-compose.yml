@@ -7,13 +7,13 @@ services:
     container_name: mysql_db
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: dinhthai2004  # Mật khẩu root MySQL
-      MYSQL_DATABASE: ezpdf             # Tên database mặc định
+      MYSQL_ROOT_PASSWORD: dinhthai2004
+      MYSQL_DATABASE: ezpdf
     ports:
-      - "3307:3306"                     # Map cổng host:container
+      - "3307:3306"
     volumes:
-      - mysql_data:/var/lib/mysql       # Mount dữ liệu MySQL vào host
-    healthcheck:                        # Kiểm tra trạng thái MySQL
+      - mysql_data:/var/lib/mysql
+    healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -pdinhthai2004 || exit 1"]
       interval: 10s
       timeout: 5s
@@ -27,14 +27,14 @@ services:
     restart: unless-stopped
     depends_on:
       db:
-        condition: service_healthy      # Chờ MySQL sẵn sàng trước khi chạy
+        condition: service_healthy
     volumes:
-      - ./static:/app/static            # Mount static files
-      - ./media:/app/media              # Mount media files
+      - ./static:/app/static
+      - ./media:/app/media
     env_file:
-      - .env                            # Sử dụng file .env để thiết lập biến môi trường
+      - .env
     deploy:
-      resources:                        # Giới hạn tài nguyên
+      resources:
         limits:
           memory: 1G
           cpus: "1.0"
@@ -42,8 +42,8 @@ services:
           memory: 1G
           cpus: "0.5"
     ports:
-      - "8000:8000"                     # Map cổng host:container
-    command: >                          # Lệnh khởi động Django
+      - "8000:8000"
+    command: >
       sh -c "python manage.py migrate &&
              python manage.py shell < create_superuser.py &&
              python manage.py runserver 0.0.0.0:8000"
@@ -53,19 +53,19 @@ services:
     build: ./nginx
     container_name: nginx
     environment:
-      - SERVER_NAME=0.0.0.0             # Tên server
+      - SERVER_NAME=0.0.0.0
     restart: unless-stopped
     network_mode: host
     volumes:
-      - ./nginx/logs:/var/log/nginx     # Mount logs Nginx vào host
-    logging:                            # Giới hạn log của Nginx
+      - ./nginx/logs:/var/log/nginx
+    logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "3"
 
 volumes:
-  mysql_data:                           # Volume lưu trữ dữ liệu MySQL
+  mysql_data:
 
 
 
