@@ -1,33 +1,60 @@
-version: '3'
 services:
   web:
     build: .
+    image: web_ezpdf:latest
     # image: dinhthai0312/ezpdf:v1
     container_name: django_app
-    command: python manage.py runserver 0.0.0.0:8000
+    restart: unless-stopped
+    # network_mode: host
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    # depends_on:
+    #   - db
     volumes:
-      - .:/app
+      - ./static:/app/static  # Mount thư mục static từ host vào container
+      - ./media:/app/media  # Mount thư mục media từ host vào container
+    env_file:
+      - .env 
+    # environment:
+    #   - DJANGO_SUPERUSER_USERNAME=admin
+    #   - DJANGO_SUPERUSER_EMAIL=admin@example.com
+    #   - DJANGO_SUPERUSER_PASSWORD=strongpassword123
     ports:
       - "8000:8000"
-    env_file:
-      - .env
-    depends_on:
-      - db
-    #   - redis 
-    # environment:
-    #   - CELERY_BROKER_URL=redis://redis:6379/0 
-
-  db:
-    image: mysql:8.0
-    container_name: mysql_db
-    restart: always
+    command: >
+      sh -c "python manage.py migrate &&
+        python manage.py runserver 0.0.0.0:8000"
+    # command: >
+    #   sh -c "python manage.py migrate &&
+    #     python manage.py shell < create_superuser.py &&
+    #     python manage.py runserver 0.0.0.0:8000"
+    deploy:
+      resources:
+        limits:
+          memory: 1G  # Giới hạn bộ nhớ tối đa
+          cpus: "1.0"  # Giới hạn CPU tối đa
+        reservations:
+          memory: 1G  # Bộ nhớ cần thiết tối thiểu
+          cpus: "0.5"  # CPU cần thiết tối thiểu
+ 
+ 
+  nginx:
+    build: ./nginx
+    container_name: nginx
     environment:
-      MYSQL_ROOT_PASSWORD: dinhthai2004
-      MYSQL_DATABASE: ezpdf
-    ports:
-      - "3307:3306"
+      - SERVER_NAME=0.0.0.0
+    restart: always
+    network_mode: host
     volumes:
-      - mysql_data:/var/lib/mysql
+      - ./nginx/logs:/var/log/nginx  # Mount thư mục logs từ container Nginx ra host
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   # redis:
   #   image: redis:latest 
@@ -47,5 +74,35 @@ services:
   #   environment:
   #     - CELERY_BROKER_URL=redis://redis:6379/0  
 
-volumes:
-  mysql_data:
+
+# services:
+#   web:
+#     build: .
+#     container_name: django_app
+#     command: python manage.py runserver 0.0.0.0:8000
+#     volumes:
+#       - .:/app
+#     ports:
+#       - "8000:8000"
+#     env_file:
+#       - .env
+#     depends_on:
+#       - db
+# command: >
+#   sh -c "./wait-for-it.sh db:3306 -- python manage.py runserver 0.0.0.0:8000"
+
+#   db:
+#     image: mysql:8.0
+#     container_name: mysql_db
+#     restart: always
+#     environment:
+#       MYSQL_ROOT_PASSWORD: dinhthai2004
+#       MYSQL_DATABASE: ezpdf
+#     ports:
+#       - "3307:3306"
+#     volumes:
+#       - mysql_data:/var/lib/mysql
+
+
+# volumes:
+#   mysql_data:

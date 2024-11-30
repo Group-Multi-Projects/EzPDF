@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-!&g7=)(&gjq0$@#g_o!%h!*jvufn_j$2)-%^!#^6rl3a0%p6-7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 AUTH_USER_MODEL = "Account.AccountModel"
 
 
@@ -87,25 +87,56 @@ WSGI_APPLICATION = 'EzPDF.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-import environ
+# import environ
+# # Khởi tạo biến môi trường
+# env = environ.Env(
+#     DEBUG=(bool, False)
+# )
 
-# Khởi tạo biến môi trường
-env = environ.Env(
-    DEBUG=(bool, False)
-)
+# # Đọc file .env
+# environ.Env.read_env()
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': env('DATABASE_NAME'),
+#         'USER': env('DATABASE_USER'),
+#         'PASSWORD': env('DATABASE_PASSWORD'),
+#         'HOST': env('DATABASE_HOST'),
+#         'PORT': env('DATABASE_PORT'),
+#     }
+# }
+
+
+################################################### 
+# import environ
+
+# # Khởi tạo môi trường từ tệp .env
+# env = environ.Env()
+# environ.Env.read_env()
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': env('DATABASE_NAME'),
+#         'USER': env('DATABASE_USER'),
+#         'PASSWORD': env('DATABASE_PASSWORD'),
+#         'HOST': env('DATABASE_HOST'),
+#         'PORT': env('DATABASE_PORT'),
+#     }
+# }
 
 # Đọc file .env
-environ.Env.read_env()
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ezpdf',
-        'USER': 'root',
-        'PASSWORD': 'dinhthai2004',
-        'HOST': 'db',
-        'PORT': 3306,
-    }
-}
+# environ.Env.read_env()
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'ezpdf',
+#         'USER': 'root',
+#         'PASSWORD': 'dinhthai2004',
+#         'HOST': 'db',
+#         'PORT': 3306,
+#     }
+# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -215,12 +246,12 @@ SIMPLE_JWT = {
 }
 LOGIN_URL = "/account/signin/"
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
-    'http://54.251.1.21:80',
+    'http://54.179.42.28',
     'http://nhothoang.store'
 ]
 CORS_ALLOW_METHODS = [
@@ -235,10 +266,12 @@ CORS_ALLOW_HEADERS = [
     'authorization',
     'x-csrftoken',
 ]
-#celery settings
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Asia/Kolkata'
-CELERY_RESULT_BACKEND = 'django-db'
+
+
+# #celery settings
+# CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+# CELERY_ACCEPT_CONTENT = ['application/json']
+# CELERY_RESULT_SERIALIZER = 'json'
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_TIMEZONE = 'Asia/Kolkata'
+# CELERY_RESULT_BACKEND = 'django-db'

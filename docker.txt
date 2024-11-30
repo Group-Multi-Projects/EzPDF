@@ -1,6 +1,0 @@
-docker exec -it django_app bash____mở terminal trong docker
-docker volume ls___lấy danh sách volume
-docker volume rm ezpdf_mysql_data___xóa volume
-docker-compose build --no-cache____build docker
-docker compose up -d
-docker compose restart
