@@ -91,18 +91,18 @@ services:
 # command: >
 #   sh -c "./wait-for-it.sh db:3306 -- python manage.py runserver 0.0.0.0:8000"
 
-#   db:
-#     image: mysql:8.0
-#     container_name: mysql_db
-#     restart: always
-#     environment:
-#       MYSQL_ROOT_PASSWORD: dinhthai2004
-#       MYSQL_DATABASE: ezpdf
-#     ports:
-#       - "3307:3306"
-#     volumes:
-#       - mysql_data:/var/lib/mysql
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: dinhthai2004
+      MYSQL_DATABASE: ezpdf
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
 
 
-# volumes:
-#   mysql_data:
+volumes:
+  mysql_data:
