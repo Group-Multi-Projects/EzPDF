@@ -1,1 +1,0 @@
-gunicorn myproject.wsgi:application --workers 4
