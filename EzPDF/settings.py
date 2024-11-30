@@ -14,6 +14,11 @@ from pathlib import Path
 from datetime import timedelta
 from django.conf import settings
 import os
+import environ
+
+# Khởi tạo môi trường từ tệp .env
+env = environ.Env()
+environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,7 +32,7 @@ SECRET_KEY = 'django-insecure-!&g7=)(&gjq0$@#g_o!%h!*jvufn_j$2)-%^!#^6rl3a0%p6-7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ALLOWED_HOSTS = ['54.179.42.28', 'nhothoang.store', 'localhost', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['127.0.0.1'])
 AUTH_USER_MODEL = "Account.AccountModel"
 # Application definition
 
@@ -106,11 +111,6 @@ WSGI_APPLICATION = 'EzPDF.wsgi.application'
 
 
 ################################################### 
-import environ
-
-# Khởi tạo môi trường từ tệp .env
-env = environ.Env()
-environ.Env.read_env()
 
 DATABASES = {
     'default': {
@@ -242,41 +242,24 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
-LOGIN_URL = "/account/signin/"
+# LOGIN_URL
+LOGIN_URL = env('LOGIN_URL')
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS SETTINGS
+CORS_ALLOW_ALL_ORIGINS = env.bool('CORS_ALLOW_ALL_ORIGINS', default=False)
+CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS')
+CORS_ALLOW_METHODS = env.list('CORS_ALLOW_METHODS')
+CORS_ALLOW_HEADERS = env.list('CORS_ALLOW_HEADERS')
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8000',
-    'http://127.0.0.1:8000',
-    'http://54.179.42.28',
-    'http://nhothoang.store'
-]
-CORS_ALLOW_METHODS = [
-    'GET',
-    'POST',
-    'PUT',
-    'DELETE',
-    'OPTIONS',
-]
-CORS_ALLOW_HEADERS = [
-    'content-type',
-    'authorization',
-    'x-csrftoken',
-]
+SECURE_CROSS_ORIGIN_OPENER_POLICY = env('SECURE_CROSS_ORIGIN_OPENER_POLICY', default=None)
 
-SECURE_CROSS_ORIGIN_OPENER_POLICY=None
+# CSRF TRUSTED ORIGINS
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS')
 
-CSRF_TRUSTED_ORIGINS = [
-    'http://nhothoang.store',
-    'https://nhothoang.store',  # nếu bạn sử dụng HTTPS
-]
-
-
-#celery settings
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Asia/Kolkata'
-CELERY_RESULT_BACKEND = 'django-db'
+# Celery Settings
+CELERY_BROKER_URL = env('CELERY_BROKER_URL')
+CELERY_ACCEPT_CONTENT = env.list('CELERY_ACCEPT_CONTENT')
+CELERY_RESULT_SERIALIZER = env('CELERY_RESULT_SERIALIZER')
+CELERY_TASK_SERIALIZER = env('CELERY_TASK_SERIALIZER')
+CELERY_TIMEZONE = env('CELERY_TIMEZONE')
+CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND')
