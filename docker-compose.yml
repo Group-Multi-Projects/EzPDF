@@ -52,18 +52,15 @@ services:
     ports:
       - "8000:8000"
 
-    logging:                            # Cấu hình logging container
+    logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "3"
-
-
     command: >
       sh -c "python manage.py migrate &&
         python manage.py shell < create_superuser.py &&
         python manage.py runserver 0.0.0.0:8000"
-    
 
   nginx:
     build: ./nginx
