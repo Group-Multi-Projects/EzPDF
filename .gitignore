@@ -1,6 +1,6 @@
 install_app
 .e
-.vscode
+.vscode/
 gui
 test
 vevn
