@@ -11,8 +11,8 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-    depends_on:
-      - db
+    # depends_on:
+    #   - db
     volumes:
       - ./static:/app/static  # Mount thư mục static từ host vào container
       - ./media:/app/media  # Mount thư mục media từ host vào container
