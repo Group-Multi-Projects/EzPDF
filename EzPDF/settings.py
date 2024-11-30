@@ -246,26 +246,28 @@ SIMPLE_JWT = {
 }
 LOGIN_URL = "/account/signin/"
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
     'http://54.179.42.28',
-    'http://nhothoang.store/'
+    'http://nhothoang.store'
 ]
-# CORS_ALLOW_METHODS = [
-#     'GET',
-#     'POST',
-#     'PUT',
-#     'DELETE',
-#     'OPTIONS',
-# ]
-# CORS_ALLOW_HEADERS = [
-#     'content-type',
-#     'authorization',
-#     'x-csrftoken',
-# ]
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'DELETE',
+    'OPTIONS',
+]
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'authorization',
+    'x-csrftoken',
+]
+
+
 # #celery settings
 # CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
 # CELERY_ACCEPT_CONTENT = ['application/json']
