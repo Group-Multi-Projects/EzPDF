@@ -132,7 +132,7 @@ function handleFreeDrawLineEvents(fabricCanvas,path, tools_edit_draw) {
 
             $.ajax({
                 type: "DELETE",
-                url: `http://127.0.0.1:8000/tools/tools_api/${item_id}/`,
+                url: `/tools/tools_api/${item_id}/`,
                 dataType: "json",
                 headers: {
                     "Authorization": "Bearer " + token
@@ -205,7 +205,7 @@ function renderDraws() {
     
     $.ajax({
         type: "GET",
-        url: `http://127.0.0.1:8000/tools/draw_added_api/${file_id}/`,
+        url: `/tools/draw_added_api/${file_id}/`,
         dataType: "json",
         headers: {
             "Authorization": "Bearer " + token

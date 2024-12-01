@@ -4,22 +4,22 @@
 let sidebar = document.querySelector('.sidebar')
 sidebar.innerHTML = ` 
                 <div class="d-flex justify-content-center">
-                  <img id="logo" src="http://127.0.0.1:8000/static/images/Logo.png"  alt="">
+                  <img id="logo" src="/static/images/Logo.png"  alt="">
                 </div>
                <div class="list-group list-group-flush">
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://127.0.0.1:8000/">
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/">
                       <i class="bi bi-house-door-fill"></i>
                       Home
                     </a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://127.0.0.1:8000/listfiles/">
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/listfiles/">
                       <i class="bi bi-file-earmark-bar-graph-fill"></i>
                       Projects
                     </a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://127.0.0.1:8000/account/profile/">
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/account/profile/">
                       <i class="bi bi-person-lines-fill"></i>
                       Account
                     </a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://127.0.0.1:8000/trash">
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/trash">
                       <i class="bi bi-trash-fill"></i>
                       Trash
                     </a>                 
@@ -43,10 +43,10 @@ topnav.innerHTML = `
                                   Tools
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
-                                    <li><button class="dropdown-item" type="button"><img class="tools-icon" src="http://127.0.0.1:8000/static/images/arrangeicon.png" alt="">Arrange PDF files</button></li>
-                                    <li><button class="dropdown-item" type="button"><img class="tools-icon" src="http://127.0.0.1:8000/static/images/editicon.png" alt="">View & Edit PDF</button></li>
-                                    <li><button class="dropdown-item" type="button"><img class="tools-icon" src="http://127.0.0.1:8000/static/images/converticon.png" alt="">PDF conversion</button></li>
-                                    <li><button class="dropdown-item" type="button"><img class="tools-icon" src="http://127.0.0.1:8000/static/images/drawicon.png" alt="">Sign</button></li>
+                                    <li><button class="dropdown-item" type="button"><img class="tools-icon" src="/static/images/arrangeicon.png" alt="">Arrange PDF files</button></li>
+                                    <li><button class="dropdown-item" type="button"><img class="tools-icon" src="/static/images/editicon.png" alt="">View & Edit PDF</button></li>
+                                    <li><button class="dropdown-item" type="button"><img class="tools-icon" src="/static/images/converticon.png" alt="">PDF conversion</button></li>
+                                    <li><button class="dropdown-item" type="button"><img class="tools-icon" src="/static/images/drawicon.png" alt="">Sign</button></li>
                                   </ul>
                               </li>
                             </ul>
@@ -75,7 +75,7 @@ topnav.innerHTML = `
 
 
 
-                            <img class="ms-3" src="http://127.0.0.1:8000/static/images/EzPDF.jpg" style="height: 3rem; width: 4rem;" alt="">
+                            <img class="ms-3" src="/static/images/EzPDF.jpg" style="height: 3rem; width: 4rem;" alt="">
                           </div>
                         </div>
                       </nav>

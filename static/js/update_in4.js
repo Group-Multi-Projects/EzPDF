@@ -2,7 +2,7 @@ function UpdateIn4() {
     const [userInfo, setUserInfo] = React.useState({ name: '', email: '' });
 
     React.useEffect(() => {
-        fetch('http://127.0.0.1:8000/account/get_user_info/')
+        fetch('/account/get_user_info/')
             .then(response => response.json())
             .then(data => {
                 setUserInfo({ name: data.username, email: data.email });

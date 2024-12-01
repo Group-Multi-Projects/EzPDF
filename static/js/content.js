@@ -54,7 +54,7 @@ function Content() {
 
         // const token = localStorage.getItem('authToken'); // Lấy token từ localStorage
         const token = document.querySelector("#user-token").textContent
-        fetch(`http://127.0.0.1:8000/get_list_files/${page_type}`, {
+        fetch(`/get_list_files/${page_type}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -128,7 +128,7 @@ function Content() {
 
         $.ajax({
             type: "POST",
-            url: `http://127.0.0.1:8000/trash/${file_id}/`,
+            url: `/trash/${file_id}/`,
             headers: {
                 "X-CSRFToken": getCookie('csrftoken'), // CSRF token if necessary
                 // Uncomment and set the Authorization header if you're using token authentication
@@ -248,7 +248,7 @@ function Content() {
                         />
                     </td>
                     <td>
-                        <a href={`http://127.0.0.1:8000/edit/${file.id}/`}
+                        <a href={`/edit/${file.id}/`}
                            style={{ textDecoration: 'none', color: 'black' }}
                         >
                             {file.file}   

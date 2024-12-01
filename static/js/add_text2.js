@@ -377,7 +377,7 @@ function handleEditEvents(textBox,tools_edit_text,activeObject,textId,fabricCanv
                 console.log(item_id)
                 $.ajax({
                     type: "DELETE",
-                    url: `http://127.0.0.1:8000/tools/tools_api/${item_id}/`,
+                    url: `/tools/tools_api/${item_id}/`,
                     dataType: "json",
                     headers: {
                         "Authorization": "Bearer " + token
@@ -465,7 +465,7 @@ function renderText() {
     const token = document.querySelector("#user-token").textContent
     $.ajax({
         type: "GET",
-        url: `http://127.0.0.1:8000/tools/text_added_api/${file_id}/`,
+        url: `/tools/text_added_api/${file_id}/`,
         dataType: "json",
         headers: {
             "Authorization": "Bearer " + token
