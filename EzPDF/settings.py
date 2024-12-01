@@ -253,51 +253,13 @@ CORS_ALLOW_HEADERS = env.list('CORS_ALLOW_HEADERS')
 
 SECURE_CROSS_ORIGIN_OPENER_POLICY = env('SECURE_CROSS_ORIGIN_OPENER_POLICY', default=None)
 
-# CSRF TRUSTED ORIGINS
+# # CSRF TRUSTED ORIGINS
 CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS')
 
-# Celery Settings
-CELERY_BROKER_URL = env('CELERY_BROKER_URL')
-CELERY_ACCEPT_CONTENT = env.list('CELERY_ACCEPT_CONTENT')
-CELERY_RESULT_SERIALIZER = env('CELERY_RESULT_SERIALIZER')
-CELERY_TASK_SERIALIZER = env('CELERY_TASK_SERIALIZER')
-CELERY_TIMEZONE = env('CELERY_TIMEZONE')
-CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND')
-
-
-import os
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': True,  # Vô hiệu hóa tất cả logger gốc
-    'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
-            'style': '{',
-        },
-    },
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',  # Ghi toàn bộ log từ DEBUG trở lên
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'django.log'),  # File log
-            'formatter': 'verbose',  # Sử dụng formatter verbose
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],  # Gắn handler file cho logger 'django'
-            'level': 'DEBUG',  # Ghi toàn bộ log từ DEBUG trở lên
-            'propagate': False,  # Không truyền log lên logger cha
-        },
-        'django.server': {
-            'handlers': ['file'],  # Ghi log server errors vào file
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-    },
-    'root': {
-        'handlers': ['file'],  # Ghi log root (toàn bộ hệ thống)
-        'level': 'DEBUG',
-    },
-}
+# # Celery Settings
+# CELERY_BROKER_URL = env('CELERY_BROKER_URL')
+# CELERY_ACCEPT_CONTENT = env.list('CELERY_ACCEPT_CONTENT')
+# CELERY_RESULT_SERIALIZER = env('CELERY_RESULT_SERIALIZER')
+# CELERY_TASK_SERIALIZER = env('CELERY_TASK_SERIALIZER')
+# CELERY_TIMEZONE = env('CELERY_TIMEZONE')
+# CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND')

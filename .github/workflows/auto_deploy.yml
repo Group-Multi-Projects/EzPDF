@@ -1,0 +1,105 @@
+name: CI/CD Pipeline  # Tên của workflow này là "CI/CD Pipeline"
+
+on:
+  push:
+    branches:
+      - main  # Khi có commit vào nhánh main
+  pull_request:
+    branches:
+      - main  # Khi có pull request vào nhánh main
+
+jobs:
+  # Job 'build': Xây dựng Docker image
+  build:
+    runs-on: ubuntu-latest  # Sử dụng môi trường Ubuntu mới nhất
+    steps:
+      - name: Checkout repository  # Lấy mã nguồn từ repository
+        uses: actions/checkout@v3  # Sử dụng action checkout của GitHub
+
+      - name: Set up Docker Buildx  # Cài đặt Docker Buildx để hỗ trợ build Docker image
+        uses: docker/setup-buildx-action@v2  # Sử dụng action cài đặt Buildx
+
+      - name: Login to DockerHub  # Đăng nhập vào DockerHub
+        uses: docker/login-action@v2  # Sử dụng action đăng nhập DockerHub
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}  # Sử dụng secret để lấy username DockerHub
+          password: ${{ secrets.DOCKER_PASSWORD }}  # Sử dụng secret để lấy password DockerHub
+        
+      - name: Build Docker image  # Xây dựng Docker image
+        run: |
+          docker build -t your-dockerhub-username/your-image-name:latest .  # Lệnh build image Docker
+
+      - name: Push Docker image to DockerHub  # Đẩy Docker image lên DockerHub
+        run: |
+          docker push your-dockerhub-username/your-image-name:latest  # Lệnh push image lên DockerHub
+
+  # Job 'test': Chạy khi có commit vào nhánh main
+  test:
+    runs-on: ubuntu-latest  # Sử dụng môi trường Ubuntu mới nhất
+    needs: build  # Đảm bảo job 'test' chỉ chạy sau khi job 'build' thành công
+    steps:
+      - name: Checkout repository  # Lấy mã nguồn từ repository
+        uses: actions/checkout@v3  # Sử dụng action checkout của GitHub
+
+      - name: Run tests  # Chạy các bài kiểm tra (tests)
+        run: |
+          # Run your tests here  # Lệnh chạy các bài kiểm tra của bạn (ví dụ: test tự động, unit test)
+          echo "Running tests..."  # In ra thông báo chạy test (chỗ này bạn thay thế bằng câu lệnh chạy test thực tế)
+
+  # Job 'deploy': Chạy khi có pull request vào nhánh main
+  deploy:
+    runs-on: ubuntu-latest  # Sử dụng môi trường Ubuntu mới nhất
+    needs: test  # Đảm bảo job 'deploy' chỉ chạy sau khi job 'test' thành công
+    steps:
+      - name: SSH into Server and deploy  # SSH vào server để deploy
+        uses: appleboy/ssh-action@v0.1.6  # Sử dụng action SSH của appleboy
+        with:
+          host: ${{ secrets.SERVER_HOST }}  # Lấy giá trị secret SERVER_HOST (địa chỉ server)
+          username: ${{ secrets.SERVER_USER }}  # Lấy giá trị secret SERVER_USER (tên người dùng SSH)
+          key: ${{ secrets.SERVER_SSH_KEY }}  # Lấy giá trị secret SERVER_SSH_KEY (khóa SSH)
+          script: |
+            cd /path/to/your/repository  # Di chuyển đến thư mục của repository trên server
+            git pull origin main  # Pull mã nguồn mới nhất từ repository GitHub
+            docker-compose down  # Dừng container hiện tại
+            docker-compose up -d  # Khởi động lại container với cấu hình mới (ở chế độ background)
+
+
+            name: CI/CD Pipeline  # Tên của workflow này là "CI/CD Pipeline"
+
+
+
+
+
+
+
+
+on:
+  push:
+    branches:
+      - main  # Khi có commit vào nhánh main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Sử dụng môi trường Ubuntu mới nhất
+    if: ${{ github.actor == 'your-username' }}  
+    # Chỉ chạy job này nếu người thực hiện push là 'your-username'
+    steps:
+      - name: Checkout repository  # Lấy mã nguồn từ repository
+        uses: actions/checkout@v3  # Sử dụng action checkout của GitHub
+
+      - name: Set up Docker Buildx  # Cài đặt Docker Buildx để hỗ trợ build Docker image
+        uses: docker/setup-buildx-action@v2  # Sử dụng action cài đặt Buildx
+
+      - name: Login to DockerHub  # Đăng nhập vào DockerHub
+        uses: docker/login-action@v2  # Sử dụng action đăng nhập DockerHub
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}  # Sử dụng secret để lấy username DockerHub
+          password: ${{ secrets.DOCKER_PASSWORD }}  # Sử dụng secret để lấy password DockerHub
+        
+      - name: Build Docker image  # Xây dựng Docker image
+        run: |
+          docker build -t your-dockerhub-username/your-image-name:latest .  # Lệnh build image Docker
+
+      - name: Push Docker image to DockerHub  # Đẩy Docker image lên DockerHub
+        run: |
+          docker push your-dockerhub-username/your-image-name:latest  # Lệnh push image lên DockerHub

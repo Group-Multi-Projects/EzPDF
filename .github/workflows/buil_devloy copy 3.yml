@@ -1,0 +1,189 @@
+name: CI/CD Pipeline  # Tên của workflow này là "CI/CD Pipeline"
+
+on:
+  workflow_dispatch:  # Trigger workflow thủ công (thông qua giao diện GitHub)
+    inputs:
+      action:
+        description: 'Select action to perform'  # Mô tả cho input người dùng
+        required: true  # Yêu cầu người dùng chọn action
+        default: 'build'  # Mặc định là 'build'
+        type: choice  # Loại input là lựa chọn
+        options:
+          - build  # Lựa chọn 'build'
+          - test  # Lựa chọn 'test'
+          - deploy  # Lựa chọn 'deploy'
+
+jobs:
+  # Job 'build': Chạy khi người dùng chọn 'build' từ giao diện GitHub
+  build:
+    if: ${{ github.event.inputs.action == 'build' }}  
+    # Điều kiện chỉ chạy job này nếu action là 'build'
+    runs-on: ubuntu-latest  # Sử dụng môi trường Ubuntu mới nhất
+    steps:
+      - name: Checkout repository  # Lấy mã nguồn từ repository
+        uses: actions/checkout@v3  # Sử dụng action checkout của GitHub
+
+      - name: Set up Docker Buildx  # Cài đặt Docker Buildx để hỗ trợ build Docker image
+        uses: docker/setup-buildx-action@v2  # Sử dụng action cài đặt Buildx
+
+      - name: Login to DockerHub  # Đăng nhập vào DockerHub
+        uses: docker/login-action@v2  # Sử dụng action đăng nhập DockerHub
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}  # Sử dụng secret để lấy username DockerHub
+          password: ${{ secrets.DOCKER_PASSWORD }}  # Sử dụng secret để lấy password DockerHub
+        
+      - name: Build Docker image  # Xây dựng Docker image
+        run: |
+          docker build -t your-dockerhub-username/your-image-name:latest .
+
+      - name: Push Docker image to DockerHub  # Đẩy Docker image lên DockerHub
+        run: |
+          docker push your-dockerhub-username/your-image-name:latest  
+  # Job 'test': Chạy khi người dùng chọn 'test'
+  test:
+    if: ${{ github.event.inputs.action == 'test' }}  # Điều kiện chỉ chạy job này nếu action là 'test'
+    runs-on: ubuntu-latest  # Sử dụng môi trường Ubuntu mới nhất
+    needs: build  # Đảm bảo job 'test' chỉ chạy sau khi job 'build' thành công
+    steps:
+      - name: Checkout repository  # Lấy mã nguồn từ repository
+        uses: actions/checkout@v3  # Sử dụng action checkout của GitHub
+
+      - name: Run tests  # Chạy các bài kiểm tra (tests)
+        run: |
+          # Run your tests here  # Lệnh chạy các bài kiểm tra của bạn (ví dụ: test tự động, unit test)
+          echo "Running tests..."  # In ra thông báo chạy test (chỗ này bạn thay thế bằng câu lệnh chạy test thực tế)
+
+  # Job 'deploy': Chạy khi người dùng chọn 'deploy'
+  deploy:
+    if: ${{ github.event.inputs.action == 'deploy' }}  # Điều kiện chỉ chạy job này nếu action là 'deploy'
+    runs-on: ubuntu-latest  # Sử dụng môi trường Ubuntu mới nhất
+    needs: test  # Đảm bảo job 'deploy' chỉ chạy sau khi job 'test' thành công
+    steps:
+      - name: SSH into Server and deploy  # SSH vào server để deploy
+        uses: appleboy/ssh-action@v0.1.6  # Sử dụng action SSH của appleboy
+        with:
+          host: ${{ secrets.SERVER_HOST }}  # Lấy giá trị secret SERVER_HOST (địa chỉ server)
+          username: ${{ secrets.SERVER_USER }}  # Lấy giá trị secret SERVER_USER (tên người dùng SSH)
+          key: ${{ secrets.SERVER_SSH_KEY }}  # Lấy giá trị secret SERVER_SSH_KEY (khóa SSH)
+          script: |
+            cd /path/to/your/repository  # Di chuyển đến thư mục của repository trên server
+            git pull origin main  # Pull mã nguồn mới nhất từ repository GitHub
+            docker-compose down  # Dừng container hiện tại
+            docker-compose up -d  # Khởi động lại container với cấu hình mới (ở chế độ background)
+  build_test_deploy:
+
+
+
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clean up old Docker images
+        run: |
+          docker images your-dockerhub-username/your-image-name --format "{{.ID}}" | tail -n +4 | xargs docker rmi -f
+
+
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Hoặc nhánh bạn muốn trigger workflow
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t your-dockerhub-username/your-image-name:latest .
+
+      - name: Push Docker image to DockerHub
+        run: |
+          docker push your-dockerhub-username/your-image-name:latest
+
+      - name: Clean up old Docker images
+        run: |
+          # Liệt kê tất cả các tag của Docker image trên DockerHub và giữ lại 3 image mới nhất
+          docker images your-dockerhub-username/your-image-name --format "{{.Tag}}" | sort -r | tail -n +4 | while read tag; do
+            echo "Deleting image: $tag"
+            docker rmi your-dockerhub-username/your-image-name:$tag || true
+          done
+
+
+ curl -u "$DOCKER_USERNAME:$DOCKER_PASSWORD" -X DELETE "https://hub.docker.com/v2/repositories/your-dockerhub-username/your-image-name/tags/$TAG/"
+         
+
+- name: Clean up old Docker images on DockerHub
+  run: |
+    # Liệt kê các tags của Docker image trên DockerHub và xóa tag cũ
+    TAGS=$(curl -s -u ${{ secrets.DOCKER_USERNAME }}:${{ secrets.DOCKER_PASSWORD }} \
+        "https://hub.docker.com/v2/repositories/${{ secrets.DOCKER_USERNAME }}/your-image-name/tags/?page_size=100" \
+        | jq -r '.results[].name' | sort -r | tail -n +4)
+    
+    # Xóa từng tag cũ
+    for TAG in $TAGS; do
+      echo "Deleting image tag: $TAG"
+      curl -s -u ${{ secrets.DOCKER_USERNAME }}:${{ secrets.DOCKER_PASSWORD }} \
+          -X DELETE "https://hub.docker.com/v2/repositories/${{ secrets.DOCKER_USERNAME }}/your-image-name/tags/$TAG/"
+    done
+
+
+
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Get current timestamp
+        id: timestamp
+        run: echo "::set-output name=timestamp::$(date +'%Y%m%d%H%M%S')"  # Tạo timestamp
+
+      - name: Build Docker image
+        run: |
+          docker build -t your-dockerhub-username/your-image-name:${{ steps.timestamp.outputs.timestamp }} .
+
+      - name: Push Docker image to DockerHub
+        run: |
+          docker push your-dockerhub-username/your-image-name:${{ steps.timestamp.outputs.timestamp }}
+
+      - name: Clean up old Docker images
+        run: |
+          # Liệt kê tất cả các tag trên DockerHub và giữ lại 3 image mới nhất
+          docker images your-dockerhub-username/your-image-name --format "{{.Tag}}" | sort -r | tail -n +4 | while read tag; do
+            echo "Deleting image: $tag"
+            docker rmi your-dockerhub-username/your-image-name:$tag || true
+          done

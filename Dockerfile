@@ -5,9 +5,14 @@ COPY . .
 CMD ["gunicorn", "EzPDF.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]
 
 
+# dockr compose 
 
-
-
+# services:
+#     app:
+#       image: your-dockerhub-username/your-image-name:${IMAGE_TAG}
+#       environment:
+#         - IMAGE_TAG=latest
+  
 
 
 
