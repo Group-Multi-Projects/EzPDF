@@ -88,15 +88,15 @@ jobs:
             
             echo "Pulling latest changes from Git repository..."
             # Kiểm tra xem thư mục /app có tồn tại không
-            if [ ! -d "/app" ]; then
-              echo "Thư mục /app không tồn tại, tạo mới..."
-              sudo mkdir /app
+            if [ ! -d "/home/ubuntu/app" ]; then
+              echo "Thư mục /home/ubuntu/app không tồn tại, tạo mới..."
+              sudo mkdir /home/ubuntu/app
             else
-              echo "Thư mục /app đã tồn tại."
+              echo "Thư mục /home/ubuntu/app đã tồn tại."
             fi
 
             # Di chuyển vào thư mục /app
-            cd /app
+            cd /home/ubuntu/app
             git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/Group-Multi-Projects/EzPDF.git
             git pull origin main
             
