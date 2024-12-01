@@ -88,12 +88,12 @@ jobs:
             
             echo "Pulling latest changes from Git repository..."
             # Kiểm tra xem thư mục /app có tồn tại không
-            if [ ! -d "/home/ubuntu/app" ]; then
-              echo "Thư mục /home/ubuntu/app không tồn tại, tạo mới..."
-              sudo mkdir /home/ubuntu/app
-            else
-              echo "Thư mục /home/ubuntu/app đã tồn tại."
-            fi
+            # if [ ! -d "/home/ubuntu/app" ]; then
+            #   echo "Thư mục /home/ubuntu/app không tồn tại, tạo mới..."
+            #   sudo mkdir /home/ubuntu/app
+            # else
+            #   echo "Thư mục /home/ubuntu/app đã tồn tại."
+            # fi
 
             # Di chuyển vào thư mục /app
             cd /home/ubuntu/app
