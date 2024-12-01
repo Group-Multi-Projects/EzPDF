@@ -90,7 +90,7 @@ jobs:
             # Kiểm tra xem thư mục /app có tồn tại không
             if [ ! -d "/app" ]; then
               echo "Thư mục /app không tồn tại, tạo mới..."
-              mkdir /app
+              sudo mkdir /app
             else
               echo "Thư mục /app đã tồn tại."
             fi
