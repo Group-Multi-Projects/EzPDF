@@ -33,7 +33,7 @@ jobs:
 
       - name: Get current timestamp
         id: timestamp
-        run: echo "timestamp=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+        run: echo "timestamp=$(date +'%Y_%m_%d_%H%M%S')" >> $GITHUB_ENV
 
       - name: Build Docker image
         run: |
