@@ -35,15 +35,15 @@ jobs:
 
       - name: Get current timestamp
         id: timestamp
-        run: echo "::set-output name=timestamp::$(date +'%Y%m%d%H%M%S')"  # Tạo timestamp
+        run: echo "timestamp=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
 
       - name: Build Docker image
         run: |
-          docker build -t nhothoang/webezpdf:${{ steps.timestamp.outputs.timestamp }} .
+          docker build -t nhothoang/webezpdf:$timestamp .
 
       - name: Push Docker image to DockerHub
         run: |
-          docker push nhothoang/webezpdf:${{ steps.timestamp.outputs.timestamp }}:
+          docker push nhothoang/webezpdf:$timestamp
 
   # Job 'test': Chạy các bài kiểm tra
   test:
