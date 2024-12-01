@@ -138,6 +138,4 @@ jobs:
             cd /path/to/your/repository
             docker-compose down
             docker-compose up -d --build-arg IMAGE_TAG=$PREVIOUS_TAG
-            echo "Rollback to version $PREVIOUS_TAG completed!"
-fbskjgfjka
-fagsjkfgsalkf
+            echo "Rolasdsalback toregrutyfdsfsdfsdfsfsafsdfsdfdsfsdfsdfdsfsdfdsopptuiqwetyi version $PasdsaREVI
