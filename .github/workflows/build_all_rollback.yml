@@ -12,6 +12,10 @@ on:
           - build
           - run-all
           - rollback  # Tùy chọn rollback
+      ref: 
+        description: 'Select branch or tag to run the workflow'
+        required: true
+        default: 'main'
 jobs:
   # Job 'build': Xây dựng Docker image
   build:
@@ -30,17 +34,18 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Get current timestamp
-        id: timestamp
-        run: echo "timestamp=$(date +'%Y_%m_%d_%H%M%S')" >> $GITHUB_ENV
+      # - name: Get current timestamp
+      #   id: timestamp
+      #   run: echo "timestamp=$(date +'%Y_%m_%d_%H%M%S')" >> $GITHUB_ENV
 
       - name: Build Docker image
         run: |
-          docker build -f docker-compose-build-image-web -t nhothoang/webezpdf:lasttest .
+          docker build -t nhothoang/webezpdf:latest .
 
       - name: Push Docker image to DockerHub
         run: |
-          docker push nhothoang/webezpdf:$timestamp
+          docker push nhothoang/webezpdf:latest
+  # Job 'test': Chạy các bài kiểm tra
   test:
     if: ${{ github.event.inputs.action == 'run-all' }}
     runs-on: ubuntu-latest
@@ -81,10 +86,9 @@ jobs:
             echo "Latest image tag: $latest_tag"
 
             echo "Pulling the latest Docker image..."
-            docker pull nhothoang/webezpdf:lasttest
+            docker pull nhothoang/webezpdf:latest
             
             echo "Pulling latest changes from Git repository..."
-            Kiểm tra xem thư mục /app có tồn tại không
             if [ ! -d "/home/ubuntu/app" ]; then
               echo "Thư mục /home/ubuntu/app không tồn tại, tạo mới..."
               sudo mkdir /home/ubuntu/app
@@ -94,9 +98,11 @@ jobs:
 
            
             cd /home/ubuntu/app
-            # git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/Group-Multi-Projects/EzPDF.git
-            # git pull origin main
-            
+            git init
+            git remote add origin https://${{ secrets.GITHUB_TOKEN }}@github.com/NhoThoang/abc.git
+            git fetch origin static_pull
+            git reset --hard origin/static_pull
+
             echo "Shutting down existing containers and removing images..."
             docker-compose down --rmi all
             
@@ -110,18 +116,23 @@ jobs:
     if: ${{ github.event.inputs.action == 'rollback' }}
     runs-on: ubuntu-latest
     steps:
-      - name: SSH into Server for Rollback
+      - name: Create SSH Key
+        run: |
+          echo "${{ secrets.EC2_PEM_KEY }}" > ec2-key.pem
+          chmod 600 ec2-key.pem  # Đặt quyền chỉ đọc cho file key
+
+      - name: SSH into EC2 and deploy
         uses: appleboy/ssh-action@v0.1.6
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key_path: ec2-key.pem
           script: |
             set -e
             echo "Rolling back to previous version..."
             
             # Lấy tag của phiên bản trước
-            PREVIOUS_TAG=$(docker images your-dockerhub-username/your-image-name --format '{{.Tag}}' | tail -n 2 | head -n 1)
+            PREVIOUS_TAG=$(docker images nhothoang/webezpdf --format '{{.Tag}}' | tail -n 2 | head -n 1)
             
             # Kiểm tra phiên bản trước
             if [ -z "$PREVIOUS_TAG" ]; then
@@ -132,7 +143,23 @@ jobs:
             echo "Found previous version: $PREVIOUS_TAG"
             
             # Rollback ứng dụng
-            cd /path/to/your/repository
+            cd /home/ubuntu/app
             docker-compose down
             docker-compose up -d --build-arg IMAGE_TAG=$PREVIOUS_TAG
             echo "Rollback to version $PREVIOUS_TAG completed!"
+
+
+
+
+
+# on:
+#   push:
+#     branches:
+#       - main  # Khi có commit vào nhánh main
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest  # Sử dụng môi trường Ubuntu mới nhất
+#     if: ${{ github.actor == 'your-username' }}  
+#     # Chỉ chạy job này nếu người thực hiện push là 'your-username'
+#     steps:
