@@ -33,13 +33,17 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Get current timestamp
+        id: timestamp
+        run: echo "::set-output name=timestamp::$(date +'%Y%m%d%H%M%S')"  # Tạo timestamp
+
       - name: Build Docker image
         run: |
-          docker build -t your-dockerhub-username/your-image-name:latest .
+          docker build -t nhothoang/webezpdf:${{ steps.timestamp.outputs.timestamp }} .
 
       - name: Push Docker image to DockerHub
         run: |
-          docker push your-dockerhub-username/your-image-name:latest
+          docker push nhothoang/webezpdf:${{ steps.timestamp.outputs.timestamp }}:
 
   # Job 'test': Chạy các bài kiểm tra
   test:
