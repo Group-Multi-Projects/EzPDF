@@ -12,26 +12,28 @@ on:
           - build
           - run-all
           - rollback  # Tùy chọn rollback
-      ref:  # Thêm input để chọn branch hoặc tag
+      ref:  # Thêm selection để chọn branch hoặc tag
         description: 'Select branch or tag to run the workflow'
         required: true
-        default: 'main'
+        type: choice
+        options:  # Danh sách các branch hoặc tag có thể chọn
+          - refs/heads/main  # Nhánh main
+          - refs/heads/develop  # Nhánh develop
+          - refs/tags/v1.0.0  # Tag phiên bản 1.0.0
+          - refs/tags/v1.1.0  # Tag phiên bản 1.1.0
 
 jobs:
   # Job 'build': Xây dựng Docker image
   build:
-    # Điều kiện chạy job này:
-    # - Phải là nhánh 'main' hoặc tag bắt đầu với 'v'
-    # - Phải chọn action là 'run-all' hoặc 'build'
     if: >
       (github.event.inputs.action == 'run-all' || github.event.inputs.action == 'build') &&
-      (startsWith(github.event.inputs.ref, 'refs/heads/main') || startsWith(github.event.inputs.ref, 'refs/tags/v'))
+      (startsWith(github.event.inputs.ref, 'refs/heads/') || startsWith(github.event.inputs.ref, 'refs/tags/'))
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.inputs.ref }}  # Sử dụng branch hoặc tag được chọn
+          ref: ${{ github.event.inputs.ref }}
 
       - name: Print action and ref
         run: |
