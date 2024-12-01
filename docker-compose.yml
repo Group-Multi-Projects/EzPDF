@@ -1,8 +1,30 @@
 services:
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: dinhthai2004
+      MYSQL_DATABASE: ezpdf
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db_logs:/var/log/mysql 
+      - ./my.cnf:/etc/mysql/mysql.cnf 
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -pdinhthai2004 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
   # Django Web Application
   web:
-    build: .
-    image: web_ezpdf:latest
+    image: nhothoang/webezpdf:lasttest
     container_name: django_app
     restart: unless-stopped
     depends_on:
@@ -11,7 +33,7 @@ services:
     volumes:
       - ./static:/app/static
       - ./media:/app/media
-      - ./logs:/app/logs
+      - ./logs:/app/django.log
     env_file:
       - .env
     deploy:
@@ -35,57 +57,23 @@ services:
         python manage.py shell < create_superuser.py &&
         python manage.py runserver 0.0.0.0:8000"
 
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    environment:
+      - SERVER_NAME=0.0.0.0
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./nginx/logs:/var/log/nginx
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
-
-
-
-
-
-  # MySQL Service
-  # db:
-  #   image: mysql:8.0
-  #   container_name: mysql_db
-  #   restart: unless-stopped
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: dinhthai2004
-  #     MYSQL_DATABASE: ezpdf
-  #   ports:
-  #     - "3307:3306"
-  #   volumes:
-  #     - mysql_data:/var/lib/mysql
-  #     - ./db_logs:/var/log/mysql 
-  #     - ./my.cnf:/etc/mysql/mysql.cnf 
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #       max-file: "3"
-
-
-  #   healthcheck:
-  #     test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -pdinhthai2004 || exit 1"]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 3
-
-
-  # nginx:
-  #   build: ./nginx
-  #   container_name: nginx
-  #   environment:
-  #     - SERVER_NAME=0.0.0.0
-  #   restart: unless-stopped
-  #   network_mode: host
-  #   volumes:
-  #     - ./nginx/logs:/var/log/nginx
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #       max-file: "3"
-
-# volumes:
-#   mysql_data:
+volumes:
+  mysql_data:
 
 
 
