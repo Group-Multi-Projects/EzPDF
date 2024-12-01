@@ -12,7 +12,6 @@ on:
           - build
           - run-all
           - rollback  # Tùy chọn rollback
-
 jobs:
   # Job 'build': Xây dựng Docker image
   build:

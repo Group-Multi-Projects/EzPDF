@@ -263,3 +263,41 @@ CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS')
 # CELERY_TASK_SERIALIZER = env('CELERY_TASK_SERIALIZER')
 # CELERY_TIMEZONE = env('CELERY_TIMEZONE')
 # CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND')
+
+from django.http import HttpResponse
+import logging
+import os
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',  # Chỉ nhận log từ cấp INFO trở lên
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'django.log'),
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'INFO',  # Chỉ nhận log từ cấp INFO trở lên
+            'propagate': False,
+        },
+        'django.server': {
+            'handlers': ['file'],
+            'level': 'INFO',  # Chỉ nhận log từ cấp INFO trở lên
+            'propagate': False,
+        },
+    },
+    'root': {
+        'handlers': ['file'],
+        'level': 'INFO',  # Chỉ ghi log từ cấp INFO trở lên
+    },
+}
