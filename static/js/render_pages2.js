@@ -26,7 +26,7 @@ var objAllChangesEvent = {
 // function end_loading_page() {} here
 $.ajax({
     type: "GET",
-    url: `http://127.0.0.1:8000/media/${file_path}`,
+    url: `/media/${file_path}`,
     xhrFields: {
         responseType: 'arraybuffer'
     },
@@ -131,7 +131,7 @@ $("#save_all_changes").click(function (e) {
     objAllChangesEvent.file_id = file_id; // Thêm file_id vào đối tượng
     $.ajax({
         type: "POST",
-        url: "http://127.0.0.1:8000/tools/getalldatas/",
+        url: "/tools/getalldatas/",
         data: JSON.stringify(objAllChangesEvent),
         contentType: "application/json",
         headers: {

@@ -46,7 +46,7 @@ def list_files(request):
     }
     return render(request,"File/project_after_login.html",context)
 def get_jwt_token(username, password):
-    url = 'http://127.0.0.1:8000/auth/api/token/'
+    url = '/auth/api/token/'
     data = {
         'username': username,
         'password': password

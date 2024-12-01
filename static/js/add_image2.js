@@ -133,7 +133,7 @@ function handleCreateBoxToolsEditImage(img,fabricCanvas) {
 
             $.ajax({
                 type: "DELETE",
-                url: `http://127.0.0.1:8000/tools/tools_api/${item_id}/`,
+                url: `/tools/tools_api/${item_id}/`,
                 dataType: "json",
                 headers: {
                     "Authorization": "Bearer " + token
@@ -239,7 +239,7 @@ function renderImage() {
         const token = document.querySelector("#user-token").textContent
         $.ajax({
             type: "GET",
-            url: `http://127.0.0.1:8000/tools/image_added_api/${file_id}/`,
+            url: `/tools/image_added_api/${file_id}/`,
             dataType: "json",
             headers: {
                 "Authorization": "Bearer " + token
