@@ -16,10 +16,6 @@ on:
         description: 'Select branch or tag to run the workflow'
         required: true
         default: 'main'
-      ref: 
-        description: 'Select branch or tag to run the workflow'
-        required: true
-        default: 'main'
 jobs:
   # Job 'build': Xây dựng Docker image
   build:

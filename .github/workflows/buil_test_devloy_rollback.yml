@@ -13,6 +13,10 @@ on:
           - test
           - deploy
           - rollback  # Tùy chọn rollback
+      ref: 
+        description: 'Select branch or tag to run the workflow'
+        required: true
+        default: 'main'
 
 jobs:
   # Job 'build': Xây dựng Docker image
@@ -32,17 +36,21 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Get current timestamp
-        id: timestamp
-        run: echo "timestamp=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+      # - name: Get current timestamp
+      #   id: timestamp
+      #   run: echo "timestamp=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+
+      - name: get short SHA of commit
+        id: sha
+        run: echo "short_sha=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
 
       - name: Build Docker image
         run: |
-          docker build -t nhothoang/webezpdf:$timestamp .
+          docker build -t nhothoang/webezpdf:${{ steps.sha.outputs.short_sha }} .
 
       - name: Push Docker image to DockerHub
         run: |
-          docker push nhothoang/webezpdf:$timestamp
+          docker push nhothoang/webezpdf:${{ steps.sha.outputs.short_sha }}
   # Job 'test': Chạy các bài kiểm tra
   test:
     if: ${{ github.event.inputs.action == 'test' }}
@@ -58,13 +66,14 @@ jobs:
 
   # Job 'deploy': Triển khai ứng dụng
   deploy:
-    if: ${{ github.event.inputs.action == 'deploy' }}
+    if: ${{ github.event.inputs.action == 'run-all' }}
     runs-on: ubuntu-latest
+    needs: test
     steps:
       - name: Create SSH Key
         run: |
           echo "${{ secrets.EC2_PEM_KEY }}" > ec2-key.pem
-          chmod 600 ec2-key.pem  # Đặt quyền chỉ đọc cho file key
+          chmod 600 ec2-key.pem 
 
       - name: SSH into EC2 and deploy
         uses: appleboy/ssh-action@v0.1.6
@@ -77,27 +86,33 @@ jobs:
             echo "Logging into DockerHub..."
             echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
             
-            
-            echo "Getting the latest Docker image tag..."
-            # Liệt kê tất cả tags của hình ảnh từ DockerHub và lấy tag mới nhất
-            latest_tag=$(curl -s "https://hub.docker.com/v2/repositories/nhothoang/webezpdf/tags" | jq -r '.results[0].name')
-            echo "Latest image tag: $latest_tag"
+            # echo "Getting the latest Docker image tag..."
+            # latest_tag=$(curl -s "https://hub.docker.com/repository/docker/nhothoang/webezpdf/tags" | jq -r '.results[0].name')
+            # echo "Latest image tag: $latest_tag"
 
 
             echo "Pulling the latest Docker image..."
-            docker pull nhothoang/webezpdf:$latest_tag
+            docker pull nhothoang/webezpdf:${{ needs.build.outputs.short_sha }}
             
             echo "Pulling latest changes from Git repository..."
-            
-            git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/NhoThoang/abc.git
-            git pull origin main
-            cd /abc
-            
+            if [ ! -d "/home/ubuntu/app" ]; then
+              echo "Thư mục /home/ubuntu/app không tồn tại, tạo mới..."
+              sudo mkdir /home/ubuntu/app
+              git init
+              git remote add origin https://${{ secrets.GITHUB_TOKEN }}@github.com/NhoThoang/abc.git
+            else
+              echo "Thư mục /home/ubuntu/app đã tồn tại."
+            fi
+        
+            cd /home/ubuntu/app
+            git fetch origin static_pull
+            git reset --hard origin/static_pull
+
             echo "Shutting down existing containers and removing images..."
             docker-compose down --rmi all
             
             echo "Starting containers with the latest image..."
-            docker-compose up -d
+            docker-compose -f docker-compose1.yml up -d
             
             echo "Deployment completed!"
 
