@@ -44,7 +44,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t nhothoang/webezpdf:${{ steps.sha.outputs.short_sha }} .
+          docker build -t nhothoang/webezpdf:${{ env.short_sha }} .
 
       - name: Push Docker image to DockerHub
         run: |
