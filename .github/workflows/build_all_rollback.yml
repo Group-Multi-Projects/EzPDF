@@ -121,7 +121,7 @@ jobs:
             docker-compose down --rmi all
             
             echo "Starting containers with the latest image..."
-            docker-compose -f docker-compose.yml up -d
+            docker-compose up -d
             
             echo "Deployment completed!"
 
