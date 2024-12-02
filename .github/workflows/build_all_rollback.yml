@@ -78,10 +78,8 @@ jobs:
         id: sha_deploy
         run: |
           echo "short_sha=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
-          export SHORT_SHA=${{ env.short_sha }}
+          # export SHORT_SHA=${{ env.short_sha }}
           # sed -i "s/^SHORT_SHA=.*/SHORT_SHA=${{ env.short_sha }}/" .env || echo "SHORT_SHA=${{ env.short_sha }}" >> .env
-
-
 
       - name: SSH into EC2 and deploy
         uses: appleboy/ssh-action@v0.1.6
@@ -102,13 +100,15 @@ jobs:
 
             echo "Pulling the latest Docker image..."
             docker pull nhothoang/webezpdf:${{ env.short_sha }}
+            export SHORT_SHA=${{ env.short_sha }}
             
             echo "Pulling latest changes from Git repository..."
             if [ ! -d "/home/ubuntu/app" ]; then
               echo "Thư mục /home/ubuntu/app không tồn tại, tạo mới..."
               sudo mkdir /home/ubuntu/app
               git init
-              git remote add origin https://${{ secrets.GITHUB_TOKEN }}@github.com/NhoThoang/abc.git
+              # git remote add origin https://${{ secrets.GITHUB_TOKEN }}@github.com/NhoThoang/abc.git
+              git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/NhoThoang/abc.git
             else
               echo "Thư mục /home/ubuntu/app đã tồn tại."
             fi
@@ -121,7 +121,7 @@ jobs:
             docker-compose down --rmi all
             
             echo "Starting containers with the latest image..."
-            docker-compose -f docker-compose1.yml up -d
+            docker-compose -f docker-compose.yml up -d
             
             echo "Deployment completed!"
 
