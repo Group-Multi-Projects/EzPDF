@@ -36,7 +36,7 @@ services:
     volumes:
       - ./static:/app/static
       - ./media:/app/media
-      - ./logs/web:/app/logs/web/django.log
+      - ./logs/web:/app/logs/web
     env_file:
       - .env
     deploy:
