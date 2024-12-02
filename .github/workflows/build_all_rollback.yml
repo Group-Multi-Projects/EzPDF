@@ -76,7 +76,11 @@ jobs:
           
       - name: Get short SHA of commit (again)
         id: sha_deploy
-        run: echo "short_sha=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
+        run: |
+          echo "short_sha=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
+          export SHORT_SHA=${{ env.short_sha }}
+          # sed -i "s/^SHORT_SHA=.*/SHORT_SHA=${{ env.short_sha }}/" .env || echo "SHORT_SHA=${{ env.short_sha }}" >> .env
+
 
 
       - name: SSH into EC2 and deploy
