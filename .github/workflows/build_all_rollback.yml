@@ -16,6 +16,10 @@ on:
         description: 'Select branch or tag to run the workflow'
         required: true
         default: 'main'
+      ref: 
+        description: 'Select branch or tag to run the workflow'
+        required: true
+        default: 'main'
 jobs:
   # Job 'build': Xây dựng Docker image
   build:
@@ -111,7 +115,7 @@ jobs:
             docker-compose down --rmi all
             
             echo "Starting containers with the latest image..."
-            docker-compose up -d
+            docker-compose -f docker-compose1.yml up -d
             
             echo "Deployment completed!"
 
