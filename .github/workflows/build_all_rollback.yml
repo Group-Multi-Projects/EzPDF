@@ -48,7 +48,7 @@ jobs:
 
       - name: Push Docker image to DockerHub
         run: |
-          docker push nhothoang/webezpdf:${{ steps.sha.outputs.short_sha }}
+          docker push nhothoang/webezpdf:${{ env.short_sha }}
   # Job 'test': Chạy các bài kiểm tra
   test:
     if: ${{ github.event.inputs.action == 'run-all' }}
@@ -73,6 +73,11 @@ jobs:
         run: |
           echo "${{ secrets.EC2_PEM_KEY }}" > ec2-key.pem
           chmod 600 ec2-key.pem 
+          
+      - name: Get short SHA of commit (again)
+        id: sha_deploy
+        run: echo "short_sha=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
+
 
       - name: SSH into EC2 and deploy
         uses: appleboy/ssh-action@v0.1.6
@@ -90,8 +95,9 @@ jobs:
             # echo "Latest image tag: $latest_tag"
 
 
+
             echo "Pulling the latest Docker image..."
-            docker pull nhothoang/webezpdf:${{ needs.build.outputs.short_sha }}
+            docker pull nhothoang/webezpdf:${{ env.short_sha }}
             
             echo "Pulling latest changes from Git repository..."
             if [ ! -d "/home/ubuntu/app" ]; then
