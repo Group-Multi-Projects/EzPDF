@@ -68,7 +68,6 @@ jobs:
   deploy:
     if: ${{ github.event.inputs.action == 'run-all' }}
     runs-on: ubuntu-latest
-    needs: test
     steps:
       - name: Create SSH Key
         run: |
