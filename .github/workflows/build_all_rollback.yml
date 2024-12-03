@@ -152,10 +152,8 @@ jobs:
             if [ -z "$PREVIOUS_TAG" ]; then
               echo "No previous version found. Rollback failed!"
               exit 1
-            fi
-            
+            fi    
             echo "Found previous version: $PREVIOUS_TAG"
-            
             # Rollback ứng dụng
             cd /home/ubuntu/app
             docker-compose down
