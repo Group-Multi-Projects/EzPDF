@@ -107,8 +107,8 @@ jobs:
               echo "Thư mục /home/ubuntu/app không tồn tại, tạo mới..."
               sudo mkdir /home/ubuntu/app
               git init
-              # git remote add origin https://${{ secrets.GITHUB_TOKEN }}@github.com/NhoThoang/abc.git
-              git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/NhoThoang/abc.git
+              # git remote add origin https://${{ secrets.GITHUB_TOKEN }}@github.com/Group-Multi-Projects/EzPDF.git
+              git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/Group-Multi-Projects/EzPDF.git
             else
               echo "Thư mục /home/ubuntu/app đã tồn tại."
             fi
