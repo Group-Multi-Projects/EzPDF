@@ -1,0 +1,7 @@
+.navbar > ul {
+    display: flex;
+    list-style: none;
+}
+.navbar > ul > li {
+    margin-left: 50px;
+}

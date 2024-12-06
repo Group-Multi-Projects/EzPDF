@@ -1,0 +1,358 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Display:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: "Noto Sans", sans-serif;}
+
+.container-fluid {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar {
+    background-color: #ffffff;
+    height: 15vh;
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.pdf-viewer {
+    z-index: 1;
+    padding-top: 5rem;
+    flex-grow: 1;
+    background-color: #e5e5e5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pdf-page {
+    width: 80%;
+    height: 100%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 7rem 0;
+}
+.logo img
+{
+    height: 4rem;
+    width: 4rem;
+}
+.back
+{
+    text-decoration: none;
+    color: #b42fae;
+    display: none;
+}
+.back>i{font-size: 1.5rem;}
+.btn-show-pages
+{
+    background-color: white;
+    border: 0.3px solid rgb(207, 207, 207);
+    border-radius: 5px;
+    margin: 0 1.5rem;
+}
+.btn-show-pages img
+{
+    height: 2.5rem;
+    width: 2.5rem;
+}
+/* SIDEBAR */
+.sidebar {
+    width: 250px; /* Giảm chiều rộng của sidebar */
+    height: 100%; /* Trừ chiều cao của toolbar */
+    position: fixed;
+    top: calc(100vh - 84.5vh); /* Đặt sidebar bắt đầu dưới toolbar */
+    left: -250px; /* Ẩn sidebar ban đầu */
+    background-color: #f4f4f4;
+    z-index: 999;
+    transition: left 0.3s ease-in-out;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+}
+
+.sidebar-header {
+    position: sticky; /* Giữ cố định */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ccc;
+}
+#page
+{
+    padding: 0.4rem 0.7rem;
+    background-color: #b4b4b4;
+    border-radius: 5px;
+}
+
+.sidebar-content {
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.pages-layout
+{
+    height: 16rem;
+    background-color: #b9b9b9;
+
+}
+
+.sidebar.active {
+    left: 0; /* Hiển thị sidebar khi có class .active */
+}
+
+#closeSidebar {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+#closeSidebar:hover{background-color: #b4b4b4; border-radius: 5px;}
+
+
+
+.btn-outline-secondary img
+{
+    height: 1.3rem;
+    width: 1.3rem;
+}
+.btn {
+    --bs-btn-padding-x: 0.5rem;
+    --bs-btn-padding-y: 0.3rem;
+}
+.btn-outline-secondary 
+{
+    --bs-btn-color: #6c757d;
+    --bs-btn-border-color: #cecece;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #cfcfcf;
+    --bs-btn-hover-border-color: #6c757d;
+}
+.draw,
+.write,
+.images,
+.add_shapes
+{
+    margin: 0 3rem;
+}  
+
+#myColor {
+  width: 2rem;   
+  height: 2rem;  
+  border-radius: 50%;  
+  padding: 0;    
+  border: 1px solid #dfdfdf; 
+  cursor: pointer;  
+}
+
+.save-all
+{
+    padding: 0.5rem 1rem;
+    background-color: rgb(197, 50, 197);
+    border: none;
+    border-radius: 7px;
+    margin-right: 3rem;
+}
+.save-all:hover {    background-color: rgb(170, 41, 170);
+}
+.bi-download
+{
+    color: white;
+    margin-right: 0.5rem;
+}
+.text-center span
+{
+    color: #868686;
+}
+
+
+
+/* TOOLBAR */
+.toolbar {
+    display: flex;
+    align-items: center;
+    border: 1px solid #e0e0e0;
+    padding: 0.5rem  1rem;
+    border-radius: 5px;
+    background-color: rgb(240, 240, 240);
+}
+.font-select-container
+{
+    position: relative;
+}
+.bi-caret-down-fill{
+    position: absolute;
+    right: 0.5rem;
+    bottom: 0.3rem;
+}
+.font-select {
+    padding: 0.3rem 1.5rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    appearance: none;
+    font-size: 14px;
+}
+
+.font-size-control {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 2rem;
+    overflow: hidden;
+}
+
+.font-size-control button {
+    padding: 5px;
+    border: none;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.font-size-control .font-size {
+    width: 30px;
+    text-align: center;
+    border: none;
+    font-size: 14px;
+    padding: 5px;
+    background-color: white;
+    border-left:  1px solid #ccc;
+    border-right: 1px solid #ccc;
+
+
+}
+
+.text-style-control {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.text-style-control button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: bold;
+}
+
+.text-style-control button.italic {
+    font-style: italic;
+}
+
+.text-style-control button.bold {
+    font-weight: bold;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+
+}
+
+.text-style-control button.underline {
+    text-decoration: underline;
+}
+.item-hover:hover
+{
+    background-color: #a3a3a3;
+}
+
+
+@media only screen and (max-width: 768px) {
+    /* Navbar */
+    .navbar {
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .logo img {
+        display: none;
+    }
+    .back{ display: block;}
+    .btn-show-pages { margin: 0;}
+    .btn-show-pages img {
+        height: 2rem;
+        width: 2rem;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        top: calc(100vh - 84.5vh); /* Đặt sidebar bắt đầu dưới toolbar */
+
+    }
+    .sidebar.active {
+        left: 0;
+    }
+
+    /* PDF Viewer */
+    .pdf-viewer {
+        padding-top: 3.5rem;
+    }
+
+    /* Toolbar
+    .toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 0.5rem;
+    }
+    .font-select-container {
+        width: 100%;
+    }
+    .font-size-control, .text-style-control {
+        width: 100%;
+        justify-content: space-between;
+    } */
+
+    /* PDF Page */
+    .pdf-page {
+        width: 95%;
+        margin: 1rem auto;
+    }
+    
+    /* Color Picker */
+    .color-picker {
+        margin-top: 0.5rem;
+    }
+    
+    /* Other adjustments */
+    .draw, .write, .images, .add_shapes {
+        margin: 0;
+    }
+    .save-all {
+        margin-right: 1rem;
+        font-size: 0.8rem;
+        padding: 0.4rem;
+    }
+    .text-center span {
+        font-size: 0.8rem;
+    }
+    .save-all>span,
+    .description-tools
+    {
+        display: none;
+    }
+    .bi-download{margin: 0; padding: 0 0.3rem;}
+}
