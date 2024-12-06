@@ -1,243 +1,66 @@
+version: '3.8'
+
 services:
-  # MySQL Service
   db:
     image: mysql:8.0
-    container_name: mysql_db
-    restart: unless-stopped
+    container_name: mysql_container
     environment:
-      MYSQL_ROOT_PASSWORD: dinhthai2004
-      MYSQL_DATABASE: ezpdf
+      MYSQL_ROOT_PASSWORD: dinhthai2004  # Đặt mật khẩu cho người dùng root
+      MYSQL_DATABASE: ezpdf               # Tạo database mặc định
     ports:
-      - "3307:3306"
+      - "3306:3306"
     volumes:
-      - ./logs/database:/var/lib/mysql
-      - ./logs/database:/var/log/mysql 
-      - ./mysql/mysql.cnf:/etc/mysql/mysql.cnf 
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -pdinhthai2004 || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+      - db_data:/var/lib/mysql
 
-  # Django Web Application
+
+  redis:
+    image: redis:latest
+    container_name: redis_container
+    ports:
+      - "6379:6379"
+
   web:
-    build: .
-    image: nhothoang/webezpdf:latest
-    container_name: django_app
-    restart: unless-stopped
-    depends_on:
-      db:
-        condition: service_healthy
-    volumes:
-      - ./static:/app/static
-      - ./media:/app/media
-      - ./logs/web:/app/logs/web
-    env_file:
-      - .env
-    deploy:
-      resources:
-        limits:
-          memory: 1G 
-          cpus: "1.0" 
-        reservations:
-          memory: 1G  
-          cpus: "0.5" 
+    image: theodorescsa/ezpdf-lib-requirements:latest
+    container_name: ezpdf_web
+    build:
+      context: .
     ports:
       - "8000:8000"
-
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-    command: >
-      sh -c "python manage.py migrate &&
-        python manage.py shell < create_superuser.py &&
-        python manage.py runserver 0.0.0.0:8000"
-
-  nginx:
-    build: ./nginx
-    container_name: nginx
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - .env  # Thêm dòng này để container nhận các biến môi trường từ file .env
     environment:
-      - SERVER_NAME=0.0.0.0
-    restart: unless-stopped
-    network_mode: host
+      - DJANGO_SETTINGS_MODULE=EzPDF.settings
+      - DATABASE_NAME=ezpdf
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=dinhthai2004
+      - DATABASE_HOST=db
+      - DATABASE_PORT=3306
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
     volumes:
-      - ./logs/nginx:/var/log/nginx
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+      - .:/app
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+  celery:
+    image: theodorescsa/ezpdf:latest
+    container_name: celery_worker
+    build:
+      context: .
+    depends_on:
+      - db
+      - redis
+    command: celery -A EzPDF worker --loglevel=info
+    env_file:
+      - .env  # Thêm dòng này để container nhận các biến môi trường từ file .env
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+
+    volumes:
+      - .:/app
+
 
 volumes:
-  mysql_data:
-
-# ágfhs
-# àhajksfs
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# version: "3.9"
-
-# services:
-#   db:
-#     image: mysql:8.0
-#     container_name: mysql_db
-#     restart: always
-#     environment:
-#       MYSQL_ROOT_PASSWORD: dinhthai2004
-#       MYSQL_DATABASE: ezpdf
-#     ports:
-#       - "3307:3306"
-#     volumes:
-#       - mysql_data:/var/lib/mysql
-
-#   healthcheck:
-#     test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -prootpassword || exit 1"]
-#     interval: 10s
-#     timeout: 5s
-#     retries: 3
-
-
-
-
-#   web:
-#     build: .
-#     image: web_ezpdf:latest
-#     # image: dinhthai0312/ezpdf:v1
-#     container_name: django_app
-#     restart: unless-stopped
-#     # network_mode: host
-#     logging:
-#       driver: "json-file"
-#       options:
-#         max-size: "10m"
-#         max-file: "3"
-#     depends_on:
-#       - db:
-#           condition: service_healthy
-#     volumes:
-#       - ./static:/app/static  # Mount thư mục static từ host vào container
-#       - ./media:/app/media  # Mount thư mục media từ host vào container
-#     env_file:
-#       - .env 
-#     # environment:
-#     #   - DJANGO_SUPERUSER_USERNAME=admin
-#     #   - DJANGO_SUPERUSER_EMAIL=admin@example.com
-#     #   - DJANGO_SUPERUSER_PASSWORD=strongpassword123
-#     deploy:
-#       resources:
-#         limits:
-#           memory: 1G  # Giới hạn bộ nhớ tối đa
-#           cpus: "1.0"  # Giới hạn CPU tối đa
-#         reservations:
-#           memory: 1G  # Bộ nhớ cần thiết tối thiểu
-#           cpus: "0.5"  # CPU cần thiết tối thiểu
-#     ports:
-#       - "8000:8000"
-#     # command: >
-#     #   sh -c "python manage.py migrate &&
-#     #     python manage.py runserver 0.0.0.0:8000"
-#     command: >
-#       sh -c "python manage.py migrate &&
-#         python manage.py shell < create_superuser.py &&
-#         python manage.py runserver 0.0.0.0:8000"
-
-
-#   nginx:
-#     build: ./nginx
-#     container_name: nginx
-#     environment:
-#       - SERVER_NAME=0.0.0.0
-#     restart: always
-#     network_mode: host
-#     volumes:
-#       - ./nginx/logs:/var/log/nginx  # Mount thư mục logs từ container Nginx ra host
-#     logging:
-#       driver: "json-file"
-#       options:
-#         max-size: "10m"
-#         max-file: "3"
-# volumes:
-#   mysql_data:
-
-
-
-
-
-#   # redis:
-  #   image: redis:latest 
-  #   container_name: redis
-  #   ports:
-  #     - "6379:6379"  # Mở cổng Redis
-
-  # celery:
-  #   build: .
-  #   container_name: celery_worker
-  #   command: celery -A EzPDF worker --loglevel=info
-  #   volumes:
-  #     - .:/app  
-  #   depends_on:
-  #     - redis 
-  #     - db    
-  #   environment:
-  #     - CELERY_BROKER_URL=redis://redis:6379/0  
-
-
-# services:
-#   web:
-#     build: .
-#     container_name: django_app
-#     command: python manage.py runserver 0.0.0.0:8000
-#     volumes:
-#       - .:/app
-#     ports:
-#       - "8000:8000"
-#     env_file:
-#       - .env
-#     depends_on:
-#       - db
-# command: >
-#   sh -c "./wait-for-it.sh db:3306 -- python manage.py runserver 0.0.0.0:8000"
-
-#   db:
-#     image: mysql:8.0
-#     container_name: mysql_db
-#     restart: always
-#     environment:
-#       MYSQL_ROOT_PASSWORD: dinhthai2004
-#       MYSQL_DATABASE: ezpdf
-#     ports:
-#       - "3307:3306"
-#     volumes:
-#       - mysql_data:/var/lib/mysql
-
-
-# volumes:
-#   mysql_data:
+  db_data:

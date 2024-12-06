@@ -1,86 +1,20 @@
-FROM thobaby/webpdf:v1
-RUN pip install -r requirements.txt
+# Sử dụng Python chính thức
+FROM python:3.10-slim
+
+# Đặt thư mục làm việc
 WORKDIR /app
-COPY . .
-CMD ["gunicorn", "EzPDF.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]
 
+# Cài đặt các gói hệ thống cần thiết (nếu cần, ví dụ để cài mysqlclient)
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    libmariadb-dev \
+    pkg-config \
+    --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
-# dockr compose 
+# Sao chép và cài đặt dependencies từ requirements.txt
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# services:
-#     app:
-#       image: your-dockerhub-username/your-image-name:${IMAGE_TAG}
-#       environment:
-#         - IMAGE_TAG=latest
-  
-
-
-
-
-
-
-
-
-
-
-
-# # Sử dụng Python image
-# FROM thobaby/webpdf:v1
-
-# # Cài đặt các gói hệ thống
-# # RUN apt-get update && apt-get install -y \
-# #     pkg-config \
-# #     libmariadb-dev \
-# #     gcc \
-# #     && apt-get clean
-
-# # # Cài đặt các thư viện Python cần thiết
-# # RUN pip install --upgrade pip setuptools wheel
-
-# # # Cài đặt Gunicorn (nếu chưa có trong requirements.txt)
-# # RUN pip install gunicorn
-# # # Cài đặt mysqlclient
-# # RUN pip install mysqlclient
-# # Cài đặt các dependencies từ requirements.txt
-# RUN pip install -r requirements.txt
-# # Sao chép mã nguồn vào container
-# WORKDIR /app
-# COPY . .
-
-# COPY entrypoint.sh /entrypoint.sh
-# RUN chmod +x /entrypoint.sh
-# ENTRYPOINT ["/entrypoint.sh"]
-
-
-
-# # Expose port và chạy Gunicorn server
-# EXPOSE 8000
-# CMD ["gunicorn", "EzPDF.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]
-
-
-# # Sử dụng Python image
-# FROM python:3.10-slim
-
-# # Cài đặt các gói hệ thống
-# RUN apt-get update && apt-get install -y \
-#     pkg-config \
-#     libmariadb-dev \
-#     gcc \
-#     && apt-get clean
-
-# # Cài đặt các thư viện Python cần thiết
-# RUN pip install --upgrade pip setuptools wheel
-
-# # Cài đặt mysqlclient
-# RUN pip install mysqlclient
-
-# # Sao chép mã nguồn vào container
-# WORKDIR /app
-# COPY . .
-
-# # Cài đặt các dependencies từ requirements.txt
-# RUN pip install -r requirements.txt
-
-# # # Expose port và chạy server
-# # EXPOSE 8000
-# CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Đặt thông tin image base
+LABEL maintainer="dinhthai0312@gmail.com"

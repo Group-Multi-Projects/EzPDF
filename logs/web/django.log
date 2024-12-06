@@ -12,3 +12,19 @@ INFO 2024-12-06 23:51:41,556 autoreload D:\Python_Project\EzPDF\EzPDF\settings.p
 INFO 2024-12-06 23:51:42,553 autoreload Watching for file changes with StatReloader
 INFO 2024-12-06 23:51:58,992 autoreload D:\Python_Project\EzPDF\EzPDF\settings.py changed, reloading.
 INFO 2024-12-06 23:51:59,998 autoreload Watching for file changes with StatReloader
+INFO 2024-12-07 01:46:32,433 autoreload Watching for file changes with StatReloader
+INFO 2024-12-07 01:46:57,113 autoreload D:\Python_Project\EzPDF\EzPDF\settings.py changed, reloading.
+INFO 2024-12-07 01:46:58,294 autoreload Watching for file changes with StatReloader
+INFO 2024-12-06 18:52:20,343 autoreload Watching for file changes with StatReloader
+INFO 2024-12-06 18:52:25,985 basehttp "GET / HTTP/1.1" 200 24049
+WARNING 2024-12-06 18:52:26,162 log Not Found: /favicon.ico
+WARNING 2024-12-06 18:52:26,166 basehttp "GET /favicon.ico HTTP/1.1" 404 6061
+INFO 2024-12-06 18:52:31,536 views User attempting login: admin@gmail.com
+ERROR 2024-12-06 18:52:31,548 views An error occurred during login: (1146, "Table 'ezpdf.Account_accountmodel' doesn't exist")
+ERROR 2024-12-06 18:52:31,554 log Internal Server Error: /account/signin/
+ERROR 2024-12-06 18:52:31,558 basehttp "POST /account/signin/ HTTP/1.1" 500 67
+INFO 2024-12-06 18:54:55,681 autoreload Watching for file changes with StatReloader
+INFO 2024-12-06 19:02:41,567 views User attempting login: admin@gmail.com
+ERROR 2024-12-06 19:02:41,578 views An error occurred during login: (1146, "Table 'ezpdf.Account_accountmodel' doesn't exist")
+ERROR 2024-12-06 19:02:41,582 log Internal Server Error: /account/signin/
+ERROR 2024-12-06 19:02:41,585 basehttp "POST /account/signin/ HTTP/1.1" 500 67

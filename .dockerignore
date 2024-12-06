@@ -1,10 +1,1 @@
-.e
-.vscode
-test
-vevn
-.gitignore
-gui
-install_app
-.git
-static
-media
+myenv/
