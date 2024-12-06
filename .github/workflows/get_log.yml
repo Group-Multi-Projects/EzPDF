@@ -1,0 +1,119 @@
+name: Get logs # Tên workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Select action to perform'
+        required: true
+        default: 'build'
+        type: choice
+        options:
+          - get-logs-web
+          - get-logs-nginx
+      ref:
+        description: 'Select branch or tag to run the workflow'
+        required: true
+        default: 'main'
+      num_lines:
+        description: 'Number of lines to fetch from the log'
+        required: false
+        default: '100'  # Mặc định lấy 10 dòng
+        type: string
+      keyword:
+        description: 'Keyword to filter logs'
+        required: false
+        type: string
+
+jobs:
+  get_logs_web:
+    if: ${{ github.event.inputs.action == 'get-logs-web' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create SSH Key
+        run: |
+          echo "${{ secrets.EC2_PEM_KEY }}" > ec2-key.pem
+          chmod 600 ec2-key.pem 
+    
+      - name: SSH into EC2 and fetch logs
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key_path: ec2-key.pem
+          script: |
+            set -e
+            cd /home/ubuntu/logs/web
+            echo "Fetching logs from web..."
+            if [ -n "${{ github.event.inputs.keyword }}" ]; then
+              echo "Filtering logs by keyword: '${{ github.event.inputs.keyword }}'"
+              grep "${{ github.event.inputs.keyword }}" django.log | tail -n ${{ github.event.inputs.num_lines }}
+            else
+              echo "Fetching the last ${{ github.event.inputs.num_lines }} lines"
+              tail -n ${{ github.event.inputs.num_lines }} django.log
+            fi
+            echo "Done"
+
+  get_logs_nginx:
+    if: ${{ github.event.inputs.action == 'get-logs-nginx' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Load .env variables
+        uses: motdotla/dotenv@v3
+        with:
+          path: .env  # Đường dẫn tới file .env
+
+      - name: Create SSH Key
+        run: |
+          echo "${{ secrets.EC2_PEM_KEY }}" > ec2-key.pem
+          chmod 600 ec2-key.pem
+
+      - name: SSH into EC2 and fetch logs
+        env:
+          EC2_HOST: ${{ env.EC2_HOST }}
+          EC2_USER: ${{ env.EC2_USER }}
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ env.EC2_HOST }}
+          username: ${{ env.EC2_USER }}
+          key_path: ec2-key.pem
+          script: |
+            set -e
+            cd /home/ubuntu/logs/nginx
+            echo "Fetching logs from nginx..."
+            if [ -n "${{ github.event.inputs.keyword }}" ]; then
+              echo "Filtering logs by keyword: '${{ github.event.inputs.keyword }}'"
+              grep "${{ github.event.inputs.keyword }}" access.log | tail -n ${{ github.event.inputs.num_lines }}
+            else
+              echo "Fetching the last ${{ github.event.inputs.num_lines }} lines"
+              tail -n ${{ github.event.inputs.num_lines }} access.log
+            fi
+            echo "Done"
+
+
+
+# jobs:
+#   get_logs_web:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Load .env variables
+#         uses: motdotla/dotenv@v3
+#         with:
+#           path: .env  # Đường dẫn tới file .env
+
+#       - name: Create SSH Key
+#         run: |
+#           echo "$EC2_PEM_KEY" > ec2-key.pem
+#           chmod 600 ec2-key.pem
+
+#       - name: SSH into EC2 and fetch logs
+#         uses: appleboy/ssh-action@v0.1.6
+#         with:
+#           host: ${{ env.EC2_HOST }}
+#           username: ${{ env.EC2_USER }}
+#           key_path: ec2-key.pem
+#           script: |
+#             cd /home/ubuntu/logs/web
+#             echo "Fetching logs from web..."
+#             tail -n 10 django.log
+#             echo "Done"

@@ -280,7 +280,7 @@ LOGGING = {
         'file': {
             'level': 'INFO',  # Chỉ nhận log từ cấp INFO trở lên
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'django.log'),
+            'filename': os.path.join(BASE_DIR, './logs/web/django.log'),
             'formatter': 'verbose',
         },
     },
