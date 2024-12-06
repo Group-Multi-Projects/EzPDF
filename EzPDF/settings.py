@@ -267,37 +267,42 @@ CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS')
 from django.http import HttpResponse
 import logging
 import os
+
+
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': True,
+    'disable_existing_loggers': False,  # Không vô hiệu hóa logger mặc định
     'formatters': {
         'verbose': {
             'format': '{levelname} {asctime} {module} {message}',
             'style': '{',
         },
     },
+
     'handlers': {
-        'file': {
-            'level': 'INFO',  # Chỉ nhận log từ cấp INFO trở lên
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, './logs/web/django.log'),
+        'rotating_file': {
+            'level': 'INFO',
+            'class': 'concurrent_log_handler.ConcurrentRotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/web/django.log'),
+            'maxBytes': 10 * 1024 * 1024,  # 10KB (hoặc tăng lên 1MB, 10MB)
+            'backupCount': 2,
             'formatter': 'verbose',
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['file'],
-            'level': 'INFO',  # Chỉ nhận log từ cấp INFO trở lên
+            'handlers': ['rotating_file'],
+            'level': 'INFO',
             'propagate': False,
         },
         'django.server': {
-            'handlers': ['file'],
-            'level': 'INFO',  # Chỉ nhận log từ cấp INFO trở lên
+            'handlers': ['rotating_file'],
+            'level': 'INFO',
             'propagate': False,
         },
     },
     'root': {
-        'handlers': ['file'],
-        'level': 'INFO',  # Chỉ ghi log từ cấp INFO trở lên
+        'handlers': ['rotating_file'],
+        'level': 'INFO',
     },
 }

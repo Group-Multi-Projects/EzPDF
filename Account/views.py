@@ -75,7 +75,7 @@ def signin(request):
         }
         return render(request, "File/index.html", context)
     except Exception as e:
-        logger.info(f"An error occurred during login: {e}")
+        logger.error(f"An error occurred during login: {e}")
         return JsonResponse({
             "success": False,
             "message": "Đã xảy ra lỗi.",
