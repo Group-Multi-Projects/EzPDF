@@ -28,3 +28,40 @@ INFO 2024-12-06 19:02:41,567 views User attempting login: admin@gmail.com
 ERROR 2024-12-06 19:02:41,578 views An error occurred during login: (1146, "Table 'ezpdf.Account_accountmodel' doesn't exist")
 ERROR 2024-12-06 19:02:41,582 log Internal Server Error: /account/signin/
 ERROR 2024-12-06 19:02:41,585 basehttp "POST /account/signin/ HTTP/1.1" 500 67
+INFO 2024-12-06 19:04:54,923 autoreload /app/EzPDF/settings.py changed, reloading.
+INFO 2024-12-06 19:04:56,170 autoreload Watching for file changes with StatReloader
+INFO 2024-12-06 19:05:59,479 autoreload Watching for file changes with StatReloader
+INFO 2024-12-06 19:06:48,113 autoreload Watching for file changes with StatReloader
+INFO 2024-12-06 19:06:50,951 basehttp "GET / HTTP/1.1" 200 24049
+WARNING 2024-12-06 19:06:51,118 log Not Found: /favicon.ico
+WARNING 2024-12-06 19:06:51,123 basehttp "GET /favicon.ico HTTP/1.1" 404 6061
+INFO 2024-12-06 19:06:53,748 views User attempting login: admin@gmail.com
+INFO 2024-12-06 19:06:54,012 views Login successful for user: admin@gmail.com
+INFO 2024-12-06 19:06:54,035 basehttp "POST /account/signin/ HTTP/1.1" 302 0
+INFO 2024-12-06 19:06:54,052 basehttp "GET /listfiles/ HTTP/1.1" 200 2844
+INFO 2024-12-06 19:06:54,073 basehttp "GET /static/css/project.css HTTP/1.1" 304 0
+INFO 2024-12-06 19:06:54,074 basehttp "GET /static/css/list_files.css HTTP/1.1" 304 0
+INFO 2024-12-06 19:06:54,075 basehttp "GET /static/css/api_boostrap_v523.css HTTP/1.1" 304 0
+INFO 2024-12-06 19:06:54,075 basehttp "GET /static/js/list_files.js HTTP/1.1" 304 0
+INFO 2024-12-06 19:06:54,076 basehttp "GET /static/css/header_and_sidebar_afterlogin.css HTTP/1.1" 304 0
+INFO 2024-12-06 19:06:54,082 basehttp "GET /static/js/Layout/toggle.js HTTP/1.1" 304 0
+INFO 2024-12-06 19:06:54,110 basehttp "GET /static/js/Layout/header_sidebar.js HTTP/1.1" 200 6006
+INFO 2024-12-06 19:06:54,281 basehttp "GET /static/images/arrangeicon.png HTTP/1.1" 304 0
+INFO 2024-12-06 19:06:54,283 basehttp "GET /static/images/editicon.png HTTP/1.1" 304 0
+INFO 2024-12-06 19:06:54,283 basehttp "GET /static/images/EzPDF.jpg HTTP/1.1" 304 0
+INFO 2024-12-06 19:06:54,283 basehttp "GET /static/images/converticon.png HTTP/1.1" 304 0
+INFO 2024-12-06 19:06:54,283 basehttp "GET /static/images/drawicon.png HTTP/1.1" 304 0
+INFO 2024-12-06 19:06:54,306 basehttp "GET /static/js/menu.js HTTP/1.1" 304 0
+INFO 2024-12-06 19:06:54,306 basehttp "GET /static/js/project.js HTTP/1.1" 304 0
+INFO 2024-12-06 19:06:54,336 basehttp "GET /static/js/content.js HTTP/1.1" 200 9730
+INFO 2024-12-06 19:06:54,432 basehttp "GET /get_list_files/files/ HTTP/1.1" 200 17
+INFO 2024-12-06 19:06:55,865 basehttp "GET / HTTP/1.1" 302 0
+INFO 2024-12-06 19:06:55,885 basehttp "GET /home/ HTTP/1.1" 200 11042
+INFO 2024-12-06 19:06:55,896 basehttp "GET /static/css/home_after_login.css HTTP/1.1" 304 0
+INFO 2024-12-06 19:06:55,896 basehttp "GET /static/css/choose.css HTTP/1.1" 304 0
+INFO 2024-12-06 19:06:55,897 basehttp "GET /static/css/convert_before_login.css HTTP/1.1" 304 0
+INFO 2024-12-06 19:06:55,898 basehttp "GET /static/js/header_and_sidebar_afterlogin.js HTTP/1.1" 304 0
+INFO 2024-12-06 19:06:55,909 basehttp "GET /static/images/how-to-edit-pdf-file.avif HTTP/1.1" 304 0
+INFO 2024-12-07 05:28:35,841 autoreload Watching for file changes with StatReloader
+INFO 2024-12-07 05:28:38,969 autoreload /app/EzPDF/settings.py changed, reloading.
+INFO 2024-12-07 05:28:39,936 autoreload Watching for file changes with StatReloader
